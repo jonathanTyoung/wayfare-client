@@ -1,10 +1,10 @@
 import { Navigate, Outlet } from "react-router-dom"
-import { NavBar } from "./nav/Navbar.jsx"
+import { SideBar } from "./nav/SideBar.jsx"
 
 export const Authorized = () => {
   if (localStorage.getItem("wayfare-client_token")) {
     return <>
-      <NavBar />
+      <SideBar />
       <main className="p-4">
         <Outlet />
       </main>
