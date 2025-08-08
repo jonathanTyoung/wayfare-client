@@ -1,7 +1,7 @@
-/* Optional Tailwind base, components, utilities */
-/* @tailwind base;
+/* Tailwind base, components, utilities */
+@tailwind base;
 @tailwind components;
-@tailwind utilities; */
+@tailwind utilities;
 
 :root {
   /* Typography */
@@ -14,14 +14,14 @@
   -moz-osx-font-smoothing: grayscale;
 
   /* Wayfare Color Palette - Light Mode */
-  --color-bg: #f9f5eb;
-  --color-bg-alt: #fafaf9;
-  --color-text: #3e2f1c;
-  --color-text-secondary: #2f3e46;
-  --color-muted: #78716c;
-  --color-accent-teal: #14b8a6;
-  --color-accent-yellow: #fbbf24;
-  --color-accent-yellow-dark: #f59e0b;
+  --color-bg: #f9f5eb;            /* Light background */
+  --color-bg-alt: #fafaf9;        /* Slightly lighter bg */
+  --color-text: #3e2f1c;          /* Dark brown text */
+  --color-text-secondary: #2f3e46;/* Dark slate text */
+  --color-muted: #78716c;         /* Muted gray */
+  --color-accent-teal: #14b8a6;  /* Teal accent */
+  --color-accent-yellow: #fbbf24;/* Yellow accent */
+  --color-accent-yellow-dark: #f59e0b; /* Dark yellow accent */
 
   color-scheme: light;
   color: var(--color-text);
@@ -31,12 +31,11 @@
 @media (prefers-color-scheme: dark) {
   :root {
     /* Dark Mode Overrides */
-    --color-bg: #2f3e46;
-    --color-bg-alt: #1a1a1a;
-    --color-text: #f9f5eb;
-    --color-text-secondary: #fafaf9;
-    --color-muted: #78716c;
-
+    --color-bg: #1a1a1a;             /* Dark background */
+    --color-bg-alt: #2f3e46;         /* Dark slate bg */
+    --color-text: #f9f5eb;           /* Light text */
+    --color-text-secondary: #fafaf9; /* Lighter secondary text */
+    --color-muted: #78716c;          /* Muted gray stays same */
     /* Accent colors remain the same */
     color-scheme: dark;
     color: var(--color-text);
@@ -44,52 +43,52 @@
   }
 }
 
-body {
-  margin: 0;
-  display: flex;
-  place-items: center;
-  min-width: 320px;
-  min-height: 100vh;
-  background-color: var(--color-bg);
-  color: var(--color-text);
-}
+  body {
+    margin: 0;
+    min-width: 320px;
+    min-height: 100vh;
+    background-color: var(--color-bg);
+    color: var(--color-text);
+    font-family: var(--font-family, Inter, system-ui, Avenir, Helvetica, Arial, sans-serif);
+  }
 
-/* Typography */
-h1 {
-  font-size: 3.2em;
-  line-height: 1.1;
-  color: var(--color-text);
-}
+  /* Typography */
+  h1 {
+    font-size: 3.2em;
+    line-height: 1.1;
+    color: var(--color-text);
+  }
 
-/* Links */
-a {
-  font-weight: 500;
-  color: var(--color-accent-teal);
-  text-decoration: none;
-}
-a:hover {
-  color: var(--color-accent-yellow-dark);
-}
+  /* Links */
+  a {
+    font-weight: 500;
+    color: var(--color-accent-teal);
+    text-decoration: none;
+  }
 
-/* Buttons */
-button {
-  border-radius: 8px;
-  border: 1px solid transparent;
-  padding: 0.6em 1.2em;
-  font-size: 1em;
-  font-weight: 500;
-  font-family: inherit;
-  background-color: var(--color-accent-yellow);
-  color: var(--color-bg);
-  cursor: pointer;
-  transition: border-color 0.25s, background-color 0.25s;
-}
+  a:hover {
+    color: var(--color-accent-yellow-dark);
+  }
 
-button:hover {
-  background-color: var(--color-accent-yellow-dark);
-}
+  /* Buttons */
+  button {
+    border-radius: 8px;
+    border: 1px solid transparent;
+    padding: 0.6em 1.2em;
+    font-size: 1em;
+    font-weight: 500;
+    font-family: inherit;
+    background-color: var(--color-accent-yellow);
+    color: var(--color-bg);
+    cursor: pointer;
+    transition: border-color 0.25s, background-color 0.25s;
+  }
 
-button:focus,
-button:focus-visible {
-  outline: 4px auto -webkit-focus-ring-color;
-}
+  button:hover {
+    background-color: var(--color-accent-yellow-dark);
+  }
+
+  button:focus,
+  button:focus-visible {
+    outline: 4px auto -webkit-focus-ring-color;
+  }

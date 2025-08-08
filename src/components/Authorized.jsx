@@ -1,14 +1,19 @@
-import { Navigate, Outlet } from "react-router-dom"
-import { SideBar } from "./nav/SideBar.jsx"
+import { Navigate, Outlet } from "react-router-dom";
+import { NavBar } from "./nav/NavBar";
 
 export const Authorized = () => {
-  if (localStorage.getItem("wayfare-client_token")) {
-    return <>
-      <SideBar />
-      <main className="p-4">
-        <Outlet />
-      </main>
-    </>
+  if (localStorage.getItem("wayfare_token")) {
+    return (
+      <div className="min-h-screen bg-gray-900 text-white flex flex-col">
+        {/* NavBar on top */}
+        <NavBar />
+
+        {/* Main content below */}
+        <main className="flex-1 p-6 overflow-auto">
+          <Outlet />
+        </main>
+      </div>
+    );
   }
-  return <Navigate to="/login" replace />
-}
+  return <Navigate to="/login" replace />;
+};
