@@ -10,68 +10,37 @@ export const NavBar = () => {
   };
 
   return (
-    <nav className="bg-gray-900 text-white px-6 py-3 shadow-md w-full">
-      <div className="max-w-7xl mx-auto flex justify-between items-center">
-        {/* Left side - links */}
-        <div className="flex space-x-6">
-          <NavLink
-            to="/"
-            className={({ isActive }) =>
-              `text-sm font-semibold hover:underline ${
-                isActive ? "underline decoration-fuchsia-500" : ""
-              }`
-            }
-          >
-            Home
-          </NavLink>
+    <nav>
+      <div>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+          {/* Left side - Brand and navigation links */}
+          <div style={{ display: 'flex', alignItems: 'center', gap: '2rem' }}>
+            <div>
+              Wayfare
+            </div>
+            
+            <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
+              <NavLink to="/">Home</NavLink>
 
-          {token && (
-            <NavLink
-              to="/profile"
-              className={({ isActive }) =>
-                `text-sm font-semibold hover:underline ${
-                  isActive ? "underline decoration-fuchsia-500" : ""
-                }`
-              }
-            >
-              Profile
-            </NavLink>
-          )}
-        </div>
+              {token && (
+                <NavLink to="/profile">Profile</NavLink>
+              )}
+            </div>
+          </div>
 
-        {/* Right side - auth buttons */}
-        <div className="flex space-x-4">
-          {token ? (
-            <button
-              onClick={handleLogout}
-              className="text-sm font-semibold bg-red-600 hover:bg-red-700 px-3 py-1 rounded"
-            >
-              Logout
-            </button>
-          ) : (
-            <>
-              <NavLink
-                to="/login"
-                className={({ isActive }) =>
-                  `text-sm font-semibold hover:underline ${
-                    isActive ? "underline decoration-fuchsia-500" : ""
-                  }`
-                }
-              >
-                Login
-              </NavLink>
-              <NavLink
-                to="/register"
-                className={({ isActive }) =>
-                  `text-sm font-semibold hover:underline ${
-                    isActive ? "underline decoration-fuchsia-500" : ""
-                  }`
-                }
-              >
-                Register
-              </NavLink>
-            </>
-          )}
+          {/* Right side - auth buttons */}
+          <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
+            {token ? (
+              <button onClick={handleLogout}>
+                Logout
+              </button>
+            ) : (
+              <>
+                <NavLink to="/login">Login</NavLink>
+                <NavLink to="/register">Register</NavLink>
+              </>
+            )}
+          </div>
         </div>
       </div>
     </nav>

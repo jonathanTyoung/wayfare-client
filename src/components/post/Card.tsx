@@ -4,40 +4,62 @@ export function PostCard({
   post,
   removePost,
   isOwner = false,
-  width = "w-full sm:w-1/2 md:w-1/3 lg:w-1/4", // Responsive width
 }: {
   post: any;
   removePost?: (id: number) => void;
   isOwner?: boolean;
-  width?: string;
 }) {
   return (
-    <div className={`p-3 ${width}`}>
-      <div className="bg-slate-800 rounded-xl shadow-lg hover:shadow-fuchsia-500/20 transition-shadow duration-300 overflow-hidden flex flex-col h-full">
-        {/* Post title */}
-        <div className="p-4 flex-grow">
-          <h2 className="text-xl font-semibold text-fuchsia-300 mb-2">
-            <Link to={`/posts/${post.id}`} className="hover:underline">
+    <div style={{ padding: '1rem' }}>
+      <div style={{ 
+        borderRadius: '0.75rem', 
+        overflow: 'hidden', 
+        display: 'flex', 
+        flexDirection: 'column', 
+        height: '100%',
+        border: '1px solid #ccc',
+        boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)'
+      }}>
+        {/* Post content */}
+        <div style={{ padding: '1.5rem', flexGrow: 1 }}>
+          <h2 style={{ fontSize: '1.25rem', fontWeight: 'bold', marginBottom: '0.75rem', lineHeight: '1.25' }}>
+            <Link 
+              to={`/posts/${post.id}`} 
+              style={{ textDecoration: 'none' }}
+            >
               {post.title}
             </Link>
           </h2>
-          <p className="text-sm text-slate-300">
+          <p style={{ lineHeight: '1.625' }}>
             {post.short_description}
           </p>
         </div>
 
         {/* Actions for owner */}
         {isOwner && removePost && (
-          <div className="flex justify-between border-t border-slate-700 text-sm text-fuchsia-300 p-4">
+          <div style={{ 
+            display: 'flex', 
+            justifyContent: 'space-between', 
+            alignItems: 'center', 
+            borderTop: '1px solid #ccc', 
+            padding: '1rem 1.5rem' 
+          }}>
             <Link
               to={`/posts/${post.id}/edit`}
-              className="hover:text-fuchsia-400 hover:underline transition"
+              style={{ textDecoration: 'none', fontWeight: '500', fontSize: '0.875rem' }}
             >
-              Edit
+              Edit Post
             </Link>
             <button
               onClick={() => removePost(post.id)}
-              className="hover:text-red-400 hover:underline transition"
+              style={{ 
+                background: 'none', 
+                border: 'none', 
+                fontWeight: '500', 
+                fontSize: '0.875rem', 
+                cursor: 'pointer',
+                textDecoration: 'underline'
+              }}
             >
               Delete
             </button>

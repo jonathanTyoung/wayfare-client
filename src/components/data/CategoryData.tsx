@@ -1,10 +1,13 @@
 import { fetchWithResponse } from "./Fetcher";
 
 
-export function getCategories() {
-  return fetchWithResponse('categories', {
+export const getCategories = () => {
+  const token = localStorage.getItem('wayfare_token');
+  
+  return fetchWithResponse("categories", {
     headers: {
-      Authorization: `Token ${localStorage.getItem('token')}`
+      "Authorization": `Token ${token}`,
+      "Content-Type": "application/json"
     }
-  })
-}
+  });
+};
