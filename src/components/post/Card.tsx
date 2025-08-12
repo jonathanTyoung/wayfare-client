@@ -10,62 +10,77 @@ export function PostCard({
   isOwner?: boolean;
 }) {
   return (
-    <div style={{ padding: '1rem' }}>
-      <div style={{ 
-        borderRadius: '0.75rem', 
-        overflow: 'hidden', 
-        display: 'flex', 
-        flexDirection: 'column', 
-        height: '100%',
-        border: '1px solid #ccc',
-        boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)'
-      }}>
-        {/* Post content */}
-        <div style={{ padding: '1.5rem', flexGrow: 1 }}>
-          <h2 style={{ fontSize: '1.25rem', fontWeight: 'bold', marginBottom: '0.75rem', lineHeight: '1.25' }}>
-            <Link 
-              to={`/posts/${post.id}`} 
-              style={{ textDecoration: 'none' }}
-            >
-              {post.title}
-            </Link>
-          </h2>
-          <p style={{ lineHeight: '1.625' }}>
-            {post.short_description}
-          </p>
-        </div>
+    <article className="max-w-xl mx-auto my-4 rounded-xl shadow-lg bg-yellow-50 text-black font-sans flex flex-col overflow-hidden">
+      {/* Title */}
+      <header className="p-6 border-b border-gray-200">
+        <h2 className="text-2xl font-bold m-0">
+          <Link
+            to={`/posts/${post.id}`}
+            className="no-underline text-gray-900 hover:underline"
+          >
+            {post.title}
+          </Link>
+        </h2>
+      </header>
 
-        {/* Actions for owner */}
-        {isOwner && removePost && (
-          <div style={{ 
-            display: 'flex', 
-            justifyContent: 'space-between', 
-            alignItems: 'center', 
-            borderTop: '1px solid #ccc', 
-            padding: '1rem 1.5rem' 
-          }}>
-            <Link
-              to={`/posts/${post.id}/edit`}
-              style={{ textDecoration: 'none', fontWeight: '500', fontSize: '0.875rem' }}
+      {/* Description */}
+      <section className="p-6 text-base leading-relaxed text-gray-700 flex-grow">
+        {post.short_description || "No description provided."}
+      </section>
+
+      {/* Meta info */}
+      <footer className="p-4 border-t border-gray-200 text-sm text-gray-500 flex flex-wrap gap-x-6 gap-y-2 justify-between">
+        <span>
+          <strong className="text-gray-700">Category:</strong>{" "}
+          {post.category?.name || "Unknown"}
+        </span>
+        <span>
+          <strong className="text-gray-700">Traveler:</strong>{" "}
+          {post.traveler?.name || "Unknown"}
+        </span>
+        <span>
+          <strong className="text-gray-700">Location:</strong>{" "}
+          {post.location_name || "Unknown"}
+        </span>
+        <span>
+          <strong className="text-gray-700">Last Updated:</strong>{" "}
+          {post.updated_at
+            ? new Date(post.updated_at).toLocaleDateString()
+            : "Unknown"}
+        </span>
+      </footer>
+
+      {/* Tags */}
+      {post.tags && post.tags.length > 0 && (
+        <div className="p-4 border-t border-gray-200 flex flex-wrap gap-2">
+          {post.tags.map((tag: { id: number; name: string }) => (
+            <span
+              key={tag.id}
+              className="bg-gray-200 text-gray-700 px-3 py-1 rounded-full text-xs font-medium"
             >
-              Edit Post
-            </Link>
-            <button
-              onClick={() => removePost(post.id)}
-              style={{ 
-                background: 'none', 
-                border: 'none', 
-                fontWeight: '500', 
-                fontSize: '0.875rem', 
-                cursor: 'pointer',
-                textDecoration: 'underline'
-              }}
-            >
-              Delete
-            </button>
-          </div>
-        )}
-      </div>
-    </div>
+              #{tag.name}
+            </span>
+          ))}
+        </div>
+      )}
+
+      {/* Owner actions */}
+      {isOwner && removePost && (
+        <div className="p-4 border-t border-gray-200 flex justify-end gap-4">
+          <Link
+            to={`/posts/${post.id}/edit`}
+            className="text-blue-600 font-semibold hover:underline"
+          >
+            Edit Post
+          </Link>
+          <button
+            onClick={() => removePost(post.id)}
+            className="text-red-600 font-semibold hover:underline cursor-pointer bg-transparent border-none"
+          >
+            Delete
+          </button>
+        </div>
+      )}
+    </article>
   );
 }

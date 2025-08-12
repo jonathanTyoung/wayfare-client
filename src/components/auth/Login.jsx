@@ -21,7 +21,7 @@ export const Login = () => {
       .then((authInfo) => {
         if (authInfo.valid) {
           localStorage.setItem("wayfare_token", authInfo.token);
-          navigate("/");
+          navigate("/home");
         } else {
           existDialog.current.showModal();
         }

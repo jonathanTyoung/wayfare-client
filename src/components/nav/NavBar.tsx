@@ -20,7 +20,7 @@ export const NavBar = () => {
             </div>
             
             <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
-              <NavLink to="/">Home</NavLink>
+              <NavLink to="/home">Home</NavLink>
 
               {token && (
                 <NavLink to="/profile">Profile</NavLink>

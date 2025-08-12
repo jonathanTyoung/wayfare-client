@@ -1,3 +1,79 @@
   @tailwind base;
   @tailwind components;
   @tailwind utilities;
+
+
+/* index.css */
+
+/* === CSS Reset === */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* === Root Theme Variables === */
+:root {
+  --color-bg: #121212;         /* deep background */
+  --color-surface: #1E1E1E;    /* slightly lighter surface */
+  --color-accent: #fbbf24;     /* pop accent (yellow/tan) */
+  --color-accent-hover: #05b88b;
+  --color-text: #E0E0E0;       /* light text */
+  --color-muted: #A0A0A0;      /* muted text */
+}
+
+/* === Base Styles === */
+body {
+  font-family: 'Inter', sans-serif;
+  background-color: var(--color-bg);
+  color: var(--color-text);
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+
+a {
+  color: var(--color-accent);
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+a:hover {
+  color: var(--color-accent-hover);
+}
+
+/* === Buttons === */
+button {
+  background: var(--color-accent);
+  color: #000;
+  border: none;
+  padding: 0.6rem 1.2rem;
+  border-radius: 6px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+button:hover {
+  background: var(--color-accent-hover);
+}
+
+input,
+textarea,
+select {
+  background-color: var(--color-surface);
+  color: var(--color-text);
+  border: 1px solid var(--color-muted);
+}
+
+input::placeholder,
+textarea::placeholder {
+  color: var(--color-muted);
+}
+
+input:focus,
+textarea:focus,
+select:focus {
+  outline: none;
+  border-color: var(--color-accent);
+  box-shadow: 0 0 0 2px rgba(6, 214, 160, 0.3); /* subtle accent glow */
+}

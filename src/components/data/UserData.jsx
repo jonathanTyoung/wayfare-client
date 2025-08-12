@@ -1,9 +1,18 @@
-export const getCurrentUser = () => {
+import { fetchWithResponse } from "./Fetcher";
+
+export async function getCurrentUser() {
   const token = localStorage.getItem("wayfare_token");
-  return fetch("http://localhost:8000/current_user", {
+
+  if (!token) {
+    throw new Error("No token found");
+  }
+
+  const user = await fetchWithResponse("/current_user", {
+    method: "GET",
     headers: {
       Authorization: `Token ${token}`,
-      "Content-Type": "application/json"
-    }
-  }).then(res => res.json());
+    },
+  });
+
+  return user;
 }

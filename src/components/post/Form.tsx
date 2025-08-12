@@ -1,210 +1,235 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
-export const PostForm = ({ categories = [], onSuccess = () => {} }) => {
+export const PostForm = ({
+  categories = [],
+  initialData = {},
+  onSubmit, // async function(postData)
+  onSuccess = () => {},
+  mode = "create", // "create" or "edit"
+  onReset, // optional custom reset handler
+}) => {
   const [formData, setFormData] = useState({
     title: "",
     short_description: "",
     location: "",
-    category: "",
+    category_id: "",
+    tags: "",
   });
 
   const [isSubmitting, setIsSubmitting] = useState(false);
 
+  // Update formData whenever initialData changes (especially in edit mode)
+  useEffect(() => {
+    setFormData({
+      title: initialData.title || "",
+      short_description: initialData.short_description || "",
+      location: initialData.location_name || "",
+      category_id: initialData.category ? initialData.category.id : "",
+      tags: initialData.tags
+        ? initialData.tags.map((tag) => tag.name).join(", ")
+        : "",
+    });
+  }, []);
+
   const handleChange = (e) => {
-    setFormData((prev) => ({
-      ...prev,
-      [e.target.name]: e.target.value,
-    }));
+    const { name, value } = e.target;
+    setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsSubmitting(true);
 
+    const tagList = formData.tags
+      .split(",")
+      .map((tag) => tag.trim())
+      .filter(Boolean);
+
     const postData = {
       title: formData.title,
       short_description: formData.short_description,
-      location: formData.location || "Not specified",
-      created_at: Date.now(), // Current timestamp
-      categories: formData.category ? [parseInt(formData.category, 10)] : [],
+      location_name: formData.location || "Not specified",
+      category_id: formData.category_id
+        ? parseInt(formData.category_id, 10)
+        : null,
+      tags: tagList,
     };
 
     try {
-      const token = localStorage.getItem("wayfare_token");
-      if (!token) throw new Error("No token found");
+      await onSubmit(postData);
 
-      console.log("Sending post data:", postData); // Debug log
-      console.log("Using token:", token); // Debug log
-
-      const response = await fetch("http://localhost:8000/posts", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Token ${token}`,
-        },
-        body: JSON.stringify(postData),
-      });
-
-      console.log("Response status:", response.status); // Debug log
-
-      if (!response.ok) {
-        const errorText = await response.text();
-        console.log("Error response:", errorText); // Debug log
-        throw new Error(`Failed to create post: ${response.status} ${errorText}`);
+      if (mode === "create") {
+        // Clear form after successful create
+        setFormData({
+          title: "",
+          short_description: "",
+          location: "",
+          category_id: "",
+          tags: "",
+        });
       }
-
-      // Reset form
-      setFormData({
-        title: "",
-        short_description: "",
-        location: "",
-        category: "",
-      });
 
       onSuccess();
     } catch (error) {
+      alert(error.message || "Failed to submit post");
       console.error("Submit error:", error);
-      alert(error.message);
     } finally {
       setIsSubmitting(false);
     }
   };
 
+  const handleReset = () => {
+    if (mode === "create") {
+      // Reset form fields in create mode
+      setFormData({
+        title: "",
+        short_description: "",
+        location: "",
+        category_id: "",
+        tags: "",
+      });
+    } else if (mode === "edit") {
+      // In edit mode, either reset to initialData or call custom handler (like navigation)
+      if (typeof onReset === "function") {
+        onReset();
+      } else {
+        setFormData({
+          title: initialData.title || "",
+          short_description: initialData.short_description || "",
+          location: initialData.location_name || "",
+          category_id: initialData.category_id || "",
+          tags: initialData.tags
+            ? initialData.tags.map((tag) => tag.name).join(", ")
+            : "",
+        });
+      }
+    }
+  };
+
   return (
-    <div style={{ maxWidth: "64rem", margin: "0 auto" }}>
-      <form onSubmit={handleSubmit} style={{ display: "flex", flexDirection: "column", gap: "2rem" }}>
-        
-        {/* Title Field */}
+    <div className="max-w-4xl mx-auto p-6 rounded-xl shadow-lg bg-yellow-50 font-sans text-gray-900">
+      <form onSubmit={handleSubmit} className="flex flex-col gap-8">
+        {/* Title */}
         <div>
-          <label style={{ display: "block", marginBottom: "0.5rem", fontSize: "0.875rem", fontWeight: "500" }}>
-            🎮 Post Title
+          <label htmlFor="title" className="block mb-2 font-semibold">
+            Post Title
           </label>
           <input
-            type="text"
+            id="title"
             name="title"
+            type="text"
             value={formData.title}
             onChange={handleChange}
             placeholder="Enter post title"
-            style={{
-              width: "100%",
-              padding: "0.75rem 1rem",
-              border: "1px solid #ccc",
-              borderRadius: "0.5rem",
-            }}
             required
+            className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-400"
           />
         </div>
 
-        {/* Description Field */}
+        {/* Description */}
         <div>
-          <label style={{ display: "block", marginBottom: "0.5rem", fontSize: "0.875rem", fontWeight: "500" }}>
+          <label
+            htmlFor="short_description"
+            className="block mb-2 font-semibold"
+          >
             📝 Description
           </label>
           <textarea
+            id="short_description"
             name="short_description"
             value={formData.short_description}
             onChange={handleChange}
             placeholder="Describe your post..."
             rows={4}
-            style={{
-              width: "100%",
-              padding: "0.75rem 1rem",
-              border: "1px solid #ccc",
-              borderRadius: "0.5rem",
-              resize: "vertical"
-            }}
             required
+            className="w-full p-3 border border-gray-300 rounded-lg resize-y focus:outline-none focus:ring-2 focus:ring-yellow-400"
           />
         </div>
 
-        {/* Location Field */}
+        {/* Location */}
         <div>
-          <label style={{ display: "block", marginBottom: "0.5rem", fontSize: "0.875rem", fontWeight: "500" }}>
+          <label htmlFor="location" className="block mb-2 font-semibold">
             📍 Location (Optional)
           </label>
           <input
-            type="text"
+            id="location"
             name="location"
+            type="text"
             value={formData.location}
             onChange={handleChange}
             placeholder="Where did this happen?"
-            style={{
-              width: "100%",
-              padding: "0.75rem 1rem",
-              border: "1px solid #ccc",
-              borderRadius: "0.5rem",
-            }}
+            className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-400"
           />
         </div>
 
-        {/* Category Field */}
+        {/* Category */}
         <div>
-          <label style={{ display: "block", marginBottom: "0.5rem", fontSize: "0.875rem", fontWeight: "500" }}>
+          <label htmlFor="category_id" className="block mb-2 font-semibold">
             🏷️ Category
           </label>
           <select
-            name="category"
-            value={formData.category}
+            id="category_id"
+            name="category_id"
+            value={formData.category_id}
             onChange={handleChange}
-            style={{
-              width: "100%",
-              padding: "0.75rem 1rem",
-              border: "1px solid #ccc",
-              borderRadius: "0.5rem",
-            }}
             required
+            className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-400"
           >
             <option value="">Select a category</option>
-            {Array.isArray(categories) && categories.length > 0 ? (
+            {categories.length === 0 ? (
+              <option disabled>No categories available</option>
+            ) : (
               categories.map((cat) => (
                 <option key={cat.id} value={cat.id}>
-                  {cat.label}
+                  {cat.name}
                 </option>
               ))
-            ) : (
-              <option disabled>No categories available</option>
             )}
           </select>
         </div>
 
-        {/* Form Actions */}
-        <div style={{ display: "flex", gap: "1rem", paddingTop: "1.5rem", borderTop: "1px solid #ccc" }}>
+        {/* Tags */}
+        <div>
+          <label htmlFor="tags" className="block mb-2 font-semibold">
+            📍 Tags (Optional)
+          </label>
+          <input
+            id="tags"
+            name="tags"
+            type="text"
+            value={formData.tags}
+            onChange={handleChange}
+            placeholder="Add tags separated by commas, e.g. travel, summer, food"
+            className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-400"
+          />
+        </div>
+
+        {/* Buttons */}
+        <div className="flex gap-4 pt-6 border-t border-gray-300">
           <button
             type="submit"
             disabled={isSubmitting}
-            style={{
-              flex: 1,
-              padding: "0.75rem 1.5rem",
-              borderRadius: "0.5rem",
-              fontWeight: "500",
-              cursor: isSubmitting ? "not-allowed" : "pointer",
-              border: "1px solid #007bff",
-              background: isSubmitting ? "#ccc" : "#007bff",
-              color: "white",
-            }}
+            className={`flex-1 py-3 rounded-md font-semibold border border-blue-600 text-black ${
+              isSubmitting
+                ? "bg-gray-300 cursor-not-allowed"
+                : "bg-yellow-400 hover:bg-yellow-500 cursor-pointer"
+            }`}
           >
-            {isSubmitting ? "Creating Post..." : "🚀 Create Post"}
+            {isSubmitting
+              ? mode === "edit"
+                ? "Updating Post..."
+                : "Creating Post..."
+              : mode === "edit"
+              ? "✏️ Update Post"
+              : "🚀 Create Post"}
           </button>
-          
+
           <button
             type="button"
-            onClick={() => {
-              setFormData({
-                title: "",
-                short_description: "",
-                location: "",
-                category: "",
-              });
-            }}
-            style={{
-              padding: "0.75rem 1.5rem",
-              border: "1px solid #ccc",
-              borderRadius: "0.5rem",
-              background: "transparent",
-              cursor: "pointer",
-            }}
+            onClick={handleReset}
+            className="py-3 px-6 rounded-md border border-gray-300 text-gray-700 hover:bg-gray-100 cursor-pointer"
           >
-            🔄 Reset Form
+            {mode === "edit" ? "← Back" : "🔄 Reset Form"}
           </button>
         </div>
       </form>

@@ -1,15 +1,29 @@
-import { Link } from "react-router-dom";
+import React from "react";
 
-export const Sidebar = () => {
+export const Sidebar: React.FC = () => {
   return (
-    <aside className="hidden lg:block w-64 bg-gray-50 dark:bg-gray-800 border-l border-gray-200 dark:border-gray-700 p-4 sticky top-16 h-[calc(100vh-4rem)] overflow-y-auto">
-      <h2 className="text-xl font-semibold mb-4 text-gray-900 dark:text-white">Wayfare</h2>
-      <ul className="space-y-3 text-gray-700 dark:text-gray-300">
-        <li><Link to="/" className="hover:underline">Home</Link></li>
-        <li><Link to="/profile" className="hover:underline">Profile</Link></li>
-        <li><Link to="/explore" className="hover:underline">Explore</Link></li>
-        <li><Link to="/explore" className="hover:underline">Search</Link></li>
-      </ul>
+    <aside className="w-64 bg-bg border-r border-border text-text flex flex-col p-6 sticky top-0 h-screen overflow-y-auto">
+      <nav className="flex flex-col gap-4">
+        <a
+          href="/home"
+          className="block px-3 py-2 rounded hover:bg-accent hover:text-bg transition"
+        >
+          Home
+        </a>
+        <a
+          href="/profile"
+          className="block px-3 py-2 rounded hover:bg-accent hover:text-bg transition"
+        >
+          Profile
+        </a>
+        <a
+          href="/explore"
+          className="block px-3 py-2 rounded hover:bg-accent hover:text-bg transition"
+        >
+          Explore Map
+        </a>
+        {/* Add more links as needed */}
+      </nav>
     </aside>
   );
 };
