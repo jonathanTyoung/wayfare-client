@@ -101,19 +101,21 @@ export const HomeFeed: React.FC = () => {
       alert("You must be logged in to create a post.");
       return;
     }
-
     try {
+      console.log("Creating post with data:", formData);
       await createPost(formData, token);
-      const freshPosts = await getPosts(); //fetches fresh posts list
-      if (freshPosts) {
-        setPosts(freshPosts);
-      }
+      const freshPosts = await getPosts();
+      if (freshPosts) setPosts(freshPosts);
       setShowForm(false);
     } catch (err) {
       console.error("Failed to create post", err);
-      alert("Failed to create post. Please try again.");
+      alert(
+        err.message ||
+          "Failed to create post. Check console for details."
+      );
     }
   };
+
 
   return (
     // inside JSX

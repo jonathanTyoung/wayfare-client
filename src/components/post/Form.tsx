@@ -29,7 +29,11 @@ export const PostForm = ({
         ? initialData.tags.map((tag) => tag.name).join(", ")
         : "",
     });
-  }, []);
+      }, [initialData.title,
+      initialData.short_description,
+      initialData.location_name,
+      initialData.category?.id,
+      initialData.tags?.map((tag) => tag.name).join(", "),]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
