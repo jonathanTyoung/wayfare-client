@@ -7,6 +7,7 @@ export const Register = () => {
     const [password, setPassword] = useState("straytor")
     const [firstName, setFirstName] = useState("Admina")
     const [lastName, setLastName] = useState("Straytor")
+    const [username, setUsername] = useState("jonyoung")
     const existDialog = useRef()
     const navigate = useNavigate()
 
@@ -15,6 +16,7 @@ export const Register = () => {
         fetch("http://localhost:8000/register", {
             method: "POST",
             body: JSON.stringify({
+                username,
                 email,
                 password,
                 first_name: firstName,
@@ -27,7 +29,7 @@ export const Register = () => {
             .then(res => res.json())
             .then(authInfo => {
                 if (authInfo && authInfo.token) {
-                    localStorage.setItem("wayfare-client_token", JSON.stringify(authInfo))
+                    localStorage.setItem("wayfare_token", JSON.stringify(authInfo))
                     navigate("/")
                 } else {
                     existDialog.current.showModal()
@@ -60,6 +62,15 @@ export const Register = () => {
                         <input type="text" id="lastName"
                             value={lastName}
                             onChange={evt => setLastName(evt.target.value)}
+                            className="form-control"
+                            placeholder=""
+                            required autoFocus />
+                    </fieldset>
+                    <fieldset className="mb-4">
+                        <label htmlFor="lastName"> Username </label>
+                        <input type="text" id="username"
+                            value={username}
+                            onChange={evt => setUsername(evt.target.value)}
                             className="form-control"
                             placeholder=""
                             required autoFocus />
