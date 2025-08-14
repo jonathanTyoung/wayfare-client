@@ -20,7 +20,11 @@ export default {
           800: "#404040",
           900: "#262626",
         }
-      }
+      },
+      fontFamily: {
+        inter: ["Inter", "sans-serif"],           // default site font
+        special: ["'Special Elite'", "cursive"], // your map/journaling font
+      },
     },
   },
   plugins: [],

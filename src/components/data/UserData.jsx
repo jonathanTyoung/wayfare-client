@@ -16,3 +16,20 @@ export async function getCurrentUser() {
 
   return user;
 }
+
+
+export async function getUserProfile() {
+  const token = localStorage.getItem("wayfare_token");
+
+  if (!token) {
+    throw new Error("No authentication token found");
+  }
+
+  return await fetchWithResponse("/profile", {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+      "Authorization": `Token ${token}`
+    }
+  });
+}

@@ -37,14 +37,13 @@ export const HomeFeed: React.FC = () => {
     useState<string>("Loading posts...");
 
   const currentUserTravelerId = currentUser?.traveler?.id;
+
   const toggleForm = async () => {
     if (!showForm) {
       setLoadingCategories(true);
       try {
         const data = await getCategories();
-        if (data) {
-          setCategories(data);
-        }
+        if (data) setCategories(data);
       } catch (err) {
         console.error("Failed to fetch categories", err);
       }
@@ -56,30 +55,25 @@ export const HomeFeed: React.FC = () => {
   useEffect(() => {
     getPosts()
       .then((data: Post[] | null) => {
-        if (data) {
-          setPosts(data);
-          setIsLoading(false);
-        }
+        if (data) setPosts(data);
+        setIsLoading(false);
       })
       .catch((err: Error) => {
-        setLoadingMessage(
-          `Unable to retrieve posts. Status code ${err.message} on response.`
-        );
+        setLoadingMessage(`Unable to retrieve posts. ${err.message}`);
       });
   }, []);
 
   if (isLoading) {
     return (
-      <div className="min-h-screen flex items-center justify-center text-center">
-        <div>
-          <div className="mb-8 text-lg">Loading...</div>
-          <p>{loadingMessage}</p>
+      <div className="min-h-screen flex items-center justify-center font-sans text-text bg-bg">
+        <div className="text-center">
+          <div className="mb-4 text-lg text-primary">Loading...</div>
+          <p className="text-secondary">{loadingMessage}</p>
         </div>
       </div>
     );
   }
 
-  // logic for actually removing post from UI and the DB
   const handleRemovePost = async (id: number) => {
     const confirmDelete = window.confirm(
       "Are you sure you want to delete this post?"
@@ -101,6 +95,7 @@ export const HomeFeed: React.FC = () => {
       alert("You must be logged in to create a post.");
       return;
     }
+
     try {
       console.log("Creating post with data:", formData);
       await createPost(formData, token);
@@ -109,17 +104,12 @@ export const HomeFeed: React.FC = () => {
       setShowForm(false);
     } catch (err) {
       console.error("Failed to create post", err);
-      alert(
-        err.message ||
-          "Failed to create post. Check console for details."
-      );
+      alert(err.message || "Failed to create post.");
     }
   };
 
-
   return (
-    // inside JSX
-    <div className="min-h-screen max-w-7xl mx-auto px-4 py-8 bg-bg text-text">
+    <div className="min-h-screen max-w-7xl mx-auto px-4 py-8 font-sans text-text bg-bg">
       {/* Header */}
       <header className="mb-12 text-center">
         <h1 className="text-5xl font-bold mb-4 text-primary">Home Feed</h1>
@@ -128,25 +118,17 @@ export const HomeFeed: React.FC = () => {
         </p>
       </header>
 
-      {/* Toggle Button */}
+      {/* Toggle Form Button */}
       <button
         onClick={toggleForm}
-        className="bg-primary text-bg px-6 py-3 rounded-lg font-medium shadow-lg hover:bg-secondary transition-all duration-300 transform hover:scale-105 flex items-center gap-2"
+        className="bg-primary text-bg px-6 py-3 rounded-lg font-medium shadow-lg hover:bg-secondary transition-transform duration-300 transform hover:scale-105 flex items-center gap-2"
       >
-        {showForm ? (
-          <>
-            <span>✕</span> Cancel
-          </>
-        ) : (
-          <>
-            <span>➕</span> Create a Post
-          </>
-        )}
+        {showForm ? <>✕ Cancel</> : <>➕ Create a Post</>}
       </button>
 
       {/* Post Creation Form */}
       {showForm && (
-        <div className="p-8 mb-8 border border-border rounded-lg bg-bg">
+        <div className="p-8 my-8 border border-border rounded-lg bg-bg">
           <div className="mb-6">
             <h2 className="text-2xl font-semibold mb-2 text-primary">
               🎯 Create New Post
@@ -171,29 +153,22 @@ export const HomeFeed: React.FC = () => {
       )}
 
       {/* Posts Grid */}
-      <main>
-        <div className="grid grid-cols-1 gap-8">
-          {posts.map((post) => {
-            console.log("currentUser:", currentUser);
-            console.log("currentUserTravelerId:", currentUserTravelerId);
-            console.log("post traveler id:", post.traveler?.id);
-            return (
-              <PostCard
-                initialData={post}
-                key={post.id}
-                post={post}
-                isOwner={currentUserTravelerId === post.traveler?.id}
-                removePost={handleRemovePost}
-              />
-            );
-          })}
-        </div>
+      <main className="grid grid-cols-1 gap-8 mt-8">
+        {posts.map((post) => (
+          <PostCard
+            initialData={post}
+            key={post.id}
+            post={post}
+            isOwner={currentUserTravelerId === post.traveler?.id}
+            removePost={handleRemovePost}
+          />
+        ))}
       </main>
 
       {/* Empty State */}
       {posts.length === 0 && (
-        <div className="flex items-center justify-center min-h-[50vh]">
-          <div className="text-center max-w-md mx-auto text-secondary">
+        <div className="flex items-center justify-center min-h-[50vh] text-center">
+          <div className="max-w-md mx-auto text-secondary">
             <div className="mb-8 text-6xl">📝</div>
             <h3 className="text-3xl font-bold mb-4 text-primary">
               No posts yet

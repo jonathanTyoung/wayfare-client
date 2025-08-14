@@ -69,6 +69,7 @@ export function PostCard({
         <div className="p-4 border-t border-gray-200 flex justify-end gap-4">
           <Link
             to={`/posts/${post.id}/edit`}
+            state={{ from: window.location.pathname }} // <-- dynamically record current page
             className="text-blue-600 font-semibold hover:underline"
           >
             Edit Post

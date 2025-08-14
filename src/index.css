@@ -1,9 +1,11 @@
-  @tailwind base;
-  @tailwind components;
-  @tailwind utilities;
-
-
 /* index.css */
+
+/* === Import Special Elite font === */
+@import url('https://fonts.googleapis.com/css2?family=Special+Elite&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
 /* === CSS Reset === */
 * {
