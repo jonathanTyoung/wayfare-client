@@ -10,3 +10,19 @@ Currently, two official plugins are available:
 ## Expanding the ESLint configuration
 
 If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+
+
+
+
+
+
+Things to elaborate on:
+
+CLIENT
+1. routing of form pages will take user back to wherever they entered the form from (e.g., "/home" vs "/profile") when user clicks on create/update or back buttons
+
+2. search bar for filtering and finding posts uses the debounce method for fewer API requests.  
+
+SERVER
+1. handling of tags, i.e., when the user deletes a Post, the tags with it are deleted unless in use on another post. Tags are also always stored in DB in lowerCase format, and cannot be repeated
+

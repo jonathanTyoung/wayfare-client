@@ -1,24 +1,28 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom"
 import { Authorized } from "./Authorized"
-import { Login } from "./auth/Login.jsx"
-import { Register } from './auth/Register.jsx'
+import { Login } from "./auth/Login"
+import { Register } from './auth/Register'
 import App from "../App.jsx"
 import LandingPage from "./auth/LandingPage"
 import { HomeFeed } from "../pages/HomeFeed"
-import { EditPost } from "../pages/EditPost.tsx"
+import { EditPost } from "../pages/EditPost"
+import Profile from "../pages/Profile"
+import { ExploreMap } from "../pages/ExploreMap.js"
 
 
 const ApplicationViews = () => {
 
     return <BrowserRouter>
         <Routes>
-            <Route path="/wayfare" element={<LandingPage />} />
+            <Route path="/" element={<LandingPage />} />
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
 
             <Route element={<Authorized />}>
                 <Route path="/home" element={<HomeFeed />} />
                 <Route path="/posts/:postId/edit" element={<EditPost />} />
+                <Route path="/profile" element={<Profile />} />
+                <Route path="/explore" element={<ExploreMap/>} />
             </Route>
         </Routes>
     </BrowserRouter>

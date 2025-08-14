@@ -70,3 +70,14 @@ export async function updatePost(postId, updatedData, token) {
     body: JSON.stringify(updatedData),
   });
 }
+
+export async function getPostsByTraveler(travelerId: number) {
+  const token = localStorage.getItem("wayfare_token");
+
+  return fetchWithResponse(`posts/traveler/${travelerId}`, {
+    method: "GET",
+    headers: {
+      Authorization: `Token ${token}`,
+    },
+  });
+}

@@ -1,4 +1,6 @@
 import { useState, useEffect } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
+import { geocodeCity } from "../data/MapData.ts";
 
 export const PostForm = ({
   categories = [],
@@ -6,8 +8,11 @@ export const PostForm = ({
   onSubmit, // async function(postData)
   onSuccess = () => {},
   mode = "create", // "create" or "edit"
-  onReset, // optional custom reset handler
 }) => {
+  const navigate = useNavigate();
+  const location = useLocation();
+  const returnTo = location.state?.from || "/home";
+
   const [formData, setFormData] = useState({
     title: "",
     short_description: "",
@@ -17,27 +22,64 @@ export const PostForm = ({
   });
 
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [locationSuggestions, setLocationSuggestions] = useState([]);
+  const [selectedLocation, setSelectedLocation] = useState(null);
 
-  // Update formData whenever initialData changes (especially in edit mode)
+  // Initialize form data and selected location
   useEffect(() => {
     setFormData({
       title: initialData.title || "",
       short_description: initialData.short_description || "",
       location: initialData.location_name || "",
-      category_id: initialData.category ? initialData.category.id : "",
-      tags: initialData.tags
-        ? initialData.tags.map((tag) => tag.name).join(", ")
-        : "",
+      category_id: initialData.category?.id || "",
+      tags: initialData.tags?.map((tag) => tag.name).join(", ") || "",
     });
-      }, [initialData.title,
-      initialData.short_description,
-      initialData.location_name,
-      initialData.category?.id,
-      initialData.tags?.map((tag) => tag.name).join(", "),]);
+
+    if (mode === "edit" && initialData.latitude && initialData.longitude) {
+      setSelectedLocation({
+        lat: parseFloat(initialData.latitude),
+        lng: parseFloat(initialData.longitude),
+        name: initialData.location_name || "",
+      });
+    }
+  }, [
+    initialData.title,
+    initialData.short_description,
+    initialData.location_name,
+    initialData.category?.id,
+    initialData.tags?.map((tag) => tag.name).join(", "),
+    initialData.latitude,
+    initialData.longitude,
+    mode,
+  ]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
+  };
+
+  const handleLocationChange = async (e) => {
+    const value = e.target.value;
+    setFormData((prev) => ({ ...prev, location: value }));
+    setSelectedLocation(null); // reset previous selection
+
+    if (value.length < 3) {
+      setLocationSuggestions([]);
+      return;
+    }
+
+    try {
+      const res = await fetch(
+        `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(
+          value
+        )}`
+      );
+      const data = await res.json();
+      setLocationSuggestions(data.slice(0, 5));
+    } catch (err) {
+      console.error("Error fetching location suggestions:", err);
+      setLocationSuggestions([]);
+    }
   };
 
   const handleSubmit = async (e) => {
@@ -49,6 +91,19 @@ export const PostForm = ({
       .map((tag) => tag.trim())
       .filter(Boolean);
 
+    const latitude = selectedLocation?.lat
+      ? parseFloat(selectedLocation.lat.toFixed(6))
+      : null;
+    const longitude = selectedLocation?.lng
+      ? parseFloat(selectedLocation.lng.toFixed(6))
+      : null;
+
+    if (formData.location && !selectedLocation) {
+      alert("Please select a valid location from the suggestions.");
+      setIsSubmitting(false);
+      return;
+    }
+
     const postData = {
       title: formData.title,
       short_description: formData.short_description,
@@ -57,23 +112,13 @@ export const PostForm = ({
         ? parseInt(formData.category_id, 10)
         : null,
       tags: tagList,
+      latitude,
+      longitude,
     };
 
     try {
       await onSubmit(postData);
-
-      if (mode === "create") {
-        // Clear form after successful create
-        setFormData({
-          title: "",
-          short_description: "",
-          location: "",
-          category_id: "",
-          tags: "",
-        });
-      }
-
-      onSuccess();
+      navigate(returnTo);
     } catch (error) {
       alert(error.message || "Failed to submit post");
       console.error("Submit error:", error);
@@ -82,32 +127,26 @@ export const PostForm = ({
     }
   };
 
+  const handleBack = () => navigate(returnTo);
+
   const handleReset = () => {
-    if (mode === "create") {
-      // Reset form fields in create mode
-      setFormData({
-        title: "",
-        short_description: "",
-        location: "",
-        category_id: "",
-        tags: "",
-      });
-    } else if (mode === "edit") {
-      // In edit mode, either reset to initialData or call custom handler (like navigation)
-      if (typeof onReset === "function") {
-        onReset();
-      } else {
-        setFormData({
-          title: initialData.title || "",
-          short_description: initialData.short_description || "",
-          location: initialData.location_name || "",
-          category_id: initialData.category_id || "",
-          tags: initialData.tags
-            ? initialData.tags.map((tag) => tag.name).join(", ")
-            : "",
-        });
-      }
-    }
+    setFormData({
+      title: initialData.title || "",
+      short_description: initialData.short_description || "",
+      location: initialData.location_name || "",
+      category_id: initialData.category?.id || "",
+      tags: initialData.tags?.map((tag) => tag.name).join(", ") || "",
+    });
+
+    setSelectedLocation(
+      mode === "edit" && initialData.latitude && initialData.longitude
+        ? {
+            lat: parseFloat(initialData.latitude),
+            lng: parseFloat(initialData.longitude),
+            name: initialData.location_name || "",
+          }
+        : null
+    );
   };
 
   return (
@@ -132,10 +171,7 @@ export const PostForm = ({
 
         {/* Description */}
         <div>
-          <label
-            htmlFor="short_description"
-            className="block mb-2 font-semibold"
-          >
+          <label htmlFor="short_description" className="block mb-2 font-semibold">
             📝 Description
           </label>
           <textarea
@@ -151,19 +187,43 @@ export const PostForm = ({
         </div>
 
         {/* Location */}
-        <div>
+        <div className="relative">
           <label htmlFor="location" className="block mb-2 font-semibold">
-            📍 Location (Optional)
+            📍 Location
           </label>
           <input
             id="location"
             name="location"
             type="text"
             value={formData.location}
-            onChange={handleChange}
-            placeholder="Where did this happen?"
+            onChange={handleLocationChange}
+            placeholder="Type a city or place"
             className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-400"
+            autoComplete="off"
+            required
           />
+          {locationSuggestions.length > 0 && (
+            <ul className="absolute z-10 bg-white border border-gray-300 w-full mt-1 rounded-lg max-h-48 overflow-auto">
+              {locationSuggestions.map((loc) => (
+                <li
+                  key={loc.place_id}
+                  className="p-2 hover:bg-yellow-100 cursor-pointer"
+                  onClick={() => {
+                    setFormData((prev) => ({ ...prev, location: loc.display_name }));
+                    setSelectedLocation({ lat: parseFloat(loc.lat), lng: parseFloat(loc.lon), name: loc.display_name });
+                    setLocationSuggestions([]);
+                  }}
+                >
+                  {loc.display_name}
+                </li>
+              ))}
+            </ul>
+          )}
+          {selectedLocation && (
+            <div className="text-xs text-gray-500 mt-1">
+              Selected: {selectedLocation.lat}, {selectedLocation.lng}
+            </div>
+          )}
         </div>
 
         {/* Category */}
@@ -180,15 +240,11 @@ export const PostForm = ({
             className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-400"
           >
             <option value="">Select a category</option>
-            {categories.length === 0 ? (
-              <option disabled>No categories available</option>
-            ) : (
-              categories.map((cat) => (
-                <option key={cat.id} value={cat.id}>
-                  {cat.name}
-                </option>
-              ))
-            )}
+            {categories.map((cat) => (
+              <option key={cat.id} value={cat.id}>
+                {cat.name}
+              </option>
+            ))}
           </select>
         </div>
 
@@ -214,9 +270,7 @@ export const PostForm = ({
             type="submit"
             disabled={isSubmitting}
             className={`flex-1 py-3 rounded-md font-semibold border border-blue-600 text-black ${
-              isSubmitting
-                ? "bg-gray-300 cursor-not-allowed"
-                : "bg-yellow-400 hover:bg-yellow-500 cursor-pointer"
+              isSubmitting ? "bg-gray-300 cursor-not-allowed" : "bg-yellow-400 hover:bg-yellow-500 cursor-pointer"
             }`}
           >
             {isSubmitting
@@ -230,7 +284,7 @@ export const PostForm = ({
 
           <button
             type="button"
-            onClick={handleReset}
+            onClick={mode === "edit" ? handleBack : handleReset}
             className="py-3 px-6 rounded-md border border-gray-300 text-gray-700 hover:bg-gray-100 cursor-pointer"
           >
             {mode === "edit" ? "← Back" : "🔄 Reset Form"}
