@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import { geocodeCity } from "../data/MapData.ts"; // your geocoding helper
+import { geocodeCity } from "../data/MapData.ts";
 
 export const PostForm = ({
   categories = [],
@@ -20,10 +20,12 @@ export const PostForm = ({
     category_id: "",
     tags: "",
   });
+
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [locationSuggestions, setLocationSuggestions] = useState([]);
-  const [selectedLocation, setSelectedLocation] = useState(null); // store lat/lng
+  const [selectedLocation, setSelectedLocation] = useState(null);
 
+  // Initialize form data and selected location
   useEffect(() => {
     setFormData({
       title: initialData.title || "",
@@ -32,17 +34,52 @@ export const PostForm = ({
       category_id: initialData.category?.id || "",
       tags: initialData.tags?.map((tag) => tag.name).join(", ") || "",
     });
+
+    if (mode === "edit" && initialData.latitude && initialData.longitude) {
+      setSelectedLocation({
+        lat: parseFloat(initialData.latitude),
+        lng: parseFloat(initialData.longitude),
+        name: initialData.location_name || "",
+      });
+    }
   }, [
     initialData.title,
     initialData.short_description,
     initialData.location_name,
     initialData.category?.id,
     initialData.tags?.map((tag) => tag.name).join(", "),
+    initialData.latitude,
+    initialData.longitude,
+    mode,
   ]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
+  };
+
+  const handleLocationChange = async (e) => {
+    const value = e.target.value;
+    setFormData((prev) => ({ ...prev, location: value }));
+    setSelectedLocation(null); // reset previous selection
+
+    if (value.length < 3) {
+      setLocationSuggestions([]);
+      return;
+    }
+
+    try {
+      const res = await fetch(
+        `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(
+          value
+        )}`
+      );
+      const data = await res.json();
+      setLocationSuggestions(data.slice(0, 5));
+    } catch (err) {
+      console.error("Error fetching location suggestions:", err);
+      setLocationSuggestions([]);
+    }
   };
 
   const handleSubmit = async (e) => {
@@ -54,7 +91,6 @@ export const PostForm = ({
       .map((tag) => tag.trim())
       .filter(Boolean);
 
-    // Use selectedLocation from autocomplete
     const latitude = selectedLocation?.lat
       ? parseFloat(selectedLocation.lat.toFixed(6))
       : null;
@@ -62,7 +98,6 @@ export const PostForm = ({
       ? parseFloat(selectedLocation.lng.toFixed(6))
       : null;
 
-    // If the user typed a location but didn’t select from suggestions, block submit
     if (formData.location && !selectedLocation) {
       alert("Please select a valid location from the suggestions.");
       setIsSubmitting(false);
@@ -93,28 +128,25 @@ export const PostForm = ({
   };
 
   const handleBack = () => navigate(returnTo);
-  const handleLocationChange = async (e) => {
-    const value = e.target.value;
-    setFormData((prev) => ({ ...prev, location: value }));
-    setSelectedLocation(null); // reset previous selection
 
-    if (value.length < 3) {
-      setLocationSuggestions([]);
-      return;
-    }
+  const handleReset = () => {
+    setFormData({
+      title: initialData.title || "",
+      short_description: initialData.short_description || "",
+      location: initialData.location_name || "",
+      category_id: initialData.category?.id || "",
+      tags: initialData.tags?.map((tag) => tag.name).join(", ") || "",
+    });
 
-    try {
-      const res = await fetch(
-        `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(
-          value
-        )}`
-      );
-      const data = await res.json();
-      setLocationSuggestions(data.slice(0, 5)); // top 5 results
-    } catch (err) {
-      console.error("Error fetching location suggestions:", err);
-      setLocationSuggestions([]);
-    }
+    setSelectedLocation(
+      mode === "edit" && initialData.latitude && initialData.longitude
+        ? {
+            lat: parseFloat(initialData.latitude),
+            lng: parseFloat(initialData.longitude),
+            name: initialData.location_name || "",
+          }
+        : null
+    );
   };
 
   return (
@@ -139,10 +171,7 @@ export const PostForm = ({
 
         {/* Description */}
         <div>
-          <label
-            htmlFor="short_description"
-            className="block mb-2 font-semibold"
-          >
+          <label htmlFor="short_description" className="block mb-2 font-semibold">
             📝 Description
           </label>
           <textarea
@@ -157,8 +186,11 @@ export const PostForm = ({
           />
         </div>
 
-        {/*  location handling with tagged location names for lat/long */}
+        {/* Location */}
         <div className="relative">
+          <label htmlFor="location" className="block mb-2 font-semibold">
+            📍 Location
+          </label>
           <input
             id="location"
             name="location"
@@ -170,7 +202,6 @@ export const PostForm = ({
             autoComplete="off"
             required
           />
-
           {locationSuggestions.length > 0 && (
             <ul className="absolute z-10 bg-white border border-gray-300 w-full mt-1 rounded-lg max-h-48 overflow-auto">
               {locationSuggestions.map((loc) => (
@@ -178,14 +209,8 @@ export const PostForm = ({
                   key={loc.place_id}
                   className="p-2 hover:bg-yellow-100 cursor-pointer"
                   onClick={() => {
-                    setFormData((prev) => ({
-                      ...prev,
-                      location: loc.display_name,
-                    }));
-                    setSelectedLocation({
-                      lat: parseFloat(loc.lat),
-                      lng: parseFloat(loc.lon),
-                    });
+                    setFormData((prev) => ({ ...prev, location: loc.display_name }));
+                    setSelectedLocation({ lat: parseFloat(loc.lat), lng: parseFloat(loc.lon), name: loc.display_name });
                     setLocationSuggestions([]);
                   }}
                 >
@@ -193,6 +218,11 @@ export const PostForm = ({
                 </li>
               ))}
             </ul>
+          )}
+          {selectedLocation && (
+            <div className="text-xs text-gray-500 mt-1">
+              Selected: {selectedLocation.lat}, {selectedLocation.lng}
+            </div>
           )}
         </div>
 
@@ -240,9 +270,7 @@ export const PostForm = ({
             type="submit"
             disabled={isSubmitting}
             className={`flex-1 py-3 rounded-md font-semibold border border-blue-600 text-black ${
-              isSubmitting
-                ? "bg-gray-300 cursor-not-allowed"
-                : "bg-yellow-400 hover:bg-yellow-500 cursor-pointer"
+              isSubmitting ? "bg-gray-300 cursor-not-allowed" : "bg-yellow-400 hover:bg-yellow-500 cursor-pointer"
             }`}
           >
             {isSubmitting
@@ -253,9 +281,10 @@ export const PostForm = ({
               ? "✏️ Update Post"
               : "🚀 Create Post"}
           </button>
+
           <button
             type="button"
-            onClick={handleBack}
+            onClick={mode === "edit" ? handleBack : handleReset}
             className="py-3 px-6 rounded-md border border-gray-300 text-gray-700 hover:bg-gray-100 cursor-pointer"
           >
             {mode === "edit" ? "← Back" : "🔄 Reset Form"}
