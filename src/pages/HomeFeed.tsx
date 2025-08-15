@@ -196,8 +196,8 @@ export const HomeFeed: React.FC = () => {
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-8">
               <span className="text-[#f5f5f4] font-semibold">Latest Stories</span>
-              <span className="text-[#a8a29e] hover:text-[#f5f5f4] cursor-pointer transition-colors">Destinations</span>
-              <span className="text-[#a8a29e] hover:text-[#f5f5f4] cursor-pointer transition-colors">Travelers</span>
+              <span className="text-[#a8a29e] hover:text-[#f5f5f4] cursor-pointer transition-colors">Following</span>
+              <span className="text-[#a8a29e] hover:text-[#f5f5f4] cursor-pointer transition-colors">Your Posts</span>
             </div>
             
             {/* Write Button - Substack style */}

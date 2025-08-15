@@ -1,13 +1,30 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import { geocodeCity } from "../data/MapData.ts";
 
+// Custom debounce hook
+const useDebounce = (value, delay) => {
+  const [debouncedValue, setDebouncedValue] = useState(value);
+
+  useEffect(() => {
+    const handler = setTimeout(() => {
+      setDebouncedValue(value);
+    }, delay);
+
+    return () => {
+      clearTimeout(handler);
+    };
+  }, [value, delay]);
+
+  return debouncedValue;
+};
+
+// Updated PostForm component with debounced location search
 export const PostForm = ({
   categories = [],
   initialData = {},
-  onSubmit, // async function(postData)
+  onSubmit,
   onSuccess = () => {},
-  mode = "create", // "create" or "edit"
+  mode = "create",
 }) => {
   const navigate = useNavigate();
   const location = useLocation();
@@ -24,6 +41,13 @@ export const PostForm = ({
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [locationSuggestions, setLocationSuggestions] = useState([]);
   const [selectedLocation, setSelectedLocation] = useState(null);
+  const [isLoadingLocations, setIsLoadingLocations] = useState(false);
+
+  // Debounce the location input with 400ms delay
+  const debouncedLocation = useDebounce(formData.location, 400);
+
+  // Ref to track the latest request to prevent race conditions
+  const locationRequestRef = useRef(0);
 
   // Initialize form data and selected location
   useEffect(() => {
@@ -53,32 +77,58 @@ export const PostForm = ({
     mode,
   ]);
 
+  // Effect for debounced location search
+  useEffect(() => {
+    const searchLocations = async () => {
+      if (debouncedLocation.length < 3) {
+        setLocationSuggestions([]);
+        setIsLoadingLocations(false);
+        return;
+      }
+
+      // Increment request counter for race condition handling
+      const currentRequest = ++locationRequestRef.current;
+      setIsLoadingLocations(true);
+
+      try {
+        const res = await fetch(
+          `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(
+            debouncedLocation
+          )}`
+        );
+        const data = await res.json();
+
+        // Only update if this is the latest request
+        if (currentRequest === locationRequestRef.current) {
+          setLocationSuggestions(data.slice(0, 5));
+          setIsLoadingLocations(false);
+        }
+      } catch (err) {
+        // Only update if this is the latest request
+        if (currentRequest === locationRequestRef.current) {
+          console.error("Error fetching location suggestions:", err);
+          setLocationSuggestions([]);
+          setIsLoadingLocations(false);
+        }
+      }
+    };
+
+    searchLocations();
+  }, [debouncedLocation]);
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleLocationChange = async (e) => {
+  const handleLocationChange = (e) => {
     const value = e.target.value;
     setFormData((prev) => ({ ...prev, location: value }));
     setSelectedLocation(null); // reset previous selection
 
-    if (value.length < 3) {
-      setLocationSuggestions([]);
-      return;
-    }
-
-    try {
-      const res = await fetch(
-        `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(
-          value
-        )}`
-      );
-      const data = await res.json();
-      setLocationSuggestions(data.slice(0, 5));
-    } catch (err) {
-      console.error("Error fetching location suggestions:", err);
-      setLocationSuggestions([]);
+    // Show loading state immediately if user is typing
+    if (value.length >= 3) {
+      setIsLoadingLocations(true);
     }
   };
 
@@ -147,6 +197,9 @@ export const PostForm = ({
           }
         : null
     );
+
+    setLocationSuggestions([]);
+    setIsLoadingLocations(false);
   };
 
   return (
@@ -171,7 +224,10 @@ export const PostForm = ({
 
         {/* Description */}
         <div>
-          <label htmlFor="short_description" className="block mb-2 font-semibold">
+          <label
+            htmlFor="short_description"
+            className="block mb-2 font-semibold"
+          >
             📝 Description
           </label>
           <textarea
@@ -202,26 +258,44 @@ export const PostForm = ({
             autoComplete="off"
             required
           />
+
+          {/* Loading indicator */}
+          {isLoadingLocations && (
+            <div className="absolute right-3 top-12 text-gray-500">
+              <span className="animate-spin">🔄</span>
+            </div>
+          )}
+
+          {/* Location suggestions */}
           {locationSuggestions.length > 0 && (
-            <ul className="absolute z-10 bg-white border border-gray-300 w-full mt-1 rounded-lg max-h-48 overflow-auto">
+            <ul className="absolute z-10 bg-white border border-gray-300 w-full mt-1 rounded-lg max-h-48 overflow-auto shadow-lg">
               {locationSuggestions.map((loc) => (
                 <li
                   key={loc.place_id}
-                  className="p-2 hover:bg-yellow-100 cursor-pointer"
+                  className="p-2 hover:bg-yellow-100 cursor-pointer border-b border-gray-100 last:border-b-0"
                   onClick={() => {
-                    setFormData((prev) => ({ ...prev, location: loc.display_name }));
-                    setSelectedLocation({ lat: parseFloat(loc.lat), lng: parseFloat(loc.lon), name: loc.display_name });
+                    setFormData((prev) => ({
+                      ...prev,
+                      location: loc.display_name,
+                    }));
+                    setSelectedLocation({
+                      lat: parseFloat(loc.lat),
+                      lng: parseFloat(loc.lon),
+                      name: loc.display_name,
+                    });
                     setLocationSuggestions([]);
                   }}
                 >
-                  {loc.display_name}
+                  <div className="font-medium text-sm">{loc.display_name}</div>
                 </li>
               ))}
             </ul>
           )}
+
+          {/* Selected location coordinates */}
           {selectedLocation && (
-            <div className="text-xs text-gray-500 mt-1">
-              Selected: {selectedLocation.lat}, {selectedLocation.lng}
+            <div className="text-xs text-green-600 mt-1 font-medium">
+              ✓ Selected: {selectedLocation.lat}, {selectedLocation.lng}
             </div>
           )}
         </div>
@@ -270,7 +344,9 @@ export const PostForm = ({
             type="submit"
             disabled={isSubmitting}
             className={`flex-1 py-3 rounded-md font-semibold border border-blue-600 text-black ${
-              isSubmitting ? "bg-gray-300 cursor-not-allowed" : "bg-yellow-400 hover:bg-yellow-500 cursor-pointer"
+              isSubmitting
+                ? "bg-gray-300 cursor-not-allowed"
+                : "bg-yellow-400 hover:bg-yellow-500 cursor-pointer"
             }`}
           >
             {isSubmitting

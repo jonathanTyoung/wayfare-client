@@ -79,11 +79,11 @@ export function PostCard({
 
           {/* Location and category */}
           <div className="text-right text-xs">
-            <div className="text-[#f5f5f4] font-medium">
-              {post.location_name?.split(",")[0] || "Unknown"}
-            </div>
             <div className="text-[#a8a29e]">
-              in {post.category?.name || "General"}
+              {post.category?.name || "General"}
+            </div>
+            <div className="text-[#f5f5f4] font-medium">
+              in {post.location_name?.split(",")[0] || "Unknown"}
             </div>
           </div>
         </div>

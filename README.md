@@ -21,7 +21,10 @@ Things to elaborate on:
 CLIENT
 1. routing of form pages will take user back to wherever they entered the form from (e.g., "/home" vs "/profile") when user clicks on create/update or back buttons
 
-2. search bar for filtering and finding posts uses the debounce method for fewer API requests.  
+2. Debounce Method
+- a modern method used for fewer API calls  
+- used on the location search when user is filling out their form
+- used in the search bar for filtering posts #stretch goal yet to be achieved 
 
 SERVER
 1. handling of tags, i.e., when the user deletes a Post, the tags with it are deleted unless in use on another post. Tags are also always stored in DB in lowerCase format, and cannot be repeated

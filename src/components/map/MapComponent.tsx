@@ -55,7 +55,7 @@ export const MapComponent = ({ posts, onAddPost }) => {
     <MapContainer
       center={[40.7128, -74.006]} // Default center (NYC)
       zoom={13}
-      style={{ height: "100vh", width: "100%" }}
+      style={{ height: "96vh", width: "100%" }}
     >
       <TileLayer
         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"

@@ -6,6 +6,7 @@ export default {
   theme: {
     extend: {
       colors: {
+        tealCustom: '#05b88b',
         black: "#000000",
         white: "#FFFFFF",
         gray: {
