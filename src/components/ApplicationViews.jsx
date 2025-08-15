@@ -1,32 +1,33 @@
-import { BrowserRouter, Route, Routes } from "react-router-dom"
-import { Authorized } from "./Authorized"
-import { Login } from "./auth/Login"
-import { Register } from './auth/Register'
-import App from "../App.jsx"
-import LandingPage from "./auth/LandingPage"
-import { HomeFeed } from "../pages/HomeFeed"
-import { EditPost } from "../pages/EditPost"
-import Profile from "../pages/Profile"
-import { ExploreMap } from "../pages/ExploreMap.js"
-
+import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { Authorized } from "./Authorized";
+import { Login } from "./auth/Login";
+import { Register } from "./auth/Register";
+import App from "../App.jsx";
+import LandingPage from "./auth/LandingPage";
+import { HomeFeed } from "../pages/HomeFeed";
+import { EditPost } from "../pages/EditPost";
+import Profile from "../pages/Profile";
+import { ExploreMap } from "../pages/ExploreMap.js";
+import { SearchResults } from "./search/SearchResults.js";
 
 const ApplicationViews = () => {
+  return (
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<LandingPage />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Register />} />
 
-    return <BrowserRouter>
-        <Routes>
-            <Route path="/" element={<LandingPage />} />
-            <Route path="/login" element={<Login />} />
-            <Route path="/register" element={<Register />} />
-
-            <Route element={<Authorized />}>
-                <Route path="/home" element={<HomeFeed />} />
-                <Route path="/posts/:postId/edit" element={<EditPost />} />
-                <Route path="/profile" element={<Profile />} />
-                <Route path="/explore" element={<ExploreMap/>} />
-            </Route>
-        </Routes>
+        <Route element={<Authorized />}>
+          <Route path="/home" element={<HomeFeed />} />
+          <Route path="/search" element={<SearchResults />} />
+          <Route path="/posts/:postId/edit" element={<EditPost />} />
+          <Route path="/profile" element={<Profile />} />
+          <Route path="/explore" element={<ExploreMap />} />
+        </Route>
+      </Routes>
     </BrowserRouter>
-    
-}
+  );
+};
 
-export default ApplicationViews
+export default ApplicationViews;
