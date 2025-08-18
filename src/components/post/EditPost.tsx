@@ -1,8 +1,8 @@
 import { useNavigate, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
-import { getPostById, updatePost } from "../components/data/PostData";
-import { PostForm } from "../components/post/Form.tsx";
-import { getCategories } from "../components/data/CategoryData.ts";
+import { getPostById, updatePost } from "../data/PostData.tsx";
+import { PostForm } from "./Form.tsx";
+import { getCategories } from "../data/CategoryData.ts";
 
 export const EditPost = () => {
   const { postId } = useParams();

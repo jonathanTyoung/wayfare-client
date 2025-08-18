@@ -1,6 +1,10 @@
 import { useState, useEffect } from "react";
 import { getUserProfile } from "../components/data/UserData";
-import { getPostsByTraveler, createPost, deletePost } from "../components/data/PostData";
+import {
+  getPostsByTraveler,
+  createPost,
+  deletePost,
+} from "../components/data/PostData";
 import { PostCard } from "../components/post/Card";
 import { PostForm } from "../components/post/Form";
 import { getCategories } from "../components/data/CategoryData";
@@ -183,7 +187,9 @@ export default function Profile() {
         <section className="bg-[#121212] border border-[#333333] text-[#f5f5f4] rounded-lg shadow-md p-6 mt-6">
           <div className="flex items-center gap-3 mb-6">
             <span className="text-3xl">📖</span>
-            <h2 className="text-2xl font-semibold text-[#f5f5f4]">My Travel Stories</h2>
+            <h2 className="text-2xl font-semibold text-[#f5f5f4]">
+              My Travel Stories
+            </h2>
           </div>
 
           {loadingPosts ? (
@@ -193,14 +199,13 @@ export default function Profile() {
             </div>
           ) : posts.length === 0 ? (
             <div className="text-center py-16">
-              <div className="mb-8 text-6xl opacity-20">
-                ✏️
-              </div>
+              <div className="mb-8 text-6xl opacity-20">✏️</div>
               <h3 className="text-2xl font-bold mb-4 text-[#f5f5f4]">
                 Your Journey Starts Here
               </h3>
               <p className="text-[#a8a29e] mb-8 text-lg font-light max-w-md mx-auto">
-                Share your first travel story and inspire fellow wanderers with your adventures.
+                Share your first travel story and inspire fellow wanderers with
+                your adventures.
               </p>
               <Link
                 to="/create"
@@ -215,7 +220,8 @@ export default function Profile() {
             <>
               <div className="mb-6 flex items-center justify-between">
                 <p className="text-[#a8a29e] font-light">
-                  {posts.length} {posts.length === 1 ? 'story' : 'stories'} shared
+                  {posts.length} {posts.length === 1 ? "story" : "stories"}{" "}
+                  shared
                 </p>
                 <button
                   onClick={openModal}
@@ -236,7 +242,10 @@ export default function Profile() {
                     renderEditButton={(postId) => (
                       <Link
                         to={`/edit/${postId}`}
-                        state={{ from: "/profile" }}
+                        state={{
+                          from: "profile",
+                          userId: currentUser.traveler?.id,
+                        }}
                         className="text-[#14b8a6] hover:text-[#0f9488] font-medium transition-colors flex items-center gap-1"
                       >
                         <span className="text-sm">✏️</span>

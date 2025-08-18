@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 export function PostCard({
   post,
@@ -9,8 +9,15 @@ export function PostCard({
   removePost?: (id: number) => void;
   isOwner?: boolean;
 }) {
+  const navigate = useNavigate();
+
+  const handleTagClick = (tagName: string) => {
+    navigate(`/search?tag=${encodeURIComponent(tagName)}`);
+  };
+
+
   return (
-    <article className="w-full max-w-lg mx-auto my-4 rounded-lg shadow-sm bg-[#1c1917] border border-[#333333] hover:shadow-md transition-all duration-300 min-h-[300px] flex flex-col overflow-hidden hover:border-[#44403c]">
+    <article className="w-full max-w-lg mx-auto my-4 rounded-lg shadow-sm bg-[#1c1917] border border-[#333333] hover:shadow-md transition-all duration-300 min-h-[220px] flex flex-col overflow-hidden hover:border-[#44403c]">
       {/* Header - Clean title area */}
       <header className="relative px-5 pt-4 pb-3 flex-shrink-0">
         <div className="flex justify-between items-start">
@@ -89,13 +96,14 @@ export function PostCard({
         </div>
       </div>
 
-      {/* Tags - True bottom footer */}
+      {/* Tags */}
       {post.tags && post.tags.length > 0 && (
         <div className="px-5 py-3 bg-[#0f0f0f] border-t border-[#333333] mt-auto">
           <div className="flex flex-wrap gap-1.5">
             {post.tags.slice(0, 5).map((tag: { id: number; name: string }) => (
               <span
                 key={tag.id}
+                onClick={() => handleTagClick(tag.name)}
                 className="inline-block bg-[#1c1917] text-[#a8a29e] px-2.5 py-1 rounded-full text-xs font-medium border border-[#333333] hover:bg-[#fbbf24] hover:text-[#121212] hover:border-[#fbbf24] transition-all duration-200 cursor-pointer select-none"
                 title={`Filter by #${tag.name}`}
               >

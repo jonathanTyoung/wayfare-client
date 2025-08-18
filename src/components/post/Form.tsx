@@ -177,7 +177,13 @@ export const PostForm = ({
     }
   };
 
-  const handleBack = () => navigate(returnTo);
+  const handleBack = () => {
+    if (location.state?.from) {
+      navigate(location.state.from);
+    } else {
+      navigate(-1); // fallback to browser history
+    }
+  };
 
   const handleReset = () => {
     setFormData({

@@ -9,6 +9,7 @@ import {
 } from "react-leaflet";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
+import { useNavigate } from "react-router-dom"; // <-- added
 
 // Import marker images instead of using require
 import iconRetinaUrl from "leaflet/dist/images/marker-icon-2x.png";
@@ -25,6 +26,7 @@ L.Icon.Default.mergeOptions({
 
 export const MapComponent = ({ posts, onAddPost }) => {
   const [newPostLocation, setNewPostLocation] = useState(null);
+  const navigate = useNavigate(); // <-- added
 
   // Handle clicks on the map
   function MapClickHandler() {
@@ -85,6 +87,12 @@ export const MapComponent = ({ posts, onAddPost }) => {
             <Popup>
               <h3>{post.title}</h3>
               <p>{post.short_description}</p>
+              <button
+                onClick={() => navigate(`/posts/${post.id}`)} // <-- added
+                className="mt-2 px-3 py-1 bg-blue-500 text-white rounded hover:bg-blue-600"
+              >
+                View Details
+              </button>
             </Popup>
           </Marker>
         ))}

@@ -3,7 +3,7 @@ export const ProfileCard = ({
   userProfile,
   loading = false,
   error = null,
-  variant = "default", // "default", "mini", "detailed"
+  variant = "default",
 }) => {
   if (loading) return <p>Loading profile...</p>;
   if (error) return <p className="text-red-500">{error}</p>;

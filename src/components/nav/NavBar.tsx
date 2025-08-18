@@ -10,11 +10,11 @@ interface NavBarProps {
   closeSearch: () => void;
 }
 
-export const NavBar: React.FC<NavBarProps> = ({
+export const NavBar = ({
   openSearch,
   isSearchOpen,
   closeSearch,
-}) => {
+}: NavBarProps) => {
   const navigate = useNavigate();
   const token = localStorage.getItem("wayfare_token");
 
@@ -33,12 +33,12 @@ export const NavBar: React.FC<NavBarProps> = ({
           >
             Wayfare
           </div>
-          {token && (
+          {/* {token && (
             <div className="flex items-center gap-2">
               <NavLink to="/home">Home</NavLink>
               <NavLink to="/profile">Profile</NavLink>
             </div>
-          )}
+          )} */}
         </div>
 
         <div className="flex items-center gap-2">

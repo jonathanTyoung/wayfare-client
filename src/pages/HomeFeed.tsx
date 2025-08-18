@@ -1,45 +1,18 @@
 import { useEffect, useState } from "react";
+import { useSearchParams } from "react-router-dom";
 import { createPost, deletePost, getPosts } from "../components/data/PostData";
 import { getCategories } from "../components/data/CategoryData";
 import { PostCard } from "../components/post/Card";
 import { PostForm } from "../components/post/Form";
 import { useUserContext } from "../context/UserContext";
 
-interface Traveler {
-  id: number;
-  user: string;
-}
-
-interface Tag {
-  id: number;
-  name: string;
-}
-
-interface Post {
-  id: number;
-  title: string;
-  short_description: string;
-  location?: string;
-  traveler?: Traveler;
-  tags?: Tag[];
-  category?: { id: number; name: string };
-  updated_at?: string;
-}
-
 // ----- Create Post Modal -----
-const CreatePostModal = ({
-  isOpen,
-  onClose,
-  categories,
-  loading,
-  onSubmit,
-}) => {
+const CreatePostModal = ({ isOpen, onClose, categories, loading, onSubmit }) => {
   if (!isOpen) return null;
 
   return (
     <div className="fixed inset-0 bg-[#3e2f1c] bg-opacity-60 flex items-center justify-center z-50 p-4 backdrop-blur-sm">
       <div className="bg-[#121212] rounded-2xl shadow-2xl max-w-3xl w-full max-h-[90vh] overflow-y-auto border border-[#333333]">
-        {/* Header */}
         <div className="sticky top-0 bg-[#2f3e46] text-white px-8 py-6 rounded-t-2xl flex justify-between items-center">
           <div>
             <h2 className="text-2xl font-semibold flex items-center gap-3">
@@ -57,7 +30,6 @@ const CreatePostModal = ({
           </button>
         </div>
 
-        {/* Content */}
         <div className="p-8">
           {loading ? (
             <div className="text-center py-16 text-[#a8a29e]">
@@ -78,24 +50,26 @@ const CreatePostModal = ({
   );
 };
 
-// ----- HomeFeed Component -----
+// ----- HomeFeed Component with Tag Filtering -----
 export const HomeFeed = () => {
   const { currentUser } = useUserContext();
-  const [posts, setPosts] = useState<Post[]>([]);
+  const [posts, setPosts] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [loadingMessage, setLoadingMessage] = useState("Loading posts...");
   const [showModal, setShowModal] = useState(false);
-  const [categories, setCategories] = useState<any[]>([]);
+  const [categories, setCategories] = useState([]);
   const [loadingCategories, setLoadingCategories] = useState(false);
 
   const currentUserTravelerId = currentUser?.traveler?.id;
 
-  // ----- Fetch Posts -----
+  const [searchParams] = useSearchParams();
+  const tagFilter = searchParams.get("tag"); // single tag ID
+
   const loadPosts = async () => {
     try {
       const data = await getPosts();
       if (data) setPosts(data);
-    } catch (err: any) {
+    } catch (err) {
       setLoadingMessage(`Unable to retrieve posts. ${err.message}`);
     } finally {
       setIsLoading(false);
@@ -106,8 +80,7 @@ export const HomeFeed = () => {
     loadPosts();
   }, []);
 
-  // ----- Post Actions -----
-  const handleRemovePost = async (id: number) => {
+  const handleRemovePost = async (id) => {
     if (!window.confirm("Are you sure you want to delete this story?")) return;
     try {
       await deletePost(id);
@@ -126,13 +99,12 @@ export const HomeFeed = () => {
       await createPost(formData, token);
       await loadPosts(); // refresh list
       closeModal();
-    } catch (err: any) {
+    } catch (err) {
       console.error("Failed to create post", err);
       alert(err.message || "Failed to create story.");
     }
   };
 
-  // ----- Modal -----
   const openModal = async () => {
     setLoadingCategories(true);
     setShowModal(true);
@@ -156,18 +128,19 @@ export const HomeFeed = () => {
         <div className="text-center max-w-md">
           <div className="relative mb-8">
             <div className="animate-spin rounded-full h-16 w-16 border-b-2 border-[#14b8a6] mx-auto"></div>
-            <span className="absolute inset-0 flex items-center justify-center text-2xl">
-              🗺️
-            </span>
+            <span className="absolute inset-0 flex items-center justify-center text-2xl">🗺️</span>
           </div>
-          <h2 className="text-2xl font-semibold text-[#f5f5f4] mb-2">
-            Loading Your Journey
-          </h2>
+          <h2 className="text-2xl font-semibold text-[#f5f5f4] mb-2">Loading Your Journey</h2>
           <p className="text-[#a8a29e]">{loadingMessage}</p>
         </div>
       </div>
     );
   }
+
+  // Apply tag filtering
+  const filteredPosts = tagFilter
+    ? posts.filter((post) => post.tags?.some((tag) => tag.id === Number(tagFilter)))
+    : posts;
 
   return (
     <div className="min-h-screen bg-[#121212] font-serif">
@@ -211,8 +184,8 @@ export const HomeFeed = () => {
 
       {/* Posts List */}
       <div className="max-w-4xl mx-auto px-6 py-12 space-y-8">
-        {posts.length > 0 ? (
-          posts.map((post) => (
+        {filteredPosts.length > 0 ? (
+          filteredPosts.map((post) => (
             <PostCard
               key={post.id}
               post={post}
@@ -227,8 +200,7 @@ export const HomeFeed = () => {
               Your Map Awaits
             </h3>
             <p className="text-xl mb-6">
-              Every great journey starts with a single story. Share your
-              adventures and connect with fellow travelers.
+              Every great journey starts with a single story. Share your adventures and connect with fellow travelers.
             </p>
             <button
               onClick={openModal}
