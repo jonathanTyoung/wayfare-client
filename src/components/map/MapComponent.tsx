@@ -1,113 +1,161 @@
 // MapComponent.jsx
-import React, { useState } from "react";
-import {
-  MapContainer,
-  TileLayer,
-  Marker,
-  Popup,
-  useMapEvents,
-} from "react-leaflet";
+import React, { useEffect } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
+import { MapContainer, TileLayer, Marker, Popup, useMap } from "react-leaflet";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
-import { useNavigate } from "react-router-dom"; // <-- added
 
-// Import marker images instead of using require
+// Fix default Leaflet marker images
 import iconRetinaUrl from "leaflet/dist/images/marker-icon-2x.png";
 import iconUrl from "leaflet/dist/images/marker-icon.png";
 import shadowUrl from "leaflet/dist/images/marker-shadow.png";
 
-// Fix default Leaflet marker icon
 delete L.Icon.Default.prototype._getIconUrl;
+
 L.Icon.Default.mergeOptions({
   iconRetinaUrl,
   iconUrl,
   shadowUrl,
 });
 
-export const MapComponent = ({ posts, onAddPost }) => {
-  const [newPostLocation, setNewPostLocation] = useState(null);
-  const navigate = useNavigate(); // <-- added
+// Custom blue and red icons using your inline SVG approach
+export const blueIcon = new L.Icon({
+  iconUrl:
+    "data:image/svg+xml;base64," +
+    btoa(`<svg xmlns="http://www.w3.org/2000/svg" width="30" height="45" viewBox="0 0 30 45">
+      <path d="M15 0C6.716 0 0 9.036 0 20.125 0 29 15 45 15 45s15-16 15-24.875C30 9.036 23.284 0 15 0z" fill="#007bff"/>
+      <circle cx="15" cy="15" r="7" fill="white"/>
+    </svg>`),
+  iconSize: [30, 45],
+  iconAnchor: [15, 45],
+  popupAnchor: [0, -40],
+  shadowUrl,
+  shadowSize: [41, 41],
+});
 
-  // Handle clicks on the map
-  function MapClickHandler() {
-    useMapEvents({
-      click(e) {
-        setNewPostLocation(e.latlng);
-      },
-    });
-    return null;
-  }
+export const redIcon = new L.Icon({
+  iconUrl:
+    "data:image/svg+xml;base64," +
+    btoa(`<svg xmlns="http://www.w3.org/2000/svg" width="30" height="45" viewBox="0 0 30 45">
+      <path d="M15 0C6.716 0 0 9.036 0 20.125 0 29 15 45 15 45s15-16 15-24.875C30 9.036 23.284 0 15 0z" fill="#ff4d4f"/>
+      <circle cx="15" cy="15" r="7" fill="white"/>
+    </svg>`),
+  iconSize: [30, 45],
+  iconAnchor: [15, 45],
+  popupAnchor: [0, -40],
+  shadowUrl,
+  shadowSize: [41, 41],
+});
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    const title = e.target.title.value;
-    const description = e.target.description.value;
-    if (newPostLocation && title) {
-      onAddPost({
-        lat: newPostLocation.lat,
-        lng: newPostLocation.lng,
-        title,
-        description,
-      });
-      setNewPostLocation(null);
-    }
-  };
+// Helper to update map center dynamically
+function SetMapCenter({ lat, lng }: { lat: number; lng: number }) {
+  const map = useMap();
+  useEffect(() => {
+    map.setView([lat, lng], map.getZoom());
+  }, [lat, lng, map]);
+  return null;
+}
+
+export const MapComponent = ({ trips, posts }) => {
+  const navigate = useNavigate();
+  const location = useLocation();
+  const params = new URLSearchParams(location.search);
+
+  const centerLat = Number(params.get("lat")) || 40.7128;
+  const centerLng = Number(params.get("lng")) || -74.006;
 
   return (
-    <MapContainer
-      center={[40.7128, -74.006]} // Default center (NYC)
-      zoom={13}
-      style={{ height: "96vh", width: "100%" }}
+    <div
+      style={{
+        height: "96vh",
+        width: "100%",
+        borderRadius: "12px",
+        overflow: "hidden",
+        boxShadow: "0 4px 20px rgba(0,0,0,0.2)",
+        border: "1px solid #e0e0e0",
+      }}
     >
-      <TileLayer
-        url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-        attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
-      />
+      <MapContainer
+        center={[centerLat, centerLng]}
+        zoom={13}
+        style={{ height: "100%", width: "100%" }}
+      >
+        <TileLayer
+          url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+          attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+        />
+        <SetMapCenter lat={centerLat} lng={centerLng} />
 
-      <MapClickHandler />
-
-      {posts
-        .filter((post) => {
-          const lat = Number(post.latitude);
-          const lng = Number(post.longitude);
-          return (
-            !isNaN(lat) &&
-            !isNaN(lng) &&
-            lat >= -90 &&
-            lat <= 90 &&
-            lng >= -180 &&
-            lng <= 180
-          );
-        })
-        .map((post) => (
+        {/* Trips markers (blue)
+        {trips.map((trip) => (
           <Marker
-            key={post.id}
-            position={[Number(post.latitude), Number(post.longitude)]}
+            key={trip.id}
+            position={[Number(trip.latitude), Number(trip.longitude)]}
+            icon={blueIcon}
           >
             <Popup>
-              <h3>{post.title}</h3>
-              <p>{post.short_description}</p>
-              <button
-                onClick={() => navigate(`/posts/${post.id}`)} // <-- added
-                className="mt-2 px-3 py-1 bg-blue-500 text-white rounded hover:bg-blue-600"
-              >
-                View Details
-              </button>
+              <div style={{ minWidth: "200px" }}>
+                <h3 style={{ fontWeight: "bold", marginBottom: "8px" }}>
+                  {trip.title}
+                </h3>
+                <p style={{ marginBottom: "8px", color: "#555" }}>
+                  {trip.short_description}
+                </p>
+                <button
+                  onClick={() => navigate(`/trips/${trip.id}`)}
+                  style={{
+                    marginTop: "8px",
+                    padding: "6px 12px",
+                    backgroundColor: "#007bff",
+                    color: "#fff",
+                    border: "none",
+                    borderRadius: "6px",
+                    cursor: "pointer",
+                  }}
+                >
+                  View Trip
+                </button>
+              </div>
             </Popup>
           </Marker>
-        ))}
+        ))} */}
 
-      {newPostLocation && (
-        <Marker position={newPostLocation}>
-          <Popup>
-            <form onSubmit={handleSubmit}>
-              <input type="text" name="title" placeholder="Title" required />
-              <textarea name="description" placeholder="Description" />
-              <button type="submit">Add Post</button>
-            </form>
-          </Popup>
-        </Marker>
-      )}
-    </MapContainer>
+        {/* Posts markers (red) */}
+        {posts
+          .filter((post) => !post.trip_id)
+          .map((post) => (
+            <Marker
+              key={post.id}
+              position={[Number(post.latitude), Number(post.longitude)]}
+              icon={redIcon}
+            >
+              <Popup>
+                <div style={{ minWidth: "200px" }}>
+                  <h3 style={{ fontWeight: "bold", marginBottom: "8px" }}>
+                    {post.title}
+                  </h3>
+                  <p style={{ marginBottom: "8px", color: "#555" }}>
+                    {post.short_description}
+                  </p>
+                  <button
+                    onClick={() => navigate(`/posts/${post.id}`)}
+                    style={{
+                      marginTop: "8px",
+                      padding: "6px 12px",
+                      backgroundColor: "#ff0000",
+                      color: "#fff",
+                      border: "none",
+                      borderRadius: "6px",
+                      cursor: "pointer",
+                    }}
+                  >
+                    View Post
+                  </button>
+                </div>
+              </Popup>
+            </Marker>
+          ))}
+      </MapContainer>
+    </div>
   );
 };

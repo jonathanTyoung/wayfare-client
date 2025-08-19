@@ -12,6 +12,7 @@ import {
   MessageCircle,
   Share2,
 } from "lucide-react";
+import { PhotoCarousel } from "./PhotoCarousel.tsx";
 
 export const PostDetails = () => {
   const { postId } = useParams();
@@ -41,6 +42,10 @@ export const PostDetails = () => {
     }
     fetchData();
   }, [postId]);
+
+  const handleTagClick = (tagName: string) => {
+    navigate(`/search?tag=${encodeURIComponent(tagName)}`);
+  };
 
   // Check if current user is the owner of the post
   const isOwner =
@@ -91,7 +96,7 @@ export const PostDetails = () => {
           >
             <ArrowLeft className="w-5 h-5 text-gray-100" />
           </button>
-          <h1 className="text-lg font-semibold">Home</h1>
+          <h1 className="text-lg font-semibold">Back</h1>
         </div>
       </div>
 
@@ -167,34 +172,43 @@ export const PostDetails = () => {
             )}
 
             {/* Post Image */}
-            {post.imageUrl && (
-              <div className="relative mb-6">
-                <img
-                  src={post.imageUrl}
-                  alt={post.title || "Post image"}
-                  className="w-full max-h-96 object-cover rounded-lg border border-gray-700"
-                />
-              </div>
-            )}
+            <PhotoCarousel photos={post.photos} />
 
-            {/* Description */}
-            {post.short_description && (
-              <div className="mb-6 text-gray-300 leading-relaxed whitespace-pre-wrap">
-                {post.short_description}
+            {/* Enhanced Description */}
+            {post?.long_form_description && (
+              <div className="mb-6 bg-gray-750 rounded-xl p-6 border-l-4 border-blue-500 shadow-inner">
+                <div className="prose prose-invert prose-gray max-w-none">
+                  <div className="text-gray-200 text-base leading-relaxed tracking-wide whitespace-pre-wrap font-light">
+                    {post.long_form_description}
+                  </div>
+                </div>
+                <div className="absolute inset-0 bg-gradient-to-r from-blue-500/5 to-purple-500/5 rounded-xl pointer-events-none opacity-30"></div>
               </div>
             )}
 
             {/* Tags */}
+            {/* Tags */}
             {post.tags && post.tags.length > 0 && (
-              <div className="flex flex-wrap gap-2 mb-6">
-                {post.tags.map((tag) => (
-                  <span
-                    key={tag.id}
-                    className="px-3 py-1 bg-gray-700 text-gray-300 rounded-full text-sm"
-                  >
-                    #{tag.name}
-                  </span>
-                ))}
+              <div className="px-5 py-3 bg-[#0f0f0f] border-t border-[#333333] mt-auto">
+                <div className="flex flex-wrap gap-1.5">
+                  {post.tags
+                    .slice(0, 5)
+                    .map((tag: { id: number; name: string }) => (
+                      <span
+                        key={tag.id}
+                        onClick={() => handleTagClick(tag.name)}
+                        className="inline-block bg-[#1c1917] text-[#a8a29e] px-2.5 py-1 rounded-full text-xs font-medium border border-[#333333] hover:bg-[#fbbf24] hover:text-[#121212] hover:border-[#fbbf24] transition-all duration-200 cursor-pointer select-none"
+                        title={`Filter by #${tag.name}`}
+                      >
+                        #{tag.name}
+                      </span>
+                    ))}
+                  {post.tags.length > 5 && (
+                    <span className="text-xs text-[#a8a29e] px-2 py-1 opacity-60">
+                      +{post.tags.length - 5}
+                    </span>
+                  )}
+                </div>
               </div>
             )}
 

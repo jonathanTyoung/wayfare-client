@@ -228,7 +228,7 @@ export default function Profile() {
                   className="bg-[#14b8a6] text-white px-4 py-2 rounded-full font-medium hover:bg-[#0f9488] transition-colors flex items-center gap-2"
                 >
                   <span className="text-sm">✍️</span>
-                  Write
+                  Create
                 </button>
               </div>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">

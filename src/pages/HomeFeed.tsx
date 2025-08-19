@@ -168,7 +168,7 @@ export const HomeFeed = () => {
             onClick={openModal}
             className="bg-[#14b8a6] text-white px-6 py-2.5 rounded-full font-medium hover:bg-[#0f9488] transition-all duration-200 flex items-center gap-2 shadow-sm hover:shadow-md"
           >
-            <span className="text-lg">✍️</span> Write
+            <span className="text-lg">✍️</span> Create
           </button>
         </div>
       </div>

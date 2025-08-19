@@ -15,7 +15,6 @@ export function PostCard({
     navigate(`/search?tag=${encodeURIComponent(tagName)}`);
   };
 
-
   return (
     <article className="w-full max-w-lg mx-auto my-4 rounded-lg shadow-sm bg-[#1c1917] border border-[#333333] hover:shadow-md transition-all duration-300 min-h-[220px] flex flex-col overflow-hidden hover:border-[#44403c]">
       {/* Header - Clean title area */}
@@ -53,6 +52,17 @@ export function PostCard({
         </div>
       </header>
 
+      {/* Thumbnail */}
+      {post.photos && post.photos.length > 0 && (
+        <div className="w-full h-40 overflow-hidden">
+          <img
+            src={post.photos[0].url}
+            alt={`Thumbnail for ${post.title}`}
+            className="w-full h-full object-cover"
+          />
+        </div>
+      )}
+
       {/* Content area - Description */}
       <section className="px-5 flex-grow">
         <p className="text-sm leading-relaxed text-[#a8a29e] line-clamp-3 mb-4">
@@ -62,7 +72,6 @@ export function PostCard({
 
       {/* Meta information */}
       <div className="px-5 py-3 border-t border-[#333333] bg-[#121212]">
-        {/* Author and date */}
         <div className="flex items-center justify-between mb-3">
           <div className="flex items-center gap-2">
             <div className="w-7 h-7 bg-[#14b8a6] rounded-full flex items-center justify-center text-xs font-medium text-white">
@@ -84,7 +93,21 @@ export function PostCard({
             </div>
           </div>
 
-          {/* Location and category */}
+
+        {/* view on map button */}
+          <button
+            onClick={() =>
+              navigate(
+                `/explore?lat=${encodeURIComponent(
+                  post.latitude
+                )}&lng=${encodeURIComponent(post.longitude)}`
+              )
+            }
+            className="px-3 py-1 bg-[#14b8a6] text-white rounded-md hover:bg-[#0f766e] transition-colors"
+          >
+            View on Map
+          </button>
+
           <div className="text-right text-xs">
             <div className="text-[#a8a29e]">
               {post.category?.name || "General"}

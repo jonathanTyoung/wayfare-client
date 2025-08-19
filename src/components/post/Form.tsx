@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
+import { uploadPhotos } from "../data/PhotoData";
 
 // Custom debounce hook
 const useDebounce = (value, delay) => {
@@ -33,6 +34,7 @@ export const PostForm = ({
   const [formData, setFormData] = useState({
     title: "",
     short_description: "",
+    long_form_description: "",
     location: "",
     category_id: "",
     tags: "",
@@ -42,6 +44,8 @@ export const PostForm = ({
   const [locationSuggestions, setLocationSuggestions] = useState([]);
   const [selectedLocation, setSelectedLocation] = useState(null);
   const [isLoadingLocations, setIsLoadingLocations] = useState(false);
+  const [photoFiles, setPhotoFiles] = useState(null);
+  const [photoPreviews, setPhotoPreviews] = useState(null);
 
   // Debounce the location input with 400ms delay
   const debouncedLocation = useDebounce(formData.location, 400);
@@ -54,6 +58,7 @@ export const PostForm = ({
     setFormData({
       title: initialData.title || "",
       short_description: initialData.short_description || "",
+      long_form_description: initialData.long_form_description || "",
       location: initialData.location_name || "",
       category_id: initialData.category?.id || "",
       tags: initialData.tags?.map((tag) => tag.name).join(", ") || "",
@@ -69,6 +74,7 @@ export const PostForm = ({
   }, [
     initialData.title,
     initialData.short_description,
+    initialData.long_form_description,
     initialData.location_name,
     initialData.category?.id,
     initialData.tags?.map((tag) => tag.name).join(", "),
@@ -157,6 +163,7 @@ export const PostForm = ({
     const postData = {
       title: formData.title,
       short_description: formData.short_description,
+      long_form_description: formData.long_form_description,
       location_name: formData.location || "Not specified",
       category_id: formData.category_id
         ? parseInt(formData.category_id, 10)
@@ -167,8 +174,14 @@ export const PostForm = ({
     };
 
     try {
-      await onSubmit(postData);
+      // Create or update the post
+      const createdOrUpdatedPost = await onSubmit(postData);
+      if (photoFiles && photoFiles.length > 0) {
+        await uploadPhotos(createdOrUpdatedPost.id, photoFiles); // now id is defined
+      }
+
       navigate(returnTo);
+      onSuccess();
     } catch (error) {
       alert(error.message || "Failed to submit post");
       console.error("Submit error:", error);
@@ -189,6 +202,7 @@ export const PostForm = ({
     setFormData({
       title: initialData.title || "",
       short_description: initialData.short_description || "",
+      long_form_description: initialData.long_form_description || "",
       location: initialData.location_name || "",
       category_id: initialData.category?.id || "",
       tags: initialData.tags?.map((tag) => tag.name).join(", ") || "",
@@ -206,6 +220,15 @@ export const PostForm = ({
 
     setLocationSuggestions([]);
     setIsLoadingLocations(false);
+  };
+
+  // --- Handle photo selection ---
+  const handlePhotoChange = (e) => {
+    const files = Array.from(e.target.files); // convert FileList to array
+    setPhotoFiles(files);
+
+    const previews = files.map((file) => URL.createObjectURL(file));
+    setPhotoPreviews(previews);
   };
 
   return (
@@ -228,7 +251,7 @@ export const PostForm = ({
           />
         </div>
 
-        {/* Description */}
+        {/* Teaser Description */}
         <div>
           <label
             htmlFor="short_description"
@@ -241,7 +264,27 @@ export const PostForm = ({
             name="short_description"
             value={formData.short_description}
             onChange={handleChange}
-            placeholder="Describe your post..."
+            placeholder="A teaser blip for your post..."
+            rows={4}
+            required
+            className="w-full p-3 border border-gray-300 rounded-lg resize-y focus:outline-none focus:ring-2 focus:ring-yellow-400"
+          />
+        </div>
+
+        {/* Long Form Text Description */}
+        <div>
+          <label
+            htmlFor="long_form_description"
+            className="block mb-2 font-semibold"
+          >
+            📝 Description
+          </label>
+          <textarea
+            id="long_form_description"
+            name="long_form_description"
+            value={formData.long_form_description}
+            onChange={handleChange}
+            placeholder="Write your story here"
             rows={4}
             required
             className="w-full p-3 border border-gray-300 rounded-lg resize-y focus:outline-none focus:ring-2 focus:ring-yellow-400"
@@ -342,6 +385,36 @@ export const PostForm = ({
             placeholder="Add tags separated by commas, e.g. travel, summer, food"
             className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-400"
           />
+        </div>
+
+        {/* Photo Upload */}
+        <div>
+          <label htmlFor="photo" className="block mb-2 font-semibold">
+            📸 Upload a Photo
+          </label>
+          <input
+            id="photo"
+            type="file"
+            accept="image/*"
+            onChange={handlePhotoChange}
+            className="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 
+               file:rounded-md file:border-0 file:text-sm file:font-semibold
+               file:bg-yellow-100 file:text-yellow-700 hover:file:bg-yellow-200"
+          />
+
+          {photoPreviews && photoPreviews.length > 0 && (
+            <div className="mt-4 flex gap-4 flex-wrap">
+              <p className="w-full text-sm text-gray-600 mb-1">Preview:</p>
+              {photoPreviews.map((url, idx) => (
+                <img
+                  key={idx}
+                  src={url}
+                  alt={`Preview ${idx + 1}`}
+                  className="w-32 h-32 object-cover rounded-lg shadow-md"
+                />
+              ))}
+            </div>
+          )}
         </div>
 
         {/* Buttons */}
