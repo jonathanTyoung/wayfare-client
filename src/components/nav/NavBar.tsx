@@ -24,7 +24,7 @@ export const NavBar = ({
   };
 
   return (
-    <nav className="bg-gray-900 text-white p-4 flex flex-col gap-2 sticky top-0 z-50">
+    <nav className="bg-[#292524] text-white p-4 flex flex-col gap-2 sticky top-0 z-50">
       <div className="flex justify-between items-center">
         <div className="flex items-center gap-4">
           <div

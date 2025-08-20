@@ -69,10 +69,13 @@ export const MapComponent = ({ trips, posts }) => {
       style={{
         height: "96vh",
         width: "100%",
+        padding: "60px",
+        background: "#292524",
         borderRadius: "12px",
         overflow: "hidden",
         boxShadow: "0 4px 20px rgba(0,0,0,0.2)",
         border: "1px solid #e0e0e0",
+        zIndex: 10,
       }}
     >
       <MapContainer

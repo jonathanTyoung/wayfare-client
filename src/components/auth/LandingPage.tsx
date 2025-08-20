@@ -18,7 +18,8 @@ export default function LandingPage() {
             Discover. Journal. Share Your Journey.
           </h1>
           <p className="text-gray-300 text-lg leading-relaxed">
-            Wayfare is your personal map-based journal. Capture your experiences and pin your stories to the places that shaped them.
+            Wayfare is your personal map-based journal. Capture your experiences
+            and pin your stories to the places that shaped them.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center md:justify-start mt-4">
             <Link
@@ -38,10 +39,9 @@ export default function LandingPage() {
 
         {/* Right: Hero Image placeholder */}
         <div className="flex-1 flex justify-center md:justify-end">
-          <div className="w-64 h-64 bg-gray-800 rounded-lg flex items-center justify-center text-gray-300">
-            image made by Kyle will go here
+            <img className="home-logo" src="/src/assets/park-jon.svg" alt="Bash Stash Hero">
+            </img>
           </div>
-        </div>
       </main>
 
       {/* Footer */}

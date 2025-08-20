@@ -1,40 +1,70 @@
 import { useEffect, useState } from "react";
-import { useSearchParams } from "react-router-dom";
 import { createPost, deletePost, getPosts } from "../components/data/PostData";
 import { getCategories } from "../components/data/CategoryData";
 import { PostCard } from "../components/post/Card";
 import { PostForm } from "../components/post/Form";
 import { useUserContext } from "../context/UserContext";
 
+interface Traveler {
+  id: number;
+  user: string;
+}
+
+interface Tag {
+  id: number;
+  name: string;
+}
+
+interface Post {
+  id: number;
+  title: string;
+  short_description: string;
+  location?: string;
+  traveler?: Traveler;
+  tags?: Tag[];
+  category?: { id: number; name: string };
+  updated_at?: string;
+}
+
 // ----- Create Post Modal -----
-const CreatePostModal = ({ isOpen, onClose, categories, loading, onSubmit }) => {
+const CreatePostModal = ({
+  isOpen,
+  onClose,
+  categories,
+  loading,
+  onSubmit,
+}) => {
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 bg-[#3e2f1c] bg-opacity-60 flex items-center justify-center z-50 p-4 backdrop-blur-sm">
-      <div className="bg-[#121212] rounded-2xl shadow-2xl max-w-3xl w-full max-h-[90vh] overflow-y-auto border border-[#333333]">
-        <div className="sticky top-0 bg-[#2f3e46] text-white px-8 py-6 rounded-t-2xl flex justify-between items-center">
-          <div>
-            <h2 className="text-2xl font-semibold flex items-center gap-3">
-              <span className="text-3xl">✍️</span> Start Your Story
-            </h2>
-            <p className="text-[#fbbf24] mt-2 text-sm">
-              Document your journey for fellow travelers
-            </p>
+    <div className="fixed inset-0 bg-[#3e2f1c]/60 flex items-center justify-center z-50 p-4">
+      <div className="bg-[#fafaf9] rounded-lg shadow-xl max-w-4xl w-full max-h-[90vh] overflow-hidden border border-[#78716c]/20">
+        {/* Header */}
+        <div className="bg-[#2f3e46] px-8 py-6 border-b border-[#78716c]/20">
+          <div className="flex items-center justify-between">
+            <div>
+              <h2 className="text-2xl font-bold text-[#f9f5eb]">
+                Create New Story
+              </h2>
+              <p className="text-[#fbbf24] mt-1 text-sm">
+                Share your travel experience
+              </p>
+            </div>
+            <button
+              onClick={onClose}
+              className="w-8 h-8 flex items-center justify-center text-[#f9f5eb] hover:text-[#fbbf24] transition-colors"
+            >
+              <span className="text-2xl">×</span>
+            </button>
           </div>
-          <button
-            onClick={onClose}
-            className="text-white hover:text-[#fbbf24] text-2xl font-bold w-10 h-10 flex items-center justify-center rounded-full hover:bg-white hover:bg-opacity-10 transition-all duration-200"
-          >
-            ×
-          </button>
         </div>
 
-        <div className="p-8">
+        {/* Content */}
+        <div className="p-8 overflow-y-auto max-h-[calc(90vh-120px)] bg-[#fafaf9]">
           {loading ? (
-            <div className="text-center py-16 text-[#a8a29e]">
-              <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#14b8a6] mx-auto mb-6"></div>
-              <p className="text-lg">Preparing your journal...</p>
+            <div className="flex flex-col items-center justify-center py-16">
+              <div className="w-8 h-8 border-2 border-[#78716c]/30 border-t-[#14b8a6] rounded-full animate-spin mb-4"></div>
+              <p className="text-white text-sm">Loading categories...</p>
             </div>
           ) : (
             <PostForm
@@ -50,26 +80,24 @@ const CreatePostModal = ({ isOpen, onClose, categories, loading, onSubmit }) => 
   );
 };
 
-// ----- HomeFeed Component with Tag Filtering -----
+// ----- HomeFeed Component -----
 export const HomeFeed = () => {
   const { currentUser } = useUserContext();
-  const [posts, setPosts] = useState([]);
+  const [posts, setPosts] = useState<Post[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [loadingMessage, setLoadingMessage] = useState("Loading posts...");
   const [showModal, setShowModal] = useState(false);
-  const [categories, setCategories] = useState([]);
+  const [categories, setCategories] = useState<any[]>([]);
   const [loadingCategories, setLoadingCategories] = useState(false);
 
   const currentUserTravelerId = currentUser?.traveler?.id;
 
-  const [searchParams] = useSearchParams();
-  const tagFilter = searchParams.get("tag"); // single tag ID
-
+  // ----- Fetch Posts -----
   const loadPosts = async () => {
     try {
       const data = await getPosts();
       if (data) setPosts(data);
-    } catch (err) {
+    } catch (err: any) {
       setLoadingMessage(`Unable to retrieve posts. ${err.message}`);
     } finally {
       setIsLoading(false);
@@ -80,7 +108,8 @@ export const HomeFeed = () => {
     loadPosts();
   }, []);
 
-  const handleRemovePost = async (id) => {
+  // ----- Post Actions -----
+  const handleRemovePost = async (id: number) => {
     if (!window.confirm("Are you sure you want to delete this story?")) return;
     try {
       await deletePost(id);
@@ -99,12 +128,13 @@ export const HomeFeed = () => {
       await createPost(formData, token);
       await loadPosts(); // refresh list
       closeModal();
-    } catch (err) {
+    } catch (err: any) {
       console.error("Failed to create post", err);
       alert(err.message || "Failed to create story.");
     }
   };
 
+  // ----- Modal -----
   const openModal = async () => {
     setLoadingCategories(true);
     setShowModal(true);
@@ -124,54 +154,54 @@ export const HomeFeed = () => {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen flex items-center justify-center font-serif bg-[#121212]">
+      <div className="min-h-screen flex items-center justify-center bg-[#f9f5eb]">
         <div className="text-center max-w-md">
-          <div className="relative mb-8">
-            <div className="animate-spin rounded-full h-16 w-16 border-b-2 border-[#14b8a6] mx-auto"></div>
-            <span className="absolute inset-0 flex items-center justify-center text-2xl">🗺️</span>
-          </div>
-          <h2 className="text-2xl font-semibold text-[#f5f5f4] mb-2">Loading Your Journey</h2>
-          <p className="text-[#a8a29e]">{loadingMessage}</p>
+          <div className="w-12 h-12 border-2 border-[#78716c]/30 border-t-[#14b8a6] rounded-full animate-spin mx-auto mb-6"></div>
+          <h2 className="text-2xl font-bold text-[#2f3e46] mb-2">
+            Loading stories
+          </h2>
+          <p className="text-white">{loadingMessage}</p>
         </div>
       </div>
     );
   }
 
-  // Apply tag filtering
-  const filteredPosts = tagFilter
-    ? posts.filter((post) => post.tags?.some((tag) => tag.id === Number(tagFilter)))
-    : posts;
-
   return (
-    <div className="min-h-screen bg-[#121212] font-serif">
-      {/* Masthead */}
-      <div className="text-white max-w-4xl mx-auto px-6 py-12 text-center">
-        <h1 className="text-5xl font-bold tracking-tight">Wayfare</h1>
-        <p className="text-xl text-[#fbbf24] mt-2 font-light">
-          A Community Travel Journal
-        </p>
-      </div>
+    <div className="min-h-screen bg-[#292524]">
+      {/* Header */}
+      <header className="border-b border-[#78716c]/10 bg-gray-900 sticky top-0 z-40">
+        <div className="max-w-4xl mx-auto px-6 py-8 text-center font-special font-bold tracking-tight text-[#d6d3d1]">
+          <h1 className="text-4xl font-bold text-[#d6d3d1] tracking-tight">
+            Wayfare
+          </h1>
+          <p className="text-lg text-white mt-2">
+            A Community Travel Journal
+          </p>
+        </div>
+      </header>
 
       {/* Navigation */}
-      <div className="border-b border-[#333333] bg-[#121212] sticky top-0 z-40 shadow-sm">
+      <nav className="border-b border-[#78716c]/10 bg-gray-900 sticky top-20 z-30">
         <div className="max-w-4xl mx-auto px-6 py-4 flex items-center justify-between">
           <div className="flex items-center gap-8">
-            <span className="text-[#f5f5f4] font-semibold">Latest Stories</span>
-            <span className="text-[#a8a29e] hover:text-[#f5f5f4] cursor-pointer transition-colors">
+            <span className="text-[#d6d3d1] font-semibold text-sm">
+              Latest Stories
+            </span>
+            <span className="text-white hover:text-[#2f3e46] cursor-pointer transition-colors text-sm">
               Following
             </span>
-            <span className="text-[#a8a29e] hover:text-[#f5f5f4] cursor-pointer transition-colors">
+            <span className="text-white hover:text-[#2f3e46] cursor-pointer transition-colors text-sm">
               Your Posts
             </span>
           </div>
           <button
             onClick={openModal}
-            className="bg-[#14b8a6] text-white px-6 py-2.5 rounded-full font-medium hover:bg-[#0f9488] transition-all duration-200 flex items-center gap-2 shadow-sm hover:shadow-md"
+            className="bg-[#14b8a6] hover:bg-[#f59e0b] text-white px-4 py-2 rounded-md text-sm font-medium transition-colors"
           >
-            <span className="text-lg">✍️</span> Create
+            Write
           </button>
         </div>
-      </div>
+      </nav>
 
       {/* Create Post Modal */}
       <CreatePostModal
@@ -183,31 +213,40 @@ export const HomeFeed = () => {
       />
 
       {/* Posts List */}
-      <div className="max-w-4xl mx-auto px-6 py-12 space-y-8">
-        {filteredPosts.length > 0 ? (
-          filteredPosts.map((post) => (
-            <PostCard
-              key={post.id}
-              post={post}
-              initialData={post}
-              isOwner={currentUserTravelerId === post.traveler?.id}
-              removePost={() => handleRemovePost(post.id)}
-            />
-          ))
+      <div className="max-w-4xl mx-auto px-6 py-12">
+        {posts.length > 0 ? (
+          <div className="space-y-6">
+            {posts.map((post) => (
+              <article
+                key={post.id}
+                className=" rounded-lg p-6 hover:shadow-sm transition-shadow"
+              >
+                <PostCard
+                  post={post}
+                  initialData={post}
+                  isOwner={currentUserTravelerId === post.traveler?.id}
+                  removePost={() => handleRemovePost(post.id)}
+                />
+              </article>
+            ))}
+          </div>
         ) : (
-          <div className="text-center py-20 text-[#a8a29e]">
-            <h3 className="text-4xl font-bold mb-4 text-[#f5f5f4]">
-              Your Map Awaits
-            </h3>
-            <p className="text-xl mb-6">
-              Every great journey starts with a single story. Share your adventures and connect with fellow travelers.
+          <div className="text-center py-20">
+            <div className="w-16 h-16 bg-[#fafaf9] border border-[#78716c]/20 rounded-full flex items-center justify-center mx-auto mb-6">
+              <span className="text-2xl text-white">🗺️</span>
+            </div>
+            <h2 className="text-3xl font-bold text-[#2f3e46] mb-4">
+              Start exploring
+            </h2>
+            <p className="text-white mb-8 max-w-md mx-auto text-lg leading-relaxed">
+              Every great journey starts with a single story. Share your
+              adventures and connect with fellow travelers.
             </p>
             <button
               onClick={openModal}
-              className="bg-gradient-to-r from-[#14b8a6] to-[#f59e0b] text-white px-10 py-4 rounded-full font-semibold text-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105 flex items-center gap-3 mx-auto"
+              className="inline-flex items-center gap-2 bg-[#14b8a6] hover:bg-[#f59e0b] text-white px-6 py-3 rounded-md font-medium transition-colors"
             >
-              <span className="text-2xl">🗺️</span> Start Your Journey{" "}
-              <span className="text-xl">→</span>
+              Start your journey
             </button>
           </div>
         )}

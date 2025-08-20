@@ -10,9 +10,8 @@ import { PostForm } from "../components/post/Form";
 import { getCategories } from "../components/data/CategoryData";
 import { useUserContext } from "../context/UserContext";
 import { Link } from "react-router-dom";
-import { ProfileCard } from "../components/profile/Card";
 
-// Enhanced Modal Component with travel theme
+// Minimalist Modal Component with Substack-inspired design
 const CreatePostModal = ({
   isOpen,
   onClose,
@@ -23,35 +22,30 @@ const CreatePostModal = ({
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 bg-[#3e2f1c] bg-opacity-60 flex items-center justify-center z-50 p-4 backdrop-blur-sm">
-      <div className="bg-[#121212] rounded-2xl shadow-2xl max-w-3xl w-full max-h-[90vh] overflow-y-auto border border-[#333333]">
+    <div className="fixed inset-0 bg-[#3e2f1c]/60 flex items-center justify-center z-50 p-4">
+      <div className="bg-[#fafaf9] rounded-lg  max-w-4xl w-full max-h-[90vh] overflow-hidden border border-[#78716c]/20">
         {/* Modal Header */}
-        <div className="sticky top-0 bg-[#2f3e46] text-white px-8 py-6 rounded-t-2xl">
+        <div className="bg-[#2f3e46] px-8 py-6 border-b border-[#78716c]/20">
           <div className="flex items-center justify-between">
             <div>
-              <h2 className="text-2xl font-semibold text-white flex items-center gap-3">
-                <span className="text-3xl">✍️</span>
-                Start Your Story
-              </h2>
-              <p className="text-[#fbbf24] mt-2 text-sm">
-                Document your journey for fellow travelers
-              </p>
+              <h2 className="text-2xl font-bold text-[#f9f5eb]">Create New Story</h2>
+              <p className="text-[#fbbf24] mt-1 text-sm">Share your travel experience</p>
             </div>
             <button
               onClick={onClose}
-              className="text-white hover:text-[#fbbf24] text-2xl font-bold w-10 h-10 flex items-center justify-center rounded-full hover:bg-white hover:bg-opacity-10 transition-all duration-200"
+              className="w-8 h-8 flex items-center justify-center text-[#f9f5eb] hover:text-[#fbbf24] transition-colors"
             >
-              ×
+              <span className="text-2xl">×</span>
             </button>
           </div>
         </div>
 
         {/* Modal Content */}
-        <div className="p-8">
+        <div className="p-8 overflow-y-auto max-h-[calc(90vh-120px)] bg-[#fafaf9]">
           {loadingCategories ? (
-            <div className="text-center py-16 text-[#a8a29e]">
-              <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#14b8a6] mx-auto mb-6"></div>
-              <p className="text-lg">Preparing your journal...</p>
+            <div className="flex flex-col items-center justify-center py-16">
+              <div className="w-8 h-8 border-2 border-[#78716c]/30 border-t-[#14b8a6] rounded-full animate-spin mb-4"></div>
+              <p className="text-[#78716c] text-sm">Loading categories...</p>
             </div>
           ) : (
             <PostForm
@@ -163,16 +157,114 @@ export default function Profile() {
     }
   };
 
+  if (loadingProfile) {
+    return (
+      <div className="min-h-screen bg-[#292524] flex items-center justify-center">
+        <div className="flex flex-col items-center">
+          <div className="w-8 h-8 border-2 border-[#78716c]/30 border-t-[#14b8a6] rounded-full animate-spin mb-4"></div>
+          <p className="text-[#d6d3d1]">Loading profile...</p>
+        </div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="min-h-screen bg-[#292524] flex items-center justify-center">
+        <p className="text-red-400">{error}</p>
+      </div>
+    );
+  }
+
+  if (!userProfile) {
+    return (
+      <div className="min-h-screen bg-[#292524] flex items-center justify-center">
+        <p className="text-[#d6d3d1]">No profile found</p>
+      </div>
+    );
+  }
+
   return (
-    <div className="min-h-screen bg-[#121212] font-serif">
-      <div className="max-w-5xl mx-auto p-6">
-        {/* Profile Information */}
-        <ProfileCard
-          userProfile={userProfile}
-          loading={loadingProfile}
-          error={error}
-          variant="default"
-        />
+    <div className="min-h-screen bg-[#292524]">
+      <div className="max-w-4xl mx-auto px-6 py-12">
+        
+        {/* Unified Profile Header */}
+        <div className="mb-12">
+          {/* Profile Info Section */}
+          <div className="flex items-start justify-between mb-8">
+            <div className="flex items-start gap-6 flex-1">
+              {/* Avatar */}
+              <div className="flex-shrink-0">
+                {userProfile.user?.avatarUrl ? (
+                  <img
+                    src={userProfile.user.avatarUrl}
+                    alt={`${userProfile.user.name}'s avatar`}
+                    className="w-20 h-20 rounded-full object-cover ring-4 ring-[#14b8a6] shadow-lg hover:ring-[#fbbf24] transition-all duration-300"
+                  />
+                ) : (
+                  <div className="w-20 h-20 bg-gradient-to-br from-[#14b8a6] to-[#0f766e] text-white rounded-full flex items-center justify-center font-bold shadow-lg ring-4 ring-[#14b8a6]/20 hover:ring-[#fbbf24]/40 hover:scale-105 transition-all duration-300 text-2xl">
+                    {userProfile.user?.name
+                      ? String(userProfile.user.name).trim().charAt(0).toUpperCase()
+                      : "?"}
+                  </div>
+                )}
+              </div>
+
+              {/* Profile Details */}
+              <div className="flex-1">
+                <h1 className="text-4xl font-bold text-[#fafaf9] mb-3">
+                  {userProfile.user?.name}
+                </h1>
+                
+                {userProfile.traveler?.location && (
+                  <p className="text-[#d6d3d1] mb-3 flex items-center gap-2">
+                    <span className="text-[#fbbf24]">📍</span>
+                    {userProfile.traveler.location}
+                  </p>
+                )}
+
+                {userProfile.traveler?.bio && (
+                  <p className="text-[#d6d3d1] leading-relaxed mb-4 max-w-2xl">
+                    {userProfile.traveler.bio}
+                  </p>
+                )}
+
+                {/* Stats Row */}
+                <div className="flex items-center gap-8 text-sm">
+                  <div className="text-[#d6d3d1]">
+                    <span className="font-bold text-[#fbbf24]">{posts.length}</span> stories
+                  </div>
+                  <div className="text-[#d6d3d1]">
+                    <span className="font-bold text-[#14b8a6]">0</span> following
+                  </div>
+                  <div className="text-[#d6d3d1]">
+                    <span className="font-bold text-[#14b8a6]">0</span> followers
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Action Buttons */}
+            <div className="flex gap-3 flex-shrink-0">
+              <Link
+                to="/edit-profile"
+                className="inline-flex items-center gap-2 bg-gray-700 hover:bg-gray-600 text-[#fafaf9] px-4 py-2 rounded-lg text-sm font-medium transition-colors border border-gray-600"
+              >
+                Edit profile
+              </Link>
+              
+              <button
+                onClick={openModal}
+                className="inline-flex items-center gap-2 bg-[#14b8a6] hover:bg-[#0d9488] text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors shadow-lg hover:shadow-xl"
+              >
+                Write
+              </button>
+            </div>
+          </div>
+
+          {/* Divider */}
+          <div className="border-t border-gray-700"></div>
+        </div>
 
         {/* Create Post Modal */}
         <CreatePostModal
@@ -183,81 +275,89 @@ export default function Profile() {
           onSubmit={handleCreatePost}
         />
 
-        {/* User Posts Section */}
-        <section className="bg-[#121212] border border-[#333333] text-[#f5f5f4] rounded-lg shadow-md p-6 mt-6">
-          <div className="flex items-center gap-3 mb-6">
-            <span className="text-3xl">📖</span>
-            <h2 className="text-2xl font-semibold text-[#f5f5f4]">
-              My Travel Stories
-            </h2>
+        {/* Stories Section */}
+        <div>
+          <div className="flex items-center justify-between mb-8">
+            <div>
+              <h2 className="text-2xl font-bold text-[#fafaf9] mb-1">Stories</h2>
+              <p className="text-[#d6d3d1]">
+                {posts.length === 0 
+                  ? "No stories shared yet" 
+                  : `${posts.length} ${posts.length === 1 ? "story" : "stories"} published`
+                }
+              </p>
+            </div>
+            {posts.length > 0 && (
+              <button
+                onClick={openModal}
+                className="hidden sm:inline-flex items-center gap-2 bg-[#14b8a6] hover:bg-[#0d9488] text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors shadow-lg hover:shadow-xl"
+              >
+                Write
+              </button>
+            )}
           </div>
 
           {loadingPosts ? (
-            <div className="text-center py-12">
-              <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#14b8a6] mx-auto mb-4"></div>
-              <p className="text-[#a8a29e]">Loading your adventures...</p>
+            <div className="flex flex-col items-center justify-center py-16">
+              <div className="w-8 h-8 border-2 border-[#78716c]/30 border-t-[#14b8a6] rounded-full animate-spin mb-4"></div>
+              <p className="text-[#d6d3d1]">Loading stories...</p>
             </div>
           ) : posts.length === 0 ? (
             <div className="text-center py-16">
-              <div className="mb-8 text-6xl opacity-20">✏️</div>
-              <h3 className="text-2xl font-bold mb-4 text-[#f5f5f4]">
-                Your Journey Starts Here
+              <div className="w-16 h-16 bg-gray-700 rounded-full flex items-center justify-center mx-auto mb-6">
+                <span className="text-2xl text-[#d6d3d1]">✏️</span>
+              </div>
+              <h3 className="text-xl font-bold text-[#fafaf9] mb-3">
+                Share your first story
               </h3>
-              <p className="text-[#a8a29e] mb-8 text-lg font-light max-w-md mx-auto">
-                Share your first travel story and inspire fellow wanderers with
-                your adventures.
+              <p className="text-[#d6d3d1] mb-8 max-w-md mx-auto">
+                Tell the world about your travel experiences and connect with fellow adventurers.
               </p>
-              <Link
-                to="/create"
-                className="inline-flex items-center gap-3 bg-gradient-to-r from-[#14b8a6] to-[#f59e0b] text-white px-8 py-3 rounded-full font-semibold hover:shadow-xl transition-all duration-300 transform hover:scale-105"
+              <button
+                onClick={openModal}
+                className="inline-flex items-center gap-2 bg-[#14b8a6] hover:bg-[#0d9488] text-white px-6 py-3 rounded-lg font-medium transition-colors shadow-lg hover:shadow-xl"
               >
-                <span className="text-xl">🗺️</span>
-                Create Your First Story
-                <span className="text-lg">→</span>
-              </Link>
+                Write your first story
+              </button>
             </div>
           ) : (
             <>
-              <div className="mb-6 flex items-center justify-between">
-                <p className="text-[#a8a29e] font-light">
-                  {posts.length} {posts.length === 1 ? "story" : "stories"}{" "}
-                  shared
-                </p>
+              <div className="mb-6 sm:hidden">
                 <button
                   onClick={openModal}
-                  className="bg-[#14b8a6] text-white px-4 py-2 rounded-full font-medium hover:bg-[#0f9488] transition-colors flex items-center gap-2"
+                  className="w-full bg-[#14b8a6] hover:bg-[#0d9488] text-white px-4 py-2 rounded-lg font-medium transition-colors shadow-lg"
                 >
-                  <span className="text-sm">✍️</span>
-                  Create
+                  Write
                 </button>
               </div>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              
+              <div className="space-y-6">
                 {posts.map((post) => (
-                  <PostCard
-                    key={post.id}
-                    post={post}
-                    initialData={post}
-                    isOwner={currentUser.traveler?.id === post.traveler?.id}
-                    removePost={handleRemovePost}
-                    renderEditButton={(postId) => (
-                      <Link
-                        to={`/edit/${postId}`}
-                        state={{
-                          from: "profile",
-                          userId: currentUser.traveler?.id,
-                        }}
-                        className="text-[#14b8a6] hover:text-[#0f9488] font-medium transition-colors flex items-center gap-1"
-                      >
-                        <span className="text-sm">✏️</span>
-                        Edit
-                      </Link>
-                    )}
-                  />
+                  <div key={post.id} className="bg-gray-800/50 border border-gray-700/50 rounded-xl p-6 hover:bg-gray-800/70 hover:border-gray-600/50 transition-all duration-200">
+                    <PostCard
+                      post={post}
+                      initialData={post}
+                      isOwner={currentUser.traveler?.id === post.traveler?.id}
+                      removePost={handleRemovePost}
+                      renderEditButton={(postId) => (
+                        <Link
+                          to={`/edit/${postId}`}
+                          state={{
+                            from: "profile",
+                            userId: currentUser.traveler?.id,
+                          }}
+                          className="text-[#14b8a6] hover:text-[#fbbf24] text-sm font-medium transition-colors"
+                        >
+                          Edit
+                        </Link>
+                      )}
+                    />
+                  </div>
                 ))}
               </div>
             </>
           )}
-        </section>
+        </div>
       </div>
     </div>
   );

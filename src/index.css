@@ -21,6 +21,7 @@
   --color-accent: #fbbf24;     /* pop accent (yellow/tan) */
   --color-accent-hover: #05b88b;
   --color-text: #E0E0E0;       /* light text */
+  --color-darktext: #121212;       /* dark text */
   --color-muted: #A0A0A0;      /* muted text */
 }
 
@@ -78,4 +79,8 @@ select:focus {
   outline: none;
   border-color: var(--color-accent);
   box-shadow: 0 0 0 2px rgba(6, 214, 160, 0.3); /* subtle accent glow */
+}
+
+.home-logo {
+  width: 400px;
 }

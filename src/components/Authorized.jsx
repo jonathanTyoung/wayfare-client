@@ -5,14 +5,16 @@ import { useState } from "react";
 
 export const Authorized = () => {
   const token = localStorage.getItem("wayfare_token");
-  const [searchResults, setSearchResults] = useState([]); // <-- state for search
+  const [searchResults, setSearchResults] = useState([]);
 
   if (!token) return <Navigate to="/login" replace />;
 
   return (
     <UserProvider>
       <Layout searchResults={searchResults} setSearchResults={setSearchResults}>
-        <Outlet context={{ searchResults, setSearchResults }} />{" "} {/* <-- pass context */}
+        <div className="flex-1 flex flex-col min-h-screen">
+          <Outlet context={{ searchResults, setSearchResults }} />
+        </div>
       </Layout>
     </UserProvider>
   );

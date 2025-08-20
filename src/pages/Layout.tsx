@@ -8,6 +8,7 @@ export const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) =>
 
   const openSearch = () => setIsSearchOpen(true);
   const closeSearch = () => setIsSearchOpen(false);
+  
 
   return (
     <div className="flex min-h-screen bg-[#121212] text-white">
