@@ -177,7 +177,7 @@ export const PostForm = ({
       // Create or update the post
       const createdOrUpdatedPost = await onSubmit(postData);
       if (photoFiles && photoFiles.length > 0) {
-        await uploadPhotos(createdOrUpdatedPost.id, photoFiles); // now id is defined
+        await uploadPhotos(createdOrUpdatedPost.id, photoFiles);
       }
 
       navigate(returnTo);
@@ -194,7 +194,7 @@ export const PostForm = ({
     if (location.state?.from) {
       navigate(location.state.from);
     } else {
-      navigate(-1); // fallback to browser history
+      navigate(-1);
     }
   };
 
@@ -222,9 +222,8 @@ export const PostForm = ({
     setIsLoadingLocations(false);
   };
 
-  // --- Handle photo selection ---
   const handlePhotoChange = (e) => {
-    const files = Array.from(e.target.files); // convert FileList to array
+    const files = Array.from(e.target.files);
     setPhotoFiles(files);
 
     const previews = files.map((file) => URL.createObjectURL(file));
@@ -232,11 +231,25 @@ export const PostForm = ({
   };
 
   return (
-    <div className="max-w-4xl mx-auto p-6 rounded-xl shadow-lg bg-yellow-50 font-sans text-gray-900">
-      <form onSubmit={handleSubmit} className="flex flex-col gap-8">
+    <div className="max-w-3xl mx-auto p-8 bg-white rounded-2xl shadow-lg border border-gray-100">
+      <div className="mb-8">
+        <h1 className="text-2xl font-bold text-gray-800 mb-2">
+          {mode === "edit" ? "✏️ Edit Post" : "✨ Create New Post"}
+        </h1>
+        <p className="text-gray-600">
+          {mode === "edit"
+            ? "Update your post details below"
+            : "Share your story with the community"}
+        </p>
+      </div>
+
+      <form onSubmit={handleSubmit} className="space-y-6">
         {/* Title */}
-        <div>
-          <label htmlFor="title" className="block mb-2 font-semibold">
+        <div className="space-y-2">
+          <label
+            htmlFor="title"
+            className="block text-sm font-semibold text-gray-700"
+          >
             Post Title
           </label>
           <input
@@ -245,83 +258,88 @@ export const PostForm = ({
             type="text"
             value={formData.title}
             onChange={handleChange}
-            placeholder="Enter post title"
+            placeholder="Give your post an engaging title..."
             required
-            className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-400"
+            className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
           />
         </div>
 
-        {/* Teaser Description */}
-        <div>
+        {/* Short Description */}
+        <div className="space-y-2">
           <label
             htmlFor="short_description"
-            className="block mb-2 font-semibold"
+            className="block text-sm font-semibold text-gray-700"
           >
-            📝 Description
+            📝 Short Description
           </label>
           <textarea
             id="short_description"
             name="short_description"
             value={formData.short_description}
             onChange={handleChange}
-            placeholder="A teaser blip for your post..."
-            rows={4}
+            placeholder="Write a brief, engaging summary..."
+            rows={3}
             required
-            className="w-full p-3 border border-gray-300 rounded-lg resize-y focus:outline-none focus:ring-2 focus:ring-yellow-400"
+            className="w-full px-4 py-3 border border-gray-300 rounded-lg resize-y focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
           />
         </div>
 
-        {/* Long Form Text Description */}
-        <div>
+        {/* Long Form Description */}
+        <div className="space-y-2">
           <label
             htmlFor="long_form_description"
-            className="block mb-2 font-semibold"
+            className="block text-sm font-semibold text-gray-700"
           >
-            📝 Description
+            📖 Full Story
           </label>
           <textarea
             id="long_form_description"
             name="long_form_description"
             value={formData.long_form_description}
             onChange={handleChange}
-            placeholder="Write your story here"
-            rows={4}
+            placeholder="Tell your full story here..."
+            rows={6}
             required
-            className="w-full p-3 border border-gray-300 rounded-lg resize-y focus:outline-none focus:ring-2 focus:ring-yellow-400"
+            className="w-full px-4 py-3 border border-gray-300 rounded-lg resize-y focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
           />
         </div>
 
         {/* Location */}
-        <div className="relative">
-          <label htmlFor="location" className="block mb-2 font-semibold">
+        <div className="space-y-2 relative">
+          <label
+            htmlFor="location"
+            className="block text-sm font-semibold text-gray-700"
+          >
             📍 Location
           </label>
-          <input
-            id="location"
-            name="location"
-            type="text"
-            value={formData.location}
-            onChange={handleLocationChange}
-            placeholder="Type a city or place"
-            className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-400"
-            autoComplete="off"
-            required
-          />
+          <div className="relative">
+            <input
+              id="location"
+              name="location"
+              type="text"
+              value={formData.location}
+              onChange={handleLocationChange}
+              placeholder="Start typing a city or place..."
+              className="w-full px-4 py-3 pr-12 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
+              autoComplete="off"
+              required
+            />
 
-          {/* Loading indicator */}
-          {isLoadingLocations && (
-            <div className="absolute right-3 top-12 text-gray-500">
-              <span className="animate-spin">🔄</span>
-            </div>
-          )}
+            {/* Loading indicator */}
+            {isLoadingLocations && (
+              <div className="absolute right-4 top-1/2 transform -translate-y-1/2 text-gray-400">
+                <span className="animate-spin text-lg">🔄</span>
+              </div>
+            )}
+          </div>
 
           {/* Location suggestions */}
           {locationSuggestions.length > 0 && (
-            <ul className="absolute z-10 bg-white border border-gray-300 w-full mt-1 rounded-lg max-h-48 overflow-auto shadow-lg">
+            <ul className="absolute z-20 bg-white border border-gray-200 w-full mt-1 rounded-lg max-h-48 overflow-auto shadow-lg">
               {locationSuggestions.map((loc) => (
                 <li
                   key={loc.place_id}
-                  className="p-2 hover:bg-yellow-100 cursor-pointer border-b border-gray-100 last:border-b-0"
+                  className="px-4 py-3 hover:bg-blue-50 cursor-pointer border-b border-gray-100 last:border-b-0 transition-colors duration-150"
                   onClick={() => {
                     setFormData((prev) => ({
                       ...prev,
@@ -335,23 +353,31 @@ export const PostForm = ({
                     setLocationSuggestions([]);
                   }}
                 >
-                  <div className="font-medium text-sm">{loc.display_name}</div>
+                  <div className="text-sm text-gray-800">
+                    {loc.display_name}
+                  </div>
                 </li>
               ))}
             </ul>
           )}
 
-          {/* Selected location coordinates */}
+          {/* Selected location confirmation */}
           {selectedLocation && (
-            <div className="text-xs text-green-600 mt-1 font-medium">
-              ✓ Selected: {selectedLocation.lat}, {selectedLocation.lng}
+            <div className="flex items-center gap-2 mt-2 text-sm text-green-600 bg-green-50 px-3 py-2 rounded-lg">
+              <span>✓</span>
+              <span>
+                Location selected: {selectedLocation.name.split(",")[0]}
+              </span>
             </div>
           )}
         </div>
 
         {/* Category */}
-        <div>
-          <label htmlFor="category_id" className="block mb-2 font-semibold">
+        <div className="space-y-2">
+          <label
+            htmlFor="category_id"
+            className="block text-sm font-semibold text-black-700"
+          >
             🏷️ Category
           </label>
           <select
@@ -360,9 +386,9 @@ export const PostForm = ({
             value={formData.category_id}
             onChange={handleChange}
             required
-            className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-400"
+            className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 bg-black-400"
           >
-            <option value="">Select a category</option>
+            <option value="">Choose a category...</option>
             {categories.map((cat) => (
               <option key={cat.id} value={cat.id}>
                 {cat.name}
@@ -372,9 +398,13 @@ export const PostForm = ({
         </div>
 
         {/* Tags */}
-        <div>
-          <label htmlFor="tags" className="block mb-2 font-semibold">
-            📍 Tags (Optional)
+        <div className="space-y-2">
+          <label
+            htmlFor="tags"
+            className="block text-sm font-semibold text-gray-700"
+          >
+            🏷️ Tags
+            <span className="text-gray-500 font-normal ml-1">(Optional)</span>
           </label>
           <input
             id="tags"
@@ -382,56 +412,70 @@ export const PostForm = ({
             type="text"
             value={formData.tags}
             onChange={handleChange}
-            placeholder="Add tags separated by commas, e.g. travel, summer, food"
-            className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-400"
+            placeholder="travel, summer, food, adventure..."
+            className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
           />
+          <p className="text-xs text-gray-500">
+            Separate multiple tags with commas
+          </p>
         </div>
 
         {/* Photo Upload */}
-        <div>
-          <label htmlFor="photo" className="block mb-2 font-semibold">
-            📸 Upload a Photo
+        <div className="space-y-2">
+          <label
+            htmlFor="photo"
+            className="block text-sm font-semibold text-gray-700"
+          >
+            📸 Photos
+            <span className="text-gray-500 font-normal ml-1">(Optional)</span>
           </label>
           <input
             id="photo"
             type="file"
             accept="image/*"
+            multiple
             onChange={handlePhotoChange}
-            className="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 
-               file:rounded-md file:border-0 file:text-sm file:font-semibold
-               file:bg-yellow-100 file:text-yellow-700 hover:file:bg-yellow-200"
+            className="block w-full text-sm text-gray-600 
+                       file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 
+                       file:text-sm file:font-medium file:bg-blue-50 file:text-blue-700 
+                       hover:file:bg-blue-100 transition-colors duration-200"
           />
 
           {photoPreviews && photoPreviews.length > 0 && (
-            <div className="mt-4 flex gap-4 flex-wrap">
-              <p className="w-full text-sm text-gray-600 mb-1">Preview:</p>
-              {photoPreviews.map((url, idx) => (
-                <img
-                  key={idx}
-                  src={url}
-                  alt={`Preview ${idx + 1}`}
-                  className="w-32 h-32 object-cover rounded-lg shadow-md"
-                />
-              ))}
+            <div className="mt-4 space-y-3">
+              <p className="text-sm font-medium text-gray-700">
+                Photo Preview:
+              </p>
+              <div className="flex gap-3 flex-wrap">
+                {photoPreviews.map((url, idx) => (
+                  <div key={idx} className="relative group">
+                    <img
+                      src={url}
+                      alt={`Preview ${idx + 1}`}
+                      className="w-24 h-24 object-cover rounded-lg shadow-md border border-gray-200 group-hover:shadow-lg transition-shadow duration-200"
+                    />
+                  </div>
+                ))}
+              </div>
             </div>
           )}
         </div>
 
-        {/* Buttons */}
-        <div className="flex gap-4 pt-6 border-t border-gray-300">
+        {/* Action Buttons */}
+        <div className="flex flex-col sm:flex-row gap-3 pt-6 border-t border-gray-200">
           <button
             type="submit"
             disabled={isSubmitting}
-            className={`flex-1 py-3 rounded-md font-semibold border border-blue-600 text-black ${
+            className={`flex-1 py-3 px-6 rounded-lg font-semibold text-white transition-all duration-200 ${
               isSubmitting
-                ? "bg-gray-300 cursor-not-allowed"
-                : "bg-yellow-400 hover:bg-yellow-500 cursor-pointer"
+                ? "bg-gray-400 cursor-not-allowed"
+                : "bg-blue-600 hover:bg-blue-700 active:bg-blue-800 shadow-md hover:shadow-lg"
             }`}
           >
             {isSubmitting
               ? mode === "edit"
-                ? "Updating Post..."
-                : "Creating Post..."
+                ? "Updating..."
+                : "Creating..."
               : mode === "edit"
               ? "✏️ Update Post"
               : "🚀 Create Post"}
@@ -440,9 +484,9 @@ export const PostForm = ({
           <button
             type="button"
             onClick={mode === "edit" ? handleBack : handleReset}
-            className="py-3 px-6 rounded-md border border-gray-300 text-gray-700 hover:bg-gray-100 cursor-pointer"
+            className="px-6 py-3 rounded-lg border border-gray-300 text-gray-700 font-semibold bg-white hover:bg-gray-50 active:bg-gray-100 transition-all duration-200 shadow-sm hover:shadow-md"
           >
-            {mode === "edit" ? "← Back" : "🔄 Reset Form"}
+            {mode === "edit" ? "← Back" : "🔄 Reset"}
           </button>
         </div>
       </form>

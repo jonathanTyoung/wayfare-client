@@ -28,8 +28,12 @@ const CreatePostModal = ({
         <div className="bg-[#2f3e46] px-8 py-6 border-b border-[#78716c]/20">
           <div className="flex items-center justify-between">
             <div>
-              <h2 className="text-2xl font-bold text-[#f9f5eb]">Create New Story</h2>
-              <p className="text-[#fbbf24] mt-1 text-sm">Share your travel experience</p>
+              <h2 className="text-2xl font-bold text-[#f9f5eb]">
+                Create New Story
+              </h2>
+              <p className="text-[#fbbf24] mt-1 text-sm">
+                Share your travel experience
+              </p>
             </div>
             <button
               onClick={onClose}
@@ -61,7 +65,7 @@ const CreatePostModal = ({
   );
 };
 
-export default function Profile() {
+export const Profile = () => {
   const { currentUser } = useUserContext();
   const [userProfile, setUserProfile] = useState(null);
   const [posts, setPosts] = useState([]);
@@ -186,8 +190,7 @@ export default function Profile() {
 
   return (
     <div className="min-h-screen bg-[#292524]">
-      <div className="max-w-4xl mx-auto px-6 py-12">
-        
+      <div className="max-w-6xl mx-auto px-6 py-12">
         {/* Unified Profile Header */}
         <div className="mb-12">
           {/* Profile Info Section */}
@@ -204,7 +207,10 @@ export default function Profile() {
                 ) : (
                   <div className="w-20 h-20 bg-gradient-to-br from-[#14b8a6] to-[#0f766e] text-white rounded-full flex items-center justify-center font-bold shadow-lg ring-4 ring-[#14b8a6]/20 hover:ring-[#fbbf24]/40 hover:scale-105 transition-all duration-300 text-2xl">
                     {userProfile.user?.name
-                      ? String(userProfile.user.name).trim().charAt(0).toUpperCase()
+                      ? String(userProfile.user.name)
+                          .trim()
+                          .charAt(0)
+                          .toUpperCase()
                       : "?"}
                   </div>
                 )}
@@ -215,7 +221,7 @@ export default function Profile() {
                 <h1 className="text-4xl font-bold text-[#fafaf9] mb-3">
                   {userProfile.user?.name}
                 </h1>
-                
+
                 {userProfile.traveler?.location && (
                   <p className="text-[#d6d3d1] mb-3 flex items-center gap-2">
                     <span className="text-[#fbbf24]">📍</span>
@@ -232,13 +238,18 @@ export default function Profile() {
                 {/* Stats Row */}
                 <div className="flex items-center gap-8 text-sm">
                   <div className="text-[#d6d3d1]">
-                    <span className="font-bold text-[#fbbf24]">{posts.length}</span> stories
+                    <span className="font-bold text-[#fbbf24]">
+                      {posts.length}
+                    </span>{" "}
+                    posts
                   </div>
                   <div className="text-[#d6d3d1]">
-                    <span className="font-bold text-[#14b8a6]">0</span> following
+                    <span className="font-bold text-[#14b8a6]">0</span>{" "}
+                    following
                   </div>
                   <div className="text-[#d6d3d1]">
-                    <span className="font-bold text-[#14b8a6]">0</span> followers
+                    <span className="font-bold text-[#14b8a6]">0</span>{" "}
+                    followers
                   </div>
                 </div>
               </div>
@@ -252,7 +263,7 @@ export default function Profile() {
               >
                 Edit profile
               </Link>
-              
+
               {/* <button
                 onClick={openModal}
                 className="inline-flex items-center gap-2 bg-[#14b8a6] hover:bg-[#0d9488] text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors shadow-lg hover:shadow-xl"
@@ -275,16 +286,17 @@ export default function Profile() {
           onSubmit={handleCreatePost}
         />
 
-        {/* Stories Section */}
+        {/* Posts Section */}
         <div>
           <div className="flex items-center justify-between mb-8">
             <div>
-              <h2 className="text-2xl font-bold text-[#fafaf9] mb-1">Stories</h2>
+              <h2 className="text-2xl font-bold text-[#fafaf9] mb-1">Posts</h2>
               <p className="text-[#d6d3d1]">
-                {posts.length === 0 
-                  ? "No stories shared yet" 
-                  : `${posts.length} ${posts.length === 1 ? "story" : "stories"} published`
-                }
+                {posts.length === 0
+                  ? "No posts shared yet"
+                  : `${posts.length} ${
+                      posts.length === 1 ? "story" : "posts"
+                    } published`}
               </p>
             </div>
             {/* {posts.length > 0 && (
@@ -300,7 +312,7 @@ export default function Profile() {
           {loadingPosts ? (
             <div className="flex flex-col items-center justify-center py-16">
               <div className="w-8 h-8 border-2 border-[#78716c]/30 border-t-[#14b8a6] rounded-full animate-spin mb-4"></div>
-              <p className="text-[#d6d3d1]">Loading stories...</p>
+              <p className="text-[#d6d3d1]">Loading posts...</p>
             </div>
           ) : posts.length === 0 ? (
             <div className="text-center py-16">
@@ -311,7 +323,8 @@ export default function Profile() {
                 Share your first story
               </h3>
               <p className="text-[#d6d3d1] mb-8 max-w-md mx-auto">
-                Tell the world about your travel experiences and connect with fellow adventurers.
+                Tell the world about your travel experiences and connect with
+                fellow adventurers.
               </p>
               <button
                 onClick={openModal}
@@ -330,10 +343,13 @@ export default function Profile() {
                   Write
                 </button>
               </div>
-              
-              <div className="space-y-6">
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                 {posts.map((post) => (
-                  <div key={post.id} className="bg-gray-800/50 border border-gray-700/50 rounded-xl p-6 hover:bg-gray-800/70 hover:border-gray-600/50 transition-all duration-200">
+                  <div
+                    key={post.id}
+                    className="bg-gray-800/50 border border-gray-700/50 rounded-xl p-8 hover:bg-gray-800/70 hover:border-gray-600/50 transition-all duration-200"
+                  >
                     <PostCard
                       post={post}
                       initialData={post}

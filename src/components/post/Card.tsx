@@ -177,14 +177,21 @@ export function PostCard({
         </p>
       </section>
 
-      {/* Thumbnail */}
-      {post.photos && post.photos.length > 0 && (
+      {/* Thumbnail or No Media Message */}
+      {post.photos && post.photos.length > 0 ? (
         <div className="mb-5 rounded-lg overflow-hidden">
           <img
             src={post.photos[0].url}
             alt={`Thumbnail for ${post.title}`}
             className="w-full h-64 object-cover"
           />
+        </div>
+      ) : (
+        <div className="mb-5 rounded-lg border-2 border-dashed border-gray-600/40 p-8 text-center">
+          {/* <div className="text-gray-400 text-sm">No media</div> */}
+          <div className="text-gray-500 text-xs mt-1">
+            This story doesn't include any photos
+          </div>
         </div>
       )}
 

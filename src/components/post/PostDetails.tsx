@@ -99,7 +99,7 @@ export const PostDetails = () => {
             onClick={() => navigate("/home")}
             className="bg-stone-100 hover:bg-stone-200 text-[#292524] px-6 py-2.5 font-medium transition-colors border border-stone-100"
           >
-            Back to Stories
+            Back to Posts
           </button>
         </div>
       </div>

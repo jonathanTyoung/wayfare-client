@@ -158,7 +158,7 @@ export const HomeFeed = () => {
         <div className="text-center max-w-md">
           <div className="w-8 h-8 border-2 border-stone-600 border-t-stone-100 animate-spin mx-auto mb-4"></div>
           <h2 className="text-xl font-semibold text-stone-100 mb-2">
-            Loading stories
+            Loading posts
           </h2>
           <p className="text-stone-400">{loadingMessage}</p>
         </div>
@@ -191,7 +191,7 @@ export const HomeFeed = () => {
         <div className="max-w-4xl mx-auto px-6 py-4">
           <div className="flex items-center gap-8 text-sm">
             <span className="text-stone-100 font-medium border-b-2 border-stone-100 pb-2">
-              Latest Stories
+              Latest Posts
             </span>
             <span className="text-stone-400 hover:text-stone-100 cursor-pointer transition-colors">
               Following

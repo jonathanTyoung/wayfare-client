@@ -71,7 +71,7 @@ export const SearchBar = ({ onClose }: SearchBarProps) => {
         value={query}
         onChange={handleChange}
         onKeyDown={handleKeyDown}
-        placeholder="Search..."
+        placeholder="Search by Title, Category, Traveler, etc..."
         className="flex-1 px-3 py-2 text-white bg-gray-800 focus:outline-none"
       />
       <button

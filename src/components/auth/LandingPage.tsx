@@ -19,7 +19,7 @@ export default function LandingPage() {
           </h1>
           <p className="text-gray-300 text-lg leading-relaxed">
             Wayfare is your personal map-based journal. Capture your experiences
-            and pin your stories to the places that shaped them.
+            and pin your posts to the places that shaped them.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center md:justify-start mt-4">
             <Link
