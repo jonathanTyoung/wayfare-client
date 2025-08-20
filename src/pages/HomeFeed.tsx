@@ -37,34 +37,34 @@ const CreatePostModal = ({
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 bg-[#3e2f1c]/60 flex items-center justify-center z-50 p-4">
-      <div className="bg-[#fafaf9] rounded-lg shadow-xl max-w-4xl w-full max-h-[90vh] overflow-hidden border border-[#78716c]/20">
+    <div className="fixed inset-0 bg-black/70 flex items-center justify-center z-50 p-4">
+      <div className="bg-[#292524] shadow-2xl max-w-4xl w-full max-h-[90vh] overflow-hidden border border-stone-600">
         {/* Header */}
-        <div className="bg-[#2f3e46] px-8 py-6 border-b border-[#78716c]/20">
+        <div className="bg-stone-900 px-6 py-4 border-b border-stone-700">
           <div className="flex items-center justify-between">
             <div>
-              <h2 className="text-2xl font-bold text-[#f9f5eb]">
-                Create New Story
+              <h2 className="text-xl font-bold text-stone-100">
+                Write your story
               </h2>
-              <p className="text-[#fbbf24] mt-1 text-sm">
+              <p className="text-stone-400 mt-0.5 text-sm">
                 Share your travel experience
               </p>
             </div>
             <button
               onClick={onClose}
-              className="w-8 h-8 flex items-center justify-center text-[#f9f5eb] hover:text-[#fbbf24] transition-colors"
+              className="w-6 h-6 flex items-center justify-center text-stone-400 hover:text-stone-100 transition-colors"
             >
-              <span className="text-2xl">×</span>
+              <span className="text-xl">×</span>
             </button>
           </div>
         </div>
 
         {/* Content */}
-        <div className="p-8 overflow-y-auto max-h-[calc(90vh-120px)] bg-[#fafaf9]">
+        <div className="p-6 overflow-y-auto max-h-[calc(90vh-80px)] bg-[#292524]">
           {loading ? (
-            <div className="flex flex-col items-center justify-center py-16">
-              <div className="w-8 h-8 border-2 border-[#78716c]/30 border-t-[#14b8a6] rounded-full animate-spin mb-4"></div>
-              <p className="text-white text-sm">Loading categories...</p>
+            <div className="flex flex-col items-center justify-center py-12">
+              <div className="w-6 h-6 border-2 border-stone-600 border-t-stone-100 animate-spin mb-3"></div>
+              <p className="text-stone-400 text-sm">Loading categories...</p>
             </div>
           ) : (
             <PostForm
@@ -154,13 +154,13 @@ export const HomeFeed = () => {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-[#f9f5eb]">
+      <div className="min-h-screen flex items-center justify-center bg-[#292524]">
         <div className="text-center max-w-md">
-          <div className="w-12 h-12 border-2 border-[#78716c]/30 border-t-[#14b8a6] rounded-full animate-spin mx-auto mb-6"></div>
-          <h2 className="text-2xl font-bold text-[#2f3e46] mb-2">
+          <div className="w-8 h-8 border-2 border-stone-600 border-t-stone-100 animate-spin mx-auto mb-4"></div>
+          <h2 className="text-xl font-semibold text-stone-100 mb-2">
             Loading stories
           </h2>
-          <p className="text-white">{loadingMessage}</p>
+          <p className="text-stone-400">{loadingMessage}</p>
         </div>
       </div>
     );
@@ -168,38 +168,38 @@ export const HomeFeed = () => {
 
   return (
     <div className="min-h-screen bg-[#292524]">
-      {/* Header */}
-      <header className="border-b border-[#78716c]/10 bg-gray-900 sticky top-0 z-40">
-        <div className="max-w-4xl mx-auto px-6 py-8 text-center font-special font-bold tracking-tight text-[#d6d3d1]">
-          <h1 className="text-4xl font-bold text-[#d6d3d1] tracking-tight">
+      {/* Proper Homepage Header */}
+      <header className="border-b border-stone-600/20 bg-[#292524] sticky top-0 z-40">
+        <div className="max-w-4xl mx-auto px-6 py-8 text-center">
+          <h1 className="text-4xl font-special font-bold text-stone-100 tracking-tight mb-2">
             Wayfare
           </h1>
-          <p className="text-lg text-white mt-2">
+          <p className="text-lg text-stone-300 mb-6">
             A Community Travel Journal
           </p>
+          <button
+            onClick={openModal}
+            className="bg-stone-100 hover:bg-stone-200 text-[#292524] px-6 py-2.5 font-medium transition-colors border border-stone-100"
+          >
+            Share Your Story
+          </button>
         </div>
       </header>
 
       {/* Navigation */}
-      <nav className="border-b border-[#78716c]/10 bg-gray-900 sticky top-20 z-30">
-        <div className="max-w-4xl mx-auto px-6 py-4 flex items-center justify-between">
-          <div className="flex items-center gap-8">
-            <span className="text-[#d6d3d1] font-semibold text-sm">
+      <nav className="border-b border-stone-600/20 bg-[#292524] sticky top-[136px] z-30">
+        <div className="max-w-4xl mx-auto px-6 py-4">
+          <div className="flex items-center gap-8 text-sm">
+            <span className="text-stone-100 font-medium border-b-2 border-stone-100 pb-2">
               Latest Stories
             </span>
-            <span className="text-white hover:text-[#2f3e46] cursor-pointer transition-colors text-sm">
+            <span className="text-stone-400 hover:text-stone-100 cursor-pointer transition-colors">
               Following
             </span>
-            <span className="text-white hover:text-[#2f3e46] cursor-pointer transition-colors text-sm">
+            <span className="text-stone-400 hover:text-stone-100 cursor-pointer transition-colors">
               Your Posts
             </span>
           </div>
-          <button
-            onClick={openModal}
-            className="bg-[#14b8a6] hover:bg-[#f59e0b] text-white px-4 py-2 rounded-md text-sm font-medium transition-colors"
-          >
-            Write
-          </button>
         </div>
       </nav>
 
@@ -212,14 +212,17 @@ export const HomeFeed = () => {
         onSubmit={handleCreatePost}
       />
 
-      {/* Posts List */}
-      <div className="max-w-4xl mx-auto px-6 py-12">
+      {/* Posts List - Tighter Spacing */}
+      <div className="max-w-4xl mx-auto px-6 py-8">
         {posts.length > 0 ? (
-          <div className="space-y-6">
-            {posts.map((post) => (
+          <div className="space-y-4">
+            {posts.map((post, index) => (
               <article
                 key={post.id}
-                className=" rounded-lg p-6 hover:shadow-sm transition-shadow"
+                className={`
+                  border-b border-stone-600/20 pb-6 mb-6
+                  ${index === posts.length - 1 ? "border-b-0 pb-0 mb-0" : ""}
+                `}
               >
                 <PostCard
                   post={post}
@@ -231,20 +234,20 @@ export const HomeFeed = () => {
             ))}
           </div>
         ) : (
-          <div className="text-center py-20">
-            <div className="w-16 h-16 bg-[#fafaf9] border border-[#78716c]/20 rounded-full flex items-center justify-center mx-auto mb-6">
-              <span className="text-2xl text-white">🗺️</span>
+          <div className="text-center py-16 border-t border-stone-600/20 mt-8">
+            <div className="w-12 h-12 bg-stone-800 border border-stone-600 flex items-center justify-center mx-auto mb-4">
+              <span className="text-xl text-stone-300">🗺️</span>
             </div>
-            <h2 className="text-3xl font-bold text-[#2f3e46] mb-4">
+            <h2 className="text-2xl font-bold text-stone-100 mb-3">
               Start exploring
             </h2>
-            <p className="text-white mb-8 max-w-md mx-auto text-lg leading-relaxed">
+            <p className="text-stone-400 mb-6 max-w-md mx-auto leading-relaxed">
               Every great journey starts with a single story. Share your
               adventures and connect with fellow travelers.
             </p>
             <button
               onClick={openModal}
-              className="inline-flex items-center gap-2 bg-[#14b8a6] hover:bg-[#f59e0b] text-white px-6 py-3 rounded-md font-medium transition-colors"
+              className="inline-flex items-center gap-2 bg-stone-100 hover:bg-stone-200 text-[#292524] px-5 py-2.5 font-medium transition-colors border border-stone-100"
             >
               Start your journey
             </button>

@@ -52,19 +52,81 @@ export const EditPost = () => {
     }
   };
 
-  if (loading) return <div>Loading...</div>;
-  if (!post) return <div>Post not found.</div>;
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-[#292524] flex items-center justify-center">
+        <div className="text-center">
+          <div className="w-8 h-8 border-2 border-stone-600 border-t-stone-100 animate-spin mx-auto mb-4"></div>
+          <h2 className="text-xl font-semibold text-stone-100 mb-2">
+            Loading post
+          </h2>
+          <p className="text-stone-400">Preparing your story for editing...</p>
+        </div>
+      </div>
+    );
+  }
+
+  if (!post) {
+    return (
+      <div className="min-h-screen bg-[#292524] flex items-center justify-center">
+        <div className="text-center max-w-md">
+          <div className="w-16 h-16 bg-stone-800 border border-stone-600 flex items-center justify-center mx-auto mb-6">
+            <span className="text-2xl text-stone-400">📝</span>
+          </div>
+          <h2 className="text-2xl font-bold text-stone-100 mb-3">
+            Story not found
+          </h2>
+          <p className="text-stone-400 mb-6 leading-relaxed">
+            The story you're looking for doesn't exist or may have been removed.
+          </p>
+          <button
+            onClick={handleBack}
+            className="bg-stone-100 hover:bg-stone-200 text-[#292524] px-6 py-2.5 font-medium transition-colors border border-stone-100"
+          >
+            Back to Stories
+          </button>
+        </div>
+      </div>
+    );
+  }
 
   return (
-    <div className="max-w-4xl mx-auto p-6">
-      <PostForm
-        categories={categories}
-        initialData={post}
-        onSubmit={handleUpdatePost}
-        onSuccess={() => console.log("Post updated!")}
-        mode="edit"
-        onReset={handleBack}
-      />
+    <div className="min-h-screen bg-[#292524]">
+      {/* Header */}
+      <header className="border-b border-stone-600/20 bg-[#292524] sticky top-0 z-40">
+        <div className="max-w-4xl mx-auto px-6 py-6">
+          <div className="flex items-center justify-between">
+            <div>
+              <h1 className="text-2xl font-bold text-stone-100 tracking-tight">
+                Edit Story
+              </h1>
+              <p className="text-stone-400 mt-1">
+                Update your travel experience
+              </p>
+            </div>
+            <button
+              onClick={handleBack}
+              className="text-stone-400 hover:text-stone-100 transition-colors text-sm font-medium"
+            >
+              ← Back to Stories
+            </button>
+          </div>
+        </div>
+      </header>
+
+      {/* Form Container */}
+      <div className="max-w-4xl mx-auto px-6 py-8">
+        <div className="bg-stone-800/30 border border-stone-600/20 p-8">
+          <PostForm
+            categories={categories}
+            initialData={post}
+            onSubmit={handleUpdatePost}
+            onSuccess={() => console.log("Post updated!")}
+            mode="edit"
+            onReset={handleBack}
+          />
+        </div>
+      </div>
     </div>
   );
 };

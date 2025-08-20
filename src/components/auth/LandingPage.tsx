@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 
 export default function LandingPage() {
   return (
-    <div className="min-h-screen flex flex-col bg-[#121212] text-gray-100 font-sans">
+    <div className="min-h-screen flex flex-col bg-[#292524] text-gray-100 font-sans">
       {/* Header */}
       <header className="px-6 py-6 md:px-12 max-w-6xl mx-auto">
         <div className="text-4xl md:text-5xl font-special font-bold tracking-tight text-[#fbbf24]">

@@ -27,12 +27,12 @@ export const NavBar = ({
     <nav className="bg-[#292524] text-white p-4 flex flex-col gap-2 sticky top-0 z-50">
       <div className="flex justify-between items-center">
         <div className="flex items-center gap-4">
-          <div
+          {/* <div
             className="font-bold text-xl cursor-pointer"
             onClick={() => navigate("/home")}
           >
             Wayfare
-          </div>
+          </div> */}
           {/* {token && (
             <div className="flex items-center gap-2">
               <NavLink to="/home">Home</NavLink>

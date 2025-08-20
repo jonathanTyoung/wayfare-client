@@ -1,4 +1,6 @@
 import { Link, useNavigate } from "react-router-dom";
+import { useState, useRef, useEffect } from "react";
+import { HiDotsVertical } from "react-icons/hi";
 
 export function PostCard({
   post,
@@ -10,70 +12,53 @@ export function PostCard({
   isOwner?: boolean;
 }) {
   const navigate = useNavigate();
+  const [menuOpen, setMenuOpen] = useState(false);
+  const menuRef = useRef<HTMLDivElement | null>(null);
 
   const handleTagClick = (tagName: string) => {
     navigate(`/search?tag=${encodeURIComponent(tagName)}`);
   };
 
+  const handleCopyLink = () => {
+    const url = `${window.location.origin}/posts/${post.id}`;
+    navigator.clipboard.writeText(url);
+    setMenuOpen(false);
+    alert("Link copied to clipboard ✅");
+  };
+
+  // Close on outside click
+  useEffect(() => {
+    function handleClickOutside(e: MouseEvent) {
+      if (menuRef.current && !menuRef.current.contains(e.target as Node)) {
+        setMenuOpen(false);
+      }
+    }
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+
+  const hasLocation = post.latitude && post.longitude;
+
   return (
-    <article className="p-6 w-full max-w-lg mx-auto my-4 rounded-lg shadow-lg bg-[#2f3e46] border border-gray-700 hover:shadow-xl hover:shadow-blue-500/10 hover:border-gray-600 transition-all duration-300 min-h-[220px] flex flex-col overflow-hidden">
-      {/* Header */}
-      <header className="relative px-5 pt-4 pb-3 flex-shrink-0">
-        <div className="flex justify-between items-start">
-          <h3 className="text-xl font-semibold pr-3 flex-1 text-white leading-tight line-clamp-2">
-            <Link
-              to={`/posts/${post.id}`}
-              className="no-underline text-white hover:text-blue-400 transition-colors duration-200"
-            >
-              {post.title}
-            </Link>
-          </h3>
-
-          <button
-            onClick={() =>
-              navigate(
-                `/explore?lat=${encodeURIComponent(
-                  post.latitude
-                )}&lng=${encodeURIComponent(post.longitude)}`
-              )
-            }
-            className="px-3 py-1 bg-[#2f3e46] text-white rounded-md hover:bg-[#14b8a6] transition-colors shadow-lg hover:shadow-blue-500/25 hover:scale-105 duration-200"
-          >
-            View on Map
-          </button>
-        </div>
-      </header>
-
-      {/* Thumbnail */}
-      {post.photos && post.photos.length > 0 && (
-        <div className="w-full h-40 overflow-hidden">
-          <img
-            src={post.photos[0].url}
-            alt={`Thumbnail for ${post.title}`}
-            className="w-full h-full object-cover"
-          />
-        </div>
-      )}
-
-      {/* Content */}
-      <section className="px-5 flex-grow">
-        <p className="text-sm leading-relaxed text-gray-300 line-clamp-3 mb-4">
-          {post.short_description || "No description provided."}
-        </p>
-      </section>
-
-      {/* Meta information */}
-      <div className="px-5 py-3 border-t border-gray-700 bg-gray-750">
-        <div className="flex items-center justify-between mb-3">
-          <div className="flex items-center gap-2">
-            <div className="w-7 h-7 bg-blue-600 rounded-full flex items-center justify-center text-xs font-medium text-white shadow-lg">
-              {post.traveler?.name?.charAt(0)?.toUpperCase() || "?"}
-            </div>
-            <div className="text-xs">
-              <div className="font-medium text-white">
-                {post.traveler?.name || "Unknown Traveler"}
+    <article className="w-full max-w-2xl mx-auto mb-8 bg-[#292524] rounded-lg border border-gray-600/30 backdrop-blur-sm p-8">
+      {/* Header with title, metadata, and menu */}
+      <header className="mb-4">
+        <div className="flex justify-between items-start gap-4">
+          <div className="flex-1">
+            {/* Author and metadata */}
+            <div className="inline-flex items-center gap-3 mb-3 px-3 py-2 bg-gray-700/30 border border-gray-600/40 rounded-lg text-xs">
+              <div className="flex items-center gap-2">
+                <div className="w-6 h-6 bg-gradient-to-br from-blue-500 to-blue-600 rounded-full flex items-center justify-center text-xs font-medium text-white">
+                  {post.traveler?.name?.charAt(0)?.toUpperCase() || "?"}
+                </div>
+                <span className="text-gray-200 font-medium">
+                  {post.traveler?.name || "Unknown Traveler"}
+                </span>
               </div>
-              <div className="text-gray-400">
+
+              <div className="w-px h-4 bg-gray-600"></div>
+
+              <span className="text-gray-300">
                 {post.updated_at
                   ? new Date(post.updated_at).toLocaleDateString("en-US", {
                       month: "short",
@@ -81,62 +66,163 @@ export function PostCard({
                       year: "numeric",
                     })
                   : "Date unknown"}
-              </div>
-            </div>
-          </div>
+              </span>
 
-          <div className="text-right text-xs">
-            <div className="text-gray-400">
-              {post.category?.name || "General"}
-            </div>
-            <div className="text-white font-medium">
-              in {post.location_name?.split(",")[0] || "Unknown"}
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {/* Tags */}
-        {post.tags && post.tags.length > 0 && (
-          <div className="px-5 py-3 bg-gray-800 border-t border-gray-700 mt-auto">
-            <div className="flex flex-wrap gap-3">
-              {post.tags.slice(0, 5).map((tag: { id: number; name: string }) => (
-                <span
-                  key={tag.id}
-                  onClick={() => handleTagClick(tag.name)}
-                  className="text-gray-400 hover:text-blue-400 transition-colors duration-200 cursor-pointer select-none text-xs font-medium hover:underline underline-offset-2"
-                  title={`Filter by #${tag.name}`}
-                >
-                  #{tag.name}
-                </span>
-              ))}
-              {post.tags.length > 5 && (
-                <span className="text-xs text-gray-500 opacity-60">
-                  +{post.tags.length - 5}
-                </span>
+              {post.category?.name && (
+                <>
+                  <div className="w-px h-4 bg-gray-600"></div>
+                  <span className="text-blue-400 font-medium">
+                    {post.category.name}
+                  </span>
+                </>
               )}
-            {isOwner && removePost && (
-              <div className="flex gap-1 ml-3 flex-shrink-0">
-                <Link
-                  to={`/posts/${post.id}/edit`}
-                  state={{ from: window.location.pathname }}
-                  className="w-8 h-8 bg-gray-700 hover:bg-[#14b8a6] rounded-md flex items-center justify-center text-gray-400 hover:text-white transition-all duration-200 hover:scale-105 border border-gray-600 hover:border-blue-500 shadow-lg hover:shadow-blue-500/25"
-                  title="Edit"
-                >
-                  <span className="text-sm">✏️</span>
-                </Link>
-                <button
-                  onClick={() => removePost(post.id)}
-                  className="w-8 h-8 bg-gray-700 hover:bg-red-600 rounded-md flex items-center justify-center text-gray-400 hover:text-white transition-all duration-200 hover:scale-105 border border-gray-600 hover:border-red-500 shadow-lg hover:shadow-red-500/25"
-                  title="Delete"
-                >
-                  <span className="text-sm">🗑️</span>
-                </button>
+
+              {post.location_name && (
+                <>
+                  <div className="w-px h-4 bg-gray-600"></div>
+                  <span className="flex items-center gap-1 text-gray-300">
+                    📍 {post.location_name.split(",")[0]}
+                  </span>
+                </>
+              )}
+            </div>
+
+            {/* Title */}
+            <h2 className="text-2xl font-bold text-white leading-tight hover:text-gray-300 transition-colors">
+              <Link
+                to={`/posts/${post.id}`}
+                className="no-underline text-inherit hover:text-gray-300"
+              >
+                {post.title}
+              </Link>
+            </h2>
+          </div>
+
+          {/* Three Dots Menu */}
+          <div className="relative flex-shrink-0" ref={menuRef}>
+            <button
+              onClick={() => setMenuOpen(!menuOpen)}
+              className="p-2 rounded-full hover:bg-gray-700/50 transition-colors text-black-400 hover:text-gray-200"
+            >
+              <HiDotsVertical className="w-5 h-5" />
+            </button>
+
+            {menuOpen && (
+              <div className="absolute right-0 top-full mt-2 w-48 bg-[#1f1f1f] border border-gray-600/50 rounded-lg shadow-xl z-20 py-1">
+                {isOwner ? (
+                  <>
+                    <Link
+                      to={`/posts/${post.id}/edit`}
+                      state={{ from: window.location.pathname }}
+                      onClick={() => setMenuOpen(false)}
+                      className="block px-4 py-3 text-sm text-black-200 hover:bg-gray-700/50 transition-colors border-b border-gray-600/30 last:border-b-0"
+                    >
+                      Edit Post
+                    </Link>
+                    <button
+                      onClick={() => {
+                        removePost?.(post.id);
+                        setMenuOpen(false);
+                      }}
+                      className="w-full text-left px-4 py-3 text-sm text-black-400 hover:bg-red-900/30 transition-colors"
+                    >
+                      Delete Post
+                    </button>
+                  </>
+                ) : (
+                  <>
+                    <button
+                      onClick={handleCopyLink}
+                      className="w-full text-left px-4 py-3 text-sm text-black-200 hover:bg-gray-700/50 transition-colors border-b border-gray-600/30"
+                    >
+                      Copy Link
+                    </button>
+                    <button
+                      onClick={() => {
+                        setMenuOpen(false);
+                        alert("Liked ❤️");
+                      }}
+                      className="w-full text-left px-4 py-3 text-sm text-black-200 hover:bg-gray-700/50 transition-colors border-b border-gray-600/30"
+                    >
+                      Like
+                    </button>
+                    <button
+                      onClick={() => {
+                        setMenuOpen(false);
+                        alert("Saved 📌");
+                      }}
+                      className="w-full text-left px-4 py-3 text-sm text-black-200 hover:bg-gray-700/50 transition-colors border-b border-gray-600/30"
+                    >
+                      Save for Later
+                    </button>
+                    <Link
+                      to={`/posts/${post.id}`}
+                      onClick={() => setMenuOpen(false)}
+                      className="block px-4 py-3 text-sm text-gray-200 hover:bg-gray-700/50 transition-colors"
+                    >
+                      View Post
+                    </Link>
+                  </>
+                )}
               </div>
             )}
           </div>
         </div>
+      </header>
+
+      {/* Description */}
+      <section className="mb-5">
+        <p className="text-gray-300 leading-relaxed text-base line-clamp-3">
+          {post.short_description || "No description provided."}
+        </p>
+      </section>
+
+      {/* Thumbnail */}
+      {post.photos && post.photos.length > 0 && (
+        <div className="mb-5 rounded-lg overflow-hidden">
+          <img
+            src={post.photos[0].url}
+            alt={`Thumbnail for ${post.title}`}
+            className="w-full h-64 object-cover"
+          />
+        </div>
       )}
+
+      {/* Footer with tags and map button */}
+      <footer className="flex items-center justify-between gap-4">
+        {/* Tags */}
+        <div className="flex-1">
+          {post.tags && post.tags.length > 0 && (
+            <div className="flex flex-wrap gap-2">
+              {post.tags.map((tag: any, index: number) => (
+                <button
+                  key={index}
+                  onClick={() => handleTagClick(tag.name || tag)}
+                  className="px-3 py-1 text-xs font-medium bg-gray-700/50 text-gray-300 rounded-full hover:bg-blue-900/30 hover:text-blue-300 transition-colors"
+                >
+                  #{typeof tag === "string" ? tag : tag.name}
+                </button>
+              ))}
+            </div>
+          )}
+        </div>
+
+        {/* View on Map button */}
+        {hasLocation && (
+          <button
+            onClick={() => {
+              navigate(
+                `/explore?lat=${encodeURIComponent(
+                  post.latitude
+                )}&lng=${encodeURIComponent(post.longitude)}`
+              );
+            }}
+            className="px-4 py-2 text-sm font-medium text-black-400 hover:text-blue-300 hover:bg-blue-900/20 rounded-md transition-colors flex-shrink-0"
+          >
+            View on Map
+          </button>
+        )}
+      </footer>
     </article>
   );
 }

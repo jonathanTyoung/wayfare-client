@@ -16,7 +16,7 @@
 
 /* === Root Theme Variables === */
 :root {
-  --color-bg: #121212;         /* deep background */
+  --color-bg: #292524;         /* deep background */
   --color-surface: #1E1E1E;    /* slightly lighter surface */
   --color-accent: #fbbf24;     /* pop accent (yellow/tan) */
   --color-accent-hover: #05b88b;

@@ -253,12 +253,12 @@ export default function Profile() {
                 Edit profile
               </Link>
               
-              <button
+              {/* <button
                 onClick={openModal}
                 className="inline-flex items-center gap-2 bg-[#14b8a6] hover:bg-[#0d9488] text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors shadow-lg hover:shadow-xl"
               >
                 Write
-              </button>
+              </button> */}
             </div>
           </div>
 
@@ -287,14 +287,14 @@ export default function Profile() {
                 }
               </p>
             </div>
-            {posts.length > 0 && (
+            {/* {posts.length > 0 && (
               <button
                 onClick={openModal}
                 className="hidden sm:inline-flex items-center gap-2 bg-[#14b8a6] hover:bg-[#0d9488] text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors shadow-lg hover:shadow-xl"
               >
                 Write
               </button>
-            )}
+            )} */}
           </div>
 
           {loadingPosts ? (
