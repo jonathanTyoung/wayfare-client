@@ -6,7 +6,7 @@ import App from "../App.jsx";
 import LandingPage from "./auth/LandingPage";
 import { HomeFeed } from "../pages/HomeFeed";
 import { EditPost } from "./post/EditPost.js";
-import Profile from "../pages/Profile";
+import {Profile} from "../pages/Profile";
 import { ExploreMap } from "../pages/ExploreMap.js";
 import { SearchResults } from "./search/SearchResults.js";
 import { PostDetails } from "./post/PostDetails.js";

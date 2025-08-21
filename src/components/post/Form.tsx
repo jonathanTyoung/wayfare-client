@@ -469,7 +469,7 @@ export const PostForm = ({
             className={`flex-1 py-3 px-6 rounded-lg font-semibold text-white transition-all duration-200 ${
               isSubmitting
                 ? "bg-gray-400 cursor-not-allowed"
-                : "bg-blue-600 hover:bg-blue-700 active:bg-blue-800 shadow-md hover:shadow-lg"
+                : "bg-[#05b88b] hover:bg-[#fbbf24] active:bg-blue-800 shadow-md hover:shadow-lg"
             }`}
           >
             {isSubmitting

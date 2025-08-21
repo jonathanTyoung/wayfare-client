@@ -72,6 +72,7 @@ const CreatePostModal = ({
               onSubmit={onSubmit}
               onSuccess={onClose}
               mode="create"
+              // travelerId={currentUserTravelerId} // <-- pass the traveler ID here
             />
           )}
         </div>
@@ -134,6 +135,43 @@ export const HomeFeed = () => {
     }
   };
 
+  
+  const updatePostLikes = (
+    postId: number,
+    liked: boolean,
+    likesCount: number
+  ) => {
+    setPosts((prevPosts) =>
+      prevPosts.map((post) => {
+        if (post.id !== postId) return post;
+
+        // Update `likes` array to reflect new state
+        let updatedLikes = post.likes ? [...post.likes] : [];
+        if (liked) {
+          // Add current user if not already there
+          if (
+            !updatedLikes.some(
+              (like) => like.traveler === currentUserTravelerId
+            )
+          ) {
+            updatedLikes.push({ traveler: currentUserTravelerId });
+          }
+        } else {
+          // Remove current user
+          updatedLikes = updatedLikes.filter(
+            (like) => like.traveler !== currentUserTravelerId
+          );
+        }
+
+        return {
+          ...post,
+          likes: updatedLikes,
+        };
+      })
+    );
+  };
+
+
   // ----- Modal -----
   const openModal = async () => {
     setLoadingCategories(true);
@@ -193,12 +231,12 @@ export const HomeFeed = () => {
             <span className="text-stone-100 font-medium border-b-2 border-stone-100 pb-2">
               Latest Posts
             </span>
-            <span className="text-stone-400 hover:text-stone-100 cursor-pointer transition-colors">
+            {/* <span className="text-stone-400 hover:text-stone-100 cursor-pointer transition-colors">
               Following
             </span>
             <span className="text-stone-400 hover:text-stone-100 cursor-pointer transition-colors">
               Your Posts
-            </span>
+            </span> */}
           </div>
         </div>
       </nav>
@@ -227,6 +265,8 @@ export const HomeFeed = () => {
                 <PostCard
                   post={post}
                   initialData={post}
+                  currentUserId={currentUserTravelerId} // ✅ Pass traveler ID here
+                  updatePostLikes={updatePostLikes}
                   isOwner={currentUserTravelerId === post.traveler?.id}
                   removePost={() => handleRemovePost(post.id)}
                 />

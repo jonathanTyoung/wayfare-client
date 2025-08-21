@@ -142,19 +142,18 @@ export const Sidebar: React.FC<SidebarProps> = ({ openSearch }) => {
           </Link>
 
           <button
-            onClick={openModal}
-            title="Create Post"
-            className="p-3 rounded-md hover:bg-[#78716c]/10 transition-colors text-[#78716c] hover:text-[#2f3e46]"
-          >
-            <FiPlus className="text-xl" />
-          </button>
-
-          <button
             onClick={openSearch}
             title="Search"
-            className="p-3 rounded-md hover:bg-[#78716c]/10 transition-colors text-[#78716c] hover:text-[#2f3e46]"
+            className="p-3 rounded-md hover:bg-[#05b88b] transition-colors text-[#1E1E1E] hover:text-[#1E1E1E]"
           >
             <FiSearch className="text-xl" />
+          </button>
+          <button
+            onClick={openModal}
+            title="Create Post"
+            className="p-3 rounded-md bg-[#05b88b] hover:bg-[#fbbf24] transition-colors text-[#1E1E1E] hover:text-[#1E1E1E]"
+          >
+            <FiPlus className="text-xl" />
           </button>
         </nav>
       </aside>

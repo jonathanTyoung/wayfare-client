@@ -24,6 +24,10 @@ export const PostDetails = () => {
   const [error, setError] = useState(null);
   const [menuOpen, setMenuOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement | null>(null);
+  const [likesCount, setLikesCount] = useState(0);
+  const [bookmarksCount, setBookmarksCount] = useState(0);
+  const [comments, setComments] = useState([]);
+  const [likedByUser, setLikedByUser] = useState(false);
 
   useEffect(() => {
     async function fetchData() {
@@ -35,13 +39,20 @@ export const PostDetails = () => {
         ]);
         setPost(postData);
         setCurrentUser(userData);
+
+        // Update likes/bookmarks/comments from response
+        setLikesCount(postData.likes_count || 0);
+        setBookmarksCount(postData.bookmarks_count || 0);
+        setLikedByUser(postData.liked_by_user || false);
+        setComments(postData.comments || []);
       } catch (err) {
         setError("Failed to load post");
-        console.error("Error fetching data:", err);
+        console.error(err);
       } finally {
         setLoading(false);
       }
     }
+
     fetchData();
   }, [postId]);
 
@@ -113,7 +124,7 @@ export const PostDetails = () => {
         <div className="max-w-2xl mx-auto px-6 py-4 flex items-center">
           <button
             onClick={() => navigate(-1)}
-            className="flex items-center gap-2 text-white hover:text-stone-200 transition-colors text-sm"
+            className="flex items-center gap-2 text-black hover:text-stone-200 transition-colors text-sm"
           >
             <ArrowLeft className="w-4 h-4" />
             Back
@@ -283,7 +294,7 @@ export const PostDetails = () => {
                       <button
                         key={tag.id}
                         onClick={() => handleTagClick(tag.name)}
-                        className="text-white hover:text-yellow-300 transition-colors text-sm underline"
+                        className="text-black hover:text-yellow-300 transition-colors text-sm underline"
                         title={`View posts tagged with #${tag.name}`}
                       >
                         #{tag.name}
@@ -302,35 +313,103 @@ export const PostDetails = () => {
           {/* Action Footer */}
           <div className="px-12 py-8 border-t border-stone-600/20">
             <div className="flex items-center justify-between">
-              <div className="flex items-center gap-8">
-                <button className="bg-yellow-300 hover:bg-yellow-400 p-2.5 transition-colors">
+              <div className="flex items-center gap-6">
+                {/* Like Button */}
+                <button
+                  className={`p-2.5 transition-colors ${
+                    likedByUser
+                      ? "bg-red-500 hover:bg-red-600"
+                      : "bg-yellow-300 hover:bg-yellow-400"
+                  }`}
+                  onClick={() => {
+                    setLikedByUser(!likedByUser);
+                    setLikesCount((prev) =>
+                      likedByUser ? prev - 1 : prev + 1
+                    );
+                  }}
+                >
                   <Heart className="w-5 h-5 text-black" />
                 </button>
+                <span className="text-white">{likesCount}</span>
+
+                {/* Comment Button */}
                 <button className="bg-yellow-300 hover:bg-yellow-400 p-2.5 transition-colors">
                   <MessageCircle className="w-5 h-5 text-black" />
                 </button>
+                <span className="text-white">{comments.length}</span>
+
+                {/* Share Button */}
                 <button className="bg-yellow-300 hover:bg-yellow-400 p-2.5 transition-colors">
                   <Share2 className="w-5 h-5 text-black" />
                 </button>
-                <button className="bg-yellow-300 hover:bg-yellow-400 p-2.5 transition-colors">
+
+                {/* Bookmark Button */}
+                <button
+                  className="bg-yellow-300 hover:bg-yellow-400 p-2.5 transition-colors"
+                  onClick={() => setBookmarksCount((prev) => prev + 1)} // Optional: toggle bookmark logic
+                >
                   <Bookmark className="w-5 h-5 text-black" />
                 </button>
+                <span className="text-white">{bookmarksCount}</span>
               </div>
             </div>
           </div>
         </article>
 
         {/* Comments */}
-        <section className="mt-12 bg-[#78716c] border-b border-stone-600/20 px-12 py-16 rounded-lg">
-          <h3 className="text-2xl font-bold text-white mb-8">Comments</h3>
-          <div className="text-center py-16">
-            <MessageCircle className="w-12 h-12 text-stone-400 mx-auto mb-4" />
-            <p className="text-white text-lg mb-2">No comments yet</p>
-            <p className="text-stone-300">
-              Be the first to share your thoughts about this story
-            </p>
+<section className="mt-12 bg-gradient-to-br from-stone-800 to-stone-900 border border-stone-700/30 shadow-2xl px-8 py-12 rounded-xl">
+  <div className="flex items-center gap-3 mb-10">
+    <MessageCircle className="w-6 h-6 text-amber-400" />
+    <h3 className="text-2xl font-bold text-white">Comments</h3>
+    <span className="bg-stone-700/50 text-amber-200 text-sm px-3 py-1 rounded-full ml-auto">
+      {comments.length}
+    </span>
+  </div>
+  
+  {comments.length > 0 ? (
+    <div className="space-y-6">
+      {comments.map((comment, index) => (
+        <div 
+          key={comment.id} 
+          className="group bg-gradient-to-r from-stone-900/80 to-stone-800/60 border border-stone-700/40 p-6 rounded-xl hover:border-amber-500/30 transition-all duration-300 hover:shadow-lg backdrop-blur-sm"
+        >
+          <div className="flex items-start gap-4">
+            <div className="w-10 h-10 bg-gradient-to-br from-amber-500 to-amber-600 rounded-full flex items-center justify-center text-white font-bold text-sm shadow-md">
+              {comment.traveler.username.charAt(0).toUpperCase()}
+            </div>
+            <div className="flex-1 min-w-0">
+              <div className="flex items-center gap-3 mb-3">
+                <span className="text-amber-200 font-semibold text-base">
+                  {comment.traveler.username}
+                </span>
+                <span className="text-stone-400 text-sm">
+                  {comment.created_at ? new Date(comment.created_at).toLocaleDateString('en-US', {
+                    month: 'short',
+                    day: 'numeric',
+                    year: 'numeric'
+                  }) : 'Just now'}
+                </span>
+              </div>
+              <p className="text-stone-200 leading-relaxed text-base">
+                {comment.content}
+              </p>
+            </div>
           </div>
-        </section>
+        </div>
+      ))}
+    </div>
+  ) : (
+    <div className="text-center py-20 border-2 border-dashed border-stone-700/50 rounded-xl bg-stone-900/30">
+      <div className="w-16 h-16 bg-stone-800/50 rounded-full flex items-center justify-center mx-auto mb-6">
+        <MessageCircle className="w-8 h-8 text-stone-500" />
+      </div>
+      <h4 className="text-white text-xl font-semibold mb-3">No comments yet</h4>
+      <p className="text-stone-400 text-base max-w-md mx-auto leading-relaxed">
+        Be the first to share your thoughts about this story. Your insights could inspire other travelers.
+      </p>
+    </div>
+  )}
+</section>
       </div>
     </div>
   );
