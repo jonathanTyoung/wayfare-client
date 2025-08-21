@@ -71,6 +71,7 @@ export const SearchResults = () => {
                 key={post.id}
                 post={post}
                 initialData={post}
+                currentUserId={currentUser?.id} // ✅ add this
                 isOwner={currentUserTravelerId === post.traveler?.id}
                 removePost={() =>
                   setPosts((prev) => prev.filter((p) => p.id !== post.id))

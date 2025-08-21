@@ -1,7 +1,7 @@
 import { useEffect, useState, useRef } from "react";
 import { useParams, useNavigate, Link } from "react-router-dom";
-import { getPostById } from "../data/PostData.tsx";
-import { getCurrentUser } from "../data/UserData.jsx";
+import { getPostById } from "../data/PostData";
+import { getCurrentUser } from "../data/UserData";
 import {
   ArrowLeft,
   MapPin,
@@ -12,8 +12,10 @@ import {
   Share2,
   Bookmark,
 } from "lucide-react";
-import { PhotoCarousel } from "./PhotoCarousel.tsx";
+import { PhotoCarousel } from "./PhotoCarousel";
 import { HiDotsVertical } from "react-icons/hi";
+import { likePost, unlikePost } from "../data/LikeData";
+import { bookmarkPost, unbookmarkPost } from "../data/BookmarkData.tsx";
 
 export const PostDetails = () => {
   const { postId } = useParams();
@@ -28,6 +30,8 @@ export const PostDetails = () => {
   const [bookmarksCount, setBookmarksCount] = useState(0);
   const [comments, setComments] = useState([]);
   const [likedByUser, setLikedByUser] = useState(false);
+  const [bookmarkedByUser, setBookmarkedByUser] = useState(false);
+  const [isTogglingBookmark, setIsTogglingBookmark] = useState(false);
 
   useEffect(() => {
     async function fetchData() {
@@ -44,6 +48,7 @@ export const PostDetails = () => {
         setLikesCount(postData.likes_count || 0);
         setBookmarksCount(postData.bookmarks_count || 0);
         setLikedByUser(postData.liked_by_user || false);
+        setBookmarkedByUser(postData.bookmarked_by_user || false);
         setComments(postData.comments || []);
       } catch (err) {
         setError("Failed to load post");
@@ -67,6 +72,34 @@ export const PostDetails = () => {
     setMenuOpen(false);
     alert("Link copied to clipboard ✅");
   };
+
+ const handleBookmarkToggle = async () => {
+  const token = localStorage.getItem("wayfare_token");
+  if (!currentUser || !token) return alert("You need to log in");
+  if (isTogglingBookmark) return; // prevent double clicks
+
+  setIsTogglingBookmark(true);
+
+  try {
+    if (bookmarkedByUser) {
+      const result = await unbookmarkPost(post.id, token);
+      console.log(result.status); // always safe
+      setBookmarkedByUser(false);
+      setBookmarksCount((prev) => Math.max(prev - 1, 0));
+    } else {
+      const result = await bookmarkPost(post.id, token);
+      console.log(result?.status); // always safe
+      setBookmarkedByUser(true);
+      setBookmarksCount((prev) => prev + 1);
+    }
+  } catch (err) {
+    console.error(err);
+    alert("Something went wrong, please try again");
+  } finally {
+    setIsTogglingBookmark(false);
+  }
+};
+
 
   useEffect(() => {
     function handleClickOutside(e: MouseEvent) {
@@ -188,12 +221,12 @@ export const PostDetails = () => {
                     </button>
                     <button
                       onClick={() => {
+                        handleBookmarkToggle();
                         setMenuOpen(false);
-                        alert("Saved 📌");
                       }}
                       className="w-full text-left block px-4 py-2 text-sm text-gray-200 hover:bg-gray-700 hover:text-white"
                     >
-                      Save
+                      {bookmarkedByUser ? "Remove Bookmark" : "Save"}
                     </button>
                   </>
                 )}
@@ -321,11 +354,25 @@ export const PostDetails = () => {
                       ? "bg-red-500 hover:bg-red-600"
                       : "bg-yellow-300 hover:bg-yellow-400"
                   }`}
-                  onClick={() => {
-                    setLikedByUser(!likedByUser);
-                    setLikesCount((prev) =>
-                      likedByUser ? prev - 1 : prev + 1
-                    );
+                  onClick={async () => {
+                    const token = localStorage.getItem("wayfare_token");
+                    if (!currentUser || !token)
+                      return alert("You need to log in");
+
+                    try {
+                      if (likedByUser) {
+                        await unlikePost(post.id, token);
+                        setLikedByUser(false);
+                        setLikesCount((prev) => prev - 1);
+                      } else {
+                        await likePost(post.id, token);
+                        setLikedByUser(true);
+                        setLikesCount((prev) => prev + 1);
+                      }
+                    } catch (err) {
+                      console.error(err);
+                      alert("Something went wrong, please try again");
+                    }
                   }}
                 >
                   <Heart className="w-5 h-5 text-black" />
@@ -345,8 +392,12 @@ export const PostDetails = () => {
 
                 {/* Bookmark Button */}
                 <button
-                  className="bg-yellow-300 hover:bg-yellow-400 p-2.5 transition-colors"
-                  onClick={() => setBookmarksCount((prev) => prev + 1)} // Optional: toggle bookmark logic
+                  className={`p-2.5 transition-colors ${
+                    bookmarkedByUser
+                      ? "bg-blue-500 hover:bg-blue-600"
+                      : "bg-yellow-300 hover:bg-yellow-400"
+                  }`}
+                  onClick={handleBookmarkToggle}
                 >
                   <Bookmark className="w-5 h-5 text-black" />
                 </button>
@@ -357,59 +408,67 @@ export const PostDetails = () => {
         </article>
 
         {/* Comments */}
-<section className="mt-12 bg-gradient-to-br from-stone-800 to-stone-900 border border-stone-700/30 shadow-2xl px-8 py-12 rounded-xl">
-  <div className="flex items-center gap-3 mb-10">
-    <MessageCircle className="w-6 h-6 text-amber-400" />
-    <h3 className="text-2xl font-bold text-white">Comments</h3>
-    <span className="bg-stone-700/50 text-amber-200 text-sm px-3 py-1 rounded-full ml-auto">
-      {comments.length}
-    </span>
-  </div>
-  
-  {comments.length > 0 ? (
-    <div className="space-y-6">
-      {comments.map((comment, index) => (
-        <div 
-          key={comment.id} 
-          className="group bg-gradient-to-r from-stone-900/80 to-stone-800/60 border border-stone-700/40 p-6 rounded-xl hover:border-amber-500/30 transition-all duration-300 hover:shadow-lg backdrop-blur-sm"
-        >
-          <div className="flex items-start gap-4">
-            <div className="w-10 h-10 bg-gradient-to-br from-amber-500 to-amber-600 rounded-full flex items-center justify-center text-white font-bold text-sm shadow-md">
-              {comment.traveler.username.charAt(0).toUpperCase()}
+        <section className="mt-12 bg-gradient-to-br from-stone-800 to-stone-900 border border-stone-700/30 shadow-2xl px-8 py-12 rounded-xl">
+          <div className="flex items-center gap-3 mb-10">
+            <MessageCircle className="w-6 h-6 text-amber-400" />
+            <h3 className="text-2xl font-bold text-white">Comments</h3>
+            <span className="bg-stone-700/50 text-amber-200 text-sm px-3 py-1 rounded-full ml-auto">
+              {comments.length}
+            </span>
+          </div>
+
+          {comments.length > 0 ? (
+            <div className="space-y-6">
+              {comments.map((comment, index) => (
+                <div
+                  key={comment.id}
+                  className="group bg-gradient-to-r from-stone-900/80 to-stone-800/60 border border-stone-700/40 p-6 rounded-xl hover:border-amber-500/30 transition-all duration-300 hover:shadow-lg backdrop-blur-sm"
+                >
+                  <div className="flex items-start gap-4">
+                    <div className="w-10 h-10 bg-gradient-to-br from-amber-500 to-amber-600 rounded-full flex items-center justify-center text-white font-bold text-sm shadow-md">
+                      {comment.traveler.username.charAt(0).toUpperCase()}
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <div className="flex items-center gap-3 mb-3">
+                        <span className="text-amber-200 font-semibold text-base">
+                          {comment.traveler.username}
+                        </span>
+                        <span className="text-stone-400 text-sm">
+                          {comment.created_at
+                            ? new Date(comment.created_at).toLocaleDateString(
+                                "en-US",
+                                {
+                                  month: "short",
+                                  day: "numeric",
+                                  year: "numeric",
+                                }
+                              )
+                            : "Just now"}
+                        </span>
+                      </div>
+                      <p className="text-stone-200 leading-relaxed text-base">
+                        {comment.content}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              ))}
             </div>
-            <div className="flex-1 min-w-0">
-              <div className="flex items-center gap-3 mb-3">
-                <span className="text-amber-200 font-semibold text-base">
-                  {comment.traveler.username}
-                </span>
-                <span className="text-stone-400 text-sm">
-                  {comment.created_at ? new Date(comment.created_at).toLocaleDateString('en-US', {
-                    month: 'short',
-                    day: 'numeric',
-                    year: 'numeric'
-                  }) : 'Just now'}
-                </span>
+          ) : (
+            <div className="text-center py-20 border-2 border-dashed border-stone-700/50 rounded-xl bg-stone-900/30">
+              <div className="w-16 h-16 bg-stone-800/50 rounded-full flex items-center justify-center mx-auto mb-6">
+                <MessageCircle className="w-8 h-8 text-stone-500" />
               </div>
-              <p className="text-stone-200 leading-relaxed text-base">
-                {comment.content}
+              <h4 className="text-white text-xl font-semibold mb-3">
+                No comments yet
+              </h4>
+              <p className="text-stone-400 text-base max-w-md mx-auto leading-relaxed">
+                Be the first to share your thoughts about this story. Your
+                insights could inspire other travelers.
               </p>
             </div>
-          </div>
-        </div>
-      ))}
-    </div>
-  ) : (
-    <div className="text-center py-20 border-2 border-dashed border-stone-700/50 rounded-xl bg-stone-900/30">
-      <div className="w-16 h-16 bg-stone-800/50 rounded-full flex items-center justify-center mx-auto mb-6">
-        <MessageCircle className="w-8 h-8 text-stone-500" />
-      </div>
-      <h4 className="text-white text-xl font-semibold mb-3">No comments yet</h4>
-      <p className="text-stone-400 text-base max-w-md mx-auto leading-relaxed">
-        Be the first to share your thoughts about this story. Your insights could inspire other travelers.
-      </p>
-    </div>
-  )}
-</section>
+          )}
+        </section>
       </div>
     </div>
   );

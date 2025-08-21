@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
 import { createPost, deletePost, getPosts } from "../components/data/PostData";
 import { getCategories } from "../components/data/CategoryData";
-import { PostCard } from "../components/post/Card";
 import { PostForm } from "../components/post/Form";
 import { useUserContext } from "../context/UserContext";
+import { PostCard } from "../components/post/Card.tsx";
 
 interface Traveler {
   id: number;
@@ -116,9 +116,23 @@ export const HomeFeed = () => {
       await deletePost(id);
       setPosts((prev) => prev.filter((p) => p.id !== id));
     } catch (err) {
-      console.error("Failed to delete post", err);
+      console.error(err);
       alert("Failed to delete story. Please try again.");
     }
+  };
+
+  const handleToggleLike = (
+    postId: number,
+    liked: boolean,
+    likesCount: number
+  ) => {
+    setPosts((prevPosts) =>
+      prevPosts.map((post) =>
+        post.id === postId
+          ? { ...post, liked_by_user: liked, likes_count: likesCount }
+          : post
+      )
+    );
   };
 
   const handleCreatePost = async (formData) => {
@@ -135,7 +149,6 @@ export const HomeFeed = () => {
     }
   };
 
-  
   const updatePostLikes = (
     postId: number,
     liked: boolean,
@@ -170,7 +183,6 @@ export const HomeFeed = () => {
       })
     );
   };
-
 
   // ----- Modal -----
   const openModal = async () => {
@@ -265,8 +277,8 @@ export const HomeFeed = () => {
                 <PostCard
                   post={post}
                   initialData={post}
-                  currentUserId={currentUserTravelerId} // ✅ Pass traveler ID here
-                  updatePostLikes={updatePostLikes}
+                  currentUserId={currentUserTravelerId}
+                  updatePostLikes={updatePostLikes} // ✅ same name used in PostCard
                   isOwner={currentUserTravelerId === post.traveler?.id}
                   removePost={() => handleRemovePost(post.id)}
                 />

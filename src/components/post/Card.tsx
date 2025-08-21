@@ -1,13 +1,19 @@
 import { Link, useNavigate } from "react-router-dom";
 import { useState, useRef, useEffect } from "react";
-import { HiDotsVertical, HiHeart, HiOutlineHeart } from "react-icons/hi";
+import {
+  HiDotsVertical,
+  HiHeart,
+  HiOutlineHeart,
+  HiBookmark,
+  HiOutlineBookmark,
+} from "react-icons/hi";
 import { likePost, unlikePost } from "../data/LikeData.ts";
+import { bookmarkPost, unbookmarkPost } from "../data/BookmarkData"; // import bookmark API
 
 export function PostCard({
   post,
   currentUserId,
   removePost,
-  updatePostLikes,
   isOwner = false,
 }: {
   post: any;
@@ -17,14 +23,14 @@ export function PostCard({
 }) {
   const navigate = useNavigate();
   const [menuOpen, setMenuOpen] = useState(false);
-  const liked = post.liked_by_user;
-  const likesCount = post.likes_count;
-
-  // const [liked, setLiked] = useState(
-  //   post.likes?.some((like: any) => like.traveler === currentUserId)
-  // );
-  // const [likesCount, setLikesCount] = useState(post.likes?.length || 0);
   const menuRef = useRef<HTMLDivElement | null>(null);
+
+  // ===== SELF-CONTAINED STATE =====
+  const [liked, setLiked] = useState(post.liked_by_user || false);
+  const [likesCount, setLikesCount] = useState(post.likes_count || 0);
+  const [bookmarked, setBookmarked] = useState(
+    post.bookmarked_by_user || false
+  );
 
   const handleTagClick = (tagName: string) => {
     navigate(`/search?tag=${encodeURIComponent(tagName)}`);
@@ -47,6 +53,7 @@ export function PostCard({
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
+  // ===== LIKE HANDLER =====
   const toggleLike = async () => {
     const token = localStorage.getItem("wayfare_token");
     if (!currentUserId || !token) return alert("You need to log in");
@@ -54,10 +61,31 @@ export function PostCard({
     try {
       if (liked) {
         await unlikePost(post.id, token);
-        updatePostLikes?.(post.id, false, likesCount - 1);
+        setLiked(false);
+        setLikesCount((c) => c - 1);
       } else {
         await likePost(post.id, token);
-        updatePostLikes?.(post.id, true, likesCount + 1);
+        setLiked(true);
+        setLikesCount((c) => c + 1);
+      }
+    } catch (err) {
+      console.error(err);
+      alert("Something went wrong, please try again");
+    }
+  };
+
+  // ===== BOOKMARK HANDLER =====
+  const toggleBookmark = async () => {
+    const token = localStorage.getItem("wayfare_token");
+    if (!currentUserId || !token) return alert("You need to log in");
+
+    try {
+      if (bookmarked) {
+        await unbookmarkPost(post.id, token);
+        setBookmarked(false);
+      } else {
+        await bookmarkPost(post.id, token);
+        setBookmarked(true);
       }
     } catch (err) {
       console.error(err);
@@ -69,7 +97,7 @@ export function PostCard({
 
   return (
     <article className="w-full max-w-2xl mx-auto mb-8 bg-[#292524] rounded-lg border border-gray-600/30 backdrop-blur-sm p-8">
-      {/* Header */}
+      {/* HEADER */}
       <header className="mb-4 flex justify-between items-start gap-4">
         <div className="flex-1">
           <div className="inline-flex items-center gap-3 mb-3 px-3 py-2 bg-gray-700/30 border border-gray-600/40 rounded-lg text-xs">
@@ -144,12 +172,12 @@ export function PostCard({
                   </button>
                   <button
                     onClick={() => {
+                      toggleBookmark();
                       setMenuOpen(false);
-                      alert("Saved 📌");
                     }}
                     className="w-full text-left px-4 py-3 text-sm text-black-200 hover:bg-gray-700/50 transition-colors border-b border-gray-600/30"
                   >
-                    Save for Later
+                    {bookmarked ? "Remove Bookmark 📌" : "Bookmark 📌"}
                   </button>
                   <Link
                     to={`/posts/${post.id}`}
@@ -165,12 +193,12 @@ export function PostCard({
         </div>
       </header>
 
-      {/* Description */}
+      {/* DESCRIPTION */}
       <p className="text-gray-300 leading-relaxed text-base line-clamp-3 mb-5">
         {post.short_description || "No description provided."}
       </p>
 
-      {/* Thumbnail */}
+      {/* THUMBNAIL */}
       {post.photos?.length ? (
         <div className="mb-5 rounded-lg overflow-hidden">
           <img
@@ -185,9 +213,9 @@ export function PostCard({
         </div>
       )}
 
-      {/* Footer with tags and actions */}
+      {/* FOOTER */}
       <footer className="flex items-center justify-between gap-4">
-        {/* Tags */}
+        {/* TAGS */}
         <div className="flex-1 flex flex-wrap gap-2">
           {post.tags?.map((tag: any, index: number) => (
             <button
@@ -200,9 +228,9 @@ export function PostCard({
           ))}
         </div>
 
-        {/* Action Buttons */}
+        {/* ACTION BUTTONS */}
         <div className="flex items-center gap-2">
-          {/* Like */}
+          {/* LIKE BUTTON */}
           <button
             onClick={toggleLike}
             className="flex items-center gap-1 px-3 py-1 rounded-md hover:bg-red-900/20 transition-colors"
@@ -215,7 +243,7 @@ export function PostCard({
             <span className="text-black text-sm">{likesCount}</span>
           </button>
 
-          {/* View on Map */}
+          {/* VIEW ON MAP */}
           {hasLocation && (
             <button
               onClick={() =>

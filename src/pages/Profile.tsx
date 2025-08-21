@@ -1,4 +1,4 @@
-// Updated Profile with Sidebar-style CreatePostModal
+// Updated Profile with Sidebar-style CreatePostModal (TypeScript-safe)
 import { useState, useEffect } from "react";
 import { getUserProfile } from "../components/data/UserData";
 import {
@@ -12,8 +12,50 @@ import { getCategories } from "../components/data/CategoryData";
 import { useUserContext } from "../context/UserContext";
 import { Link } from "react-router-dom";
 
+// ---- Types ----
+interface Traveler {
+  id: number;
+  name?: string;
+  location?: string;
+  bio?: string;
+}
+
+interface User {
+  id: number;
+  name: string;
+  avatarUrl?: string;
+}
+
+interface Post {
+  id: number;
+  title: string;
+  content: string;
+  traveler?: Traveler;
+  liked_by_user: boolean;
+  likes_count: number;
+  // any other fields PostCard expects
+}
+
+interface UserProfile {
+  user: User;
+  traveler?: Traveler;
+}
+
+interface Category {
+  id: number;
+  name: string;
+}
+
 // ----- Dark-styled CreatePostModal (Sidebar style) -----
-const CreatePostModal = ({
+interface CreatePostModalProps {
+  isOpen: boolean;
+  onClose: () => void;
+  categories: Category[];
+  loading: boolean;
+  onSubmit: (formData: any) => void;
+}
+
+const CreatePostModal: React.FC<CreatePostModalProps> = ({
   isOpen,
   onClose,
   categories,
@@ -66,23 +108,27 @@ const CreatePostModal = ({
   );
 };
 
-export const Profile = () => {
+// ---- Profile Component ----
+export const Profile: React.FC = () => {
   const { currentUser } = useUserContext();
-  const [userProfile, setUserProfile] = useState(null);
-  const [posts, setPosts] = useState([]);
+
+  const [userProfile, setUserProfile] = useState<UserProfile | null>(null);
+  const [posts, setPosts] = useState<Post[]>([]);
+  const [categories, setCategories] = useState<Category[]>([]);
+  const [showModal, setShowModal] = useState(false);
+
   const [loadingProfile, setLoadingProfile] = useState(true);
   const [loadingPosts, setLoadingPosts] = useState(true);
   const [loadingCategories, setLoadingCategories] = useState(false);
-  const [categories, setCategories] = useState([]);
-  const [showModal, setShowModal] = useState(false);
-  const [error, setError] = useState(null);
+  const [error, setError] = useState<string | null>(null);
 
+  // Fetch profile
   useEffect(() => {
     async function fetchProfile() {
       try {
         const data = await getUserProfile();
         setUserProfile(data);
-      } catch (err) {
+      } catch (err: any) {
         console.error("Error fetching profile:", err);
         setError(err?.message || "Unable to load profile");
       } finally {
@@ -92,6 +138,7 @@ export const Profile = () => {
     fetchProfile();
   }, []);
 
+  // Fetch posts
   useEffect(() => {
     async function fetchTravelerPosts() {
       if (!currentUser?.traveler?.id) return;
@@ -107,6 +154,7 @@ export const Profile = () => {
     fetchTravelerPosts();
   }, [currentUser]);
 
+  // Modal handlers
   const openModal = async () => {
     setLoadingCategories(true);
     setShowModal(true);
@@ -115,8 +163,9 @@ export const Profile = () => {
       if (data) setCategories(data);
     } catch (err) {
       console.error("Failed to fetch categories", err);
+    } finally {
+      setLoadingCategories(false);
     }
-    setLoadingCategories(false);
   };
 
   const closeModal = () => {
@@ -124,7 +173,8 @@ export const Profile = () => {
     setCategories([]);
   };
 
-  const handleCreatePost = async (formData) => {
+  // Create post
+  const handleCreatePost = async (formData: any) => {
     const token = localStorage.getItem("wayfare_token");
     if (!token) {
       alert("You must be logged in to share your story.");
@@ -135,13 +185,14 @@ export const Profile = () => {
       const travelerPosts = await getPostsByTraveler(currentUser.traveler.id);
       setPosts(travelerPosts);
       closeModal();
-    } catch (err) {
+    } catch (err: any) {
       console.error("Failed to create post", err);
       alert(err.message || "Failed to create story.");
     }
   };
 
-  const handleRemovePost = async (id) => {
+  // Remove post
+  const handleRemovePost = async (id: number) => {
     if (!window.confirm("Are you sure you want to delete this story?")) return;
     try {
       await deletePost(id);
@@ -152,6 +203,7 @@ export const Profile = () => {
     }
   };
 
+  // --- Render ---
   if (loadingProfile) {
     return (
       <div className="min-h-screen bg-[#292524] flex items-center justify-center">
@@ -182,7 +234,7 @@ export const Profile = () => {
   return (
     <div className="min-h-screen bg-[#292524]">
       <div className="max-w-6xl mx-auto px-6 py-12">
-        {/* Profile Header Section */}
+        {/* Profile Header */}
         <div className="mb-12">
           <div className="flex items-start justify-between mb-8">
             <div className="flex items-start gap-6 flex-1">
@@ -197,10 +249,7 @@ export const Profile = () => {
                 ) : (
                   <div className="w-20 h-20 bg-gradient-to-br from-[#14b8a6] to-[#0f766e] text-white rounded-full flex items-center justify-center font-bold shadow-lg ring-4 ring-[#14b8a6]/20 hover:ring-[#fbbf24]/40 hover:scale-105 transition-all duration-300 text-2xl">
                     {userProfile.user?.name
-                      ? String(userProfile.user.name)
-                          .trim()
-                          .charAt(0)
-                          .toUpperCase()
+                      ? userProfile.user.name.trim().charAt(0).toUpperCase()
                       : "?"}
                   </div>
                 )}
@@ -313,7 +362,21 @@ export const Profile = () => {
                     post={post}
                     initialData={post}
                     isOwner={currentUser.traveler?.id === post.traveler?.id}
+                    currentUserId={currentUser?.id}
                     removePost={handleRemovePost}
+                    updatePostLikes={(postId, liked, likesCount) => {
+                      setPosts((prevPosts) =>
+                        prevPosts.map((p) =>
+                          p.id === postId
+                            ? {
+                                ...p,
+                                liked_by_user: liked,
+                                likes_count: likesCount,
+                              }
+                            : p
+                        )
+                      );
+                    }}
                     renderEditButton={(postId) => (
                       <Link
                         to={`/edit/${postId}`}
