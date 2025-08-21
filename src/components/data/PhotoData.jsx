@@ -45,20 +45,12 @@ export const uploadPhoto = async (postId, file, token) => {
 
 export async function uploadPhotos(postId, files) {
   const token = localStorage.getItem("wayfare_token");
-  const formData = new FormData();
+  const uploaded = [];
 
-  files.forEach((file) => {
-    formData.append("file", file); // backend expects "photos" field
-  });
+  for (const file of files) {
+    const res = await uploadPhoto(postId, file, token);
+    uploaded.push(res);
+  }
 
-  const res = await fetch(`${API_URL}/posts/${postId}/upload_photo`, {
-    method: "POST",
-    headers: {
-      Authorization: `Token ${token}`,
-    },
-    body: formData,
-  });
-
-  if (!res.ok) throw new Error("Failed to upload photos");
-  return res.json();
+  return uploaded; // array of {id, url}
 }

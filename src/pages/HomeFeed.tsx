@@ -140,12 +140,25 @@ export const HomeFeed = () => {
     if (!token) return alert("You must be logged in to share your story.");
 
     try {
-      await createPost(formData, token);
-      await loadPosts(); // refresh list
+      const createdPost = await createPost(formData, token);
+      console.log("Post creation response:", createdPost);
+
+      if (!createdPost?.id) {
+        throw new Error("Post creation failed: missing post ID.");
+      }
+
+      // Update local state if you want
+      setPosts((prev) => [createdPost, ...prev]);
+
+      // Close modal
       closeModal();
+
+      // ✅ RETURN the post so PostForm gets it
+      return createdPost;
     } catch (err: any) {
       console.error("Failed to create post", err);
       alert(err.message || "Failed to create story.");
+      throw err; // re-throw so PostForm can catch
     }
   };
 

@@ -138,63 +138,69 @@ export const PostForm = ({
     }
   };
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
 
-    const tagList = formData.tags
-      .split(",")
-      .map((tag) => tag.trim())
-      .filter(Boolean);
-
-    const latitude = selectedLocation?.lat
-      ? parseFloat(selectedLocation.lat.toFixed(6))
-      : null;
-    const longitude = selectedLocation?.lng
-      ? parseFloat(selectedLocation.lng.toFixed(6))
-      : null;
-
-    if (formData.location && !selectedLocation) {
-      alert("Please select a valid location from the suggestions.");
-      setIsSubmitting(false);
-      return;
-    }
-
-    const postData = {
-      title: formData.title,
-      short_description: formData.short_description,
-      long_form_description: formData.long_form_description,
-      location_name: formData.location || "Not specified",
-      category_id: formData.category_id
-        ? parseInt(formData.category_id, 10)
-        : null,
-      tags: tagList,
-      latitude,
-      longitude,
-    };
-
     try {
-      // Create or update the post
-      const createdOrUpdatedPost = await onSubmit(postData);
-      if (photoFiles && photoFiles.length > 0) {
-        await uploadPhotos(createdOrUpdatedPost.id, photoFiles);
+      // Prepare tags
+      const tagList = formData.tags
+        .split(",")
+        .map((tag) => tag.trim())
+        .filter(Boolean);
+
+      // Prepare location
+      const latitude = selectedLocation?.lat
+        ? parseFloat(selectedLocation.lat.toFixed(6))
+        : null;
+      const longitude = selectedLocation?.lng
+        ? parseFloat(selectedLocation.lng.toFixed(6))
+        : null;
+
+      if (formData.location && !selectedLocation) {
+        alert("Please select a valid location from the suggestions.");
+        return;
       }
 
+      // Build post payload
+      const postData = {
+        title: formData.title,
+        short_description: formData.short_description,
+        long_form_description: formData.long_form_description,
+        location_name: formData.location || "Not specified",
+        category_id: formData.category_id
+          ? parseInt(formData.category_id, 10)
+          : null,
+        tags: tagList,
+        latitude,
+        longitude,
+      };
+
+      // Create or update the post
+      const createdOrUpdatedPost = await onSubmit(postData);
+      console.log("Post creation response:", createdOrUpdatedPost);
+      if (!createdOrUpdatedPost?.id) {
+        throw new Error("Post creation failed: missing post ID.");
+      }
+
+      // Upload photos if any
+      if (photoFiles && photoFiles.length > 0) {
+        try {
+          await uploadPhotos(createdOrUpdatedPost.id, photoFiles);
+        } catch (err) {
+          console.error("Photo upload failed:", err);
+          alert("Post created, but photo upload failed.");
+        }
+      }
+
+      // Navigate and call success callback
       navigate(returnTo);
       onSuccess();
-    } catch (error) {
+    } catch (error: any) {
       alert(error.message || "Failed to submit post");
       console.error("Submit error:", error);
     } finally {
       setIsSubmitting(false);
-    }
-  };
-
-  const handleBack = () => {
-    if (location.state?.from) {
-      navigate(location.state.from);
-    } else {
-      navigate(-1);
     }
   };
 
@@ -231,7 +237,7 @@ export const PostForm = ({
   };
 
   return (
-    <div className="max-w-3xl mx-auto p-8 bg-white rounded-2xl shadow-lg border border-gray-100">
+    <div className="max-w-3xl mx-auto p-8 bg-[#A0A0A0] rounded-2xl shadow-lg border border-gray-100">
       <div className="mb-8">
         <h1 className="text-2xl font-bold text-gray-800 mb-2">
           {mode === "edit" ? "✏️ Edit Post" : "✨ Create New Post"}
