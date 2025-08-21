@@ -73,33 +73,33 @@ export const PostDetails = () => {
     alert("Link copied to clipboard ✅");
   };
 
- const handleBookmarkToggle = async () => {
-  const token = localStorage.getItem("wayfare_token");
-  if (!currentUser || !token) return alert("You need to log in");
-  if (isTogglingBookmark) return; // prevent double clicks
 
-  setIsTogglingBookmark(true);
+  const handleBookmarkToggle = async () => {
+    const token = localStorage.getItem("wayfare_token");
+    if (!currentUser || !token) return alert("You need to log in");
+    if (isTogglingBookmark) return; // prevent double clicks
 
-  try {
-    if (bookmarkedByUser) {
-      const result = await unbookmarkPost(post.id, token);
-      console.log(result.status); // always safe
-      setBookmarkedByUser(false);
-      setBookmarksCount((prev) => Math.max(prev - 1, 0));
-    } else {
-      const result = await bookmarkPost(post.id, token);
-      console.log(result?.status); // always safe
-      setBookmarkedByUser(true);
-      setBookmarksCount((prev) => prev + 1);
+    setIsTogglingBookmark(true);
+
+    try {
+      if (bookmarkedByUser) {
+        const result = await unbookmarkPost(post.id, token);
+        console.log(result.status); // always safe
+        setBookmarkedByUser(false);
+        setBookmarksCount((prev) => Math.max(prev - 1, 0));
+      } else {
+        const result = await bookmarkPost(post.id, token);
+        console.log(result?.status); // always safe
+        setBookmarkedByUser(true);
+        setBookmarksCount((prev) => prev + 1);
+      }
+    } catch (err) {
+      console.error(err);
+      alert("Something went wrong, please try again");
+    } finally {
+      setIsTogglingBookmark(false);
     }
-  } catch (err) {
-    console.error(err);
-    alert("Something went wrong, please try again");
-  } finally {
-    setIsTogglingBookmark(false);
-  }
-};
-
+  };
 
   useEffect(() => {
     function handleClickOutside(e: MouseEvent) {
@@ -386,7 +386,10 @@ export const PostDetails = () => {
                 <span className="text-white">{comments.length}</span>
 
                 {/* Share Button */}
-                <button className="bg-yellow-300 hover:bg-yellow-400 p-2.5 transition-colors">
+                <button
+                  onClick={handleCopyLink}
+                  className="w-full text-left px-4 py-3 text-sm text-black-200 hover:bg-gray-700/50 transition-colors border-b border-gray-600/30"
+                >
                   <Share2 className="w-5 h-5 text-black" />
                 </button>
 
