@@ -1,12 +1,12 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-import { Authorized } from "./Authorized";
-import { Login } from "./auth/Login";
-import { Register } from "./auth/Register";
+import { Authorized } from "./Authorized.jsx";
+import { Login } from "./auth/Login.jsx";
+import { Register } from "./auth/Register.jsx";
 import App from "../App.jsx";
-import LandingPage from "./auth/LandingPage";
-import { HomeFeed } from "../pages/HomeFeed";
+import LandingPage from "./auth/LandingPage.js";
+import { HomeFeed } from "../pages/HomeFeed.js";
 import { EditPost } from "./post/EditPost.js";
-import {Profile} from "../pages/Profile";
+import {Profile} from "../pages/Profile.js";
 import { ExploreMap } from "../pages/ExploreMap.js";
 import { SearchResults } from "./search/SearchResults.js";
 import { PostDetails } from "./post/PostDetails.js";

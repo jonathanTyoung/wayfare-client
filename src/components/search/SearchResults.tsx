@@ -34,7 +34,7 @@ export const SearchResults = () => {
           const matchesCategory = post.category?.name
             ?.toLowerCase()
             .includes(searchTerm);
-          const matchesTraveler = post.traveler?.user
+          const matchesTraveler = post.traveler?.name
             ?.toLowerCase()
             .includes(searchTerm);
           const matchesTags =

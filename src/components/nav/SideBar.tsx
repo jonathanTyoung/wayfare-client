@@ -1,8 +1,7 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { FiSearch, FiPlus } from "react-icons/fi";
-
-import Logo from "../assets/park-jon.svg"; // adjust path to your .svg
+import Logo from "/assets/park-jon.svg"; // adjust path to your .svg
 import { PostForm } from "../post/Form.tsx";
 import { useUserContext } from "../../context/UserContext.tsx";
 import { getCategories } from "../data/CategoryData.ts";

@@ -149,6 +149,7 @@ export const PostDetails = () => {
       </div>
     );
   }
+  const hasLocation = post.latitude && post.longitude;
 
   return (
     <div className="min-h-screen bg-[#292524] relative">
@@ -176,7 +177,7 @@ export const PostDetails = () => {
             >
               <HiDotsVertical
                 size={22}
-                className="text-gray-400 hover:text-gray-200"
+                className="text-[#fbbf24] hover:text-gray-200"
               />
             </button>
 
@@ -188,7 +189,7 @@ export const PostDetails = () => {
                       to={`/posts/${postId}/edit`}
                       state={{ fromPostId: postId }}
                       onClick={() => setMenuOpen(false)}
-                      className="block px-4 py-2 text-sm text-gray-200 hover:bg-gray-700 hover:text-white rounded-t-md"
+                      className="block px-4 py-2 text-sm text-black-200 hover:bg-gray-700 hover:text-white rounded-t-md"
                     >
                       Edit Story
                     </Link>
@@ -206,25 +207,25 @@ export const PostDetails = () => {
                   <>
                     <button
                       onClick={handleCopyLink}
-                      className="w-full text-left block px-4 py-2 text-sm text-gray-200 hover:bg-gray-700 hover:text-white rounded-t-md"
+                      className="w-full text-left block px-4 py-2 text-sm text-black-200 hover:bg-gray-700 hover:text-white rounded-t-md"
                     >
                       Copy Link
                     </button>
-                    <button
+                    {/* <button
                       onClick={() => {
                         setMenuOpen(false);
                         alert("Liked ❤️");
                       }}
-                      className="w-full text-left block px-4 py-2 text-sm text-gray-200 hover:bg-gray-700 hover:text-white"
+                      className="w-full text-left block px-4 py-2 text-sm text-black-200 hover:bg-gray-700 hover:text-white"
                     >
                       Like
-                    </button>
+                    </button> */}
                     <button
                       onClick={() => {
                         handleBookmarkToggle();
                         setMenuOpen(false);
                       }}
-                      className="w-full text-left block px-4 py-2 text-sm text-gray-200 hover:bg-gray-700 hover:text-white"
+                      className="w-full text-left block px-4 py-2 text-sm text-black-200 hover:bg-gray-700 hover:text-white"
                     >
                       {bookmarkedByUser ? "Remove Bookmark" : "Save"}
                     </button>
@@ -406,9 +407,30 @@ export const PostDetails = () => {
                 </button>
                 <span className="text-white">{bookmarksCount}</span>
               </div>
+          {/* VIEW ON MAP */}
+          {hasLocation && (
+            <button
+              onClick={() =>
+                navigate(
+                  `/explore?lat=${encodeURIComponent(
+                    post.latitude
+                  )}&lng=${encodeURIComponent(post.longitude)}`
+                )
+              }
+              className="px-4 py-2 text-sm font-medium text-black-400 hover:text-blue-300 hover:bg-blue-900/20 rounded-md transition-colors flex-shrink-0"
+            >
+              View on Map
+            </button>
+          )}
             </div>
           </div>
+
+
+
         </article>
+
+
+
 
         {/* Comments */}
         <section className="mt-12 bg-gradient-to-br from-stone-800 to-stone-900 border border-stone-700/30 shadow-2xl px-8 py-12 rounded-xl">

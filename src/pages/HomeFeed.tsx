@@ -256,12 +256,12 @@ export const HomeFeed = () => {
             <span className="text-stone-100 font-medium border-b-2 border-stone-100 pb-2">
               Latest Posts
             </span>
-            {/* <span className="text-stone-400 hover:text-stone-100 cursor-pointer transition-colors">
+            <span className="text-stone-400 hover:text-stone-100 cursor-pointer transition-colors">
               Following
             </span>
             <span className="text-stone-400 hover:text-stone-100 cursor-pointer transition-colors">
               Your Posts
-            </span> */}
+            </span>
           </div>
         </div>
       </nav>

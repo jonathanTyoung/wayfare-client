@@ -108,6 +108,14 @@ export function PostCard({
               <span className="text-gray-200 font-medium">
                 {post.traveler?.name || "Unknown Traveler"}
               </span>
+              <div className="w-px h-4 bg-gray-600"></div>
+              <span className="text-gray-200 font-medium">
+                {post.category.name || "Unknown Traveler"}
+              </span>
+              <div className="w-px h-4 bg-gray-600"></div>
+              <span className="text-gray-200 font-medium">
+                {post.location_name || "Unknown Traveler"}
+              </span>
             </div>
             <div className="w-px h-4 bg-gray-600"></div>
             <span className="text-gray-300">
