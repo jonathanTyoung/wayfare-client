@@ -1,9 +1,11 @@
-  @tailwind base;
-  @tailwind components;
-  @tailwind utilities;
-
-
 /* index.css */
+
+/* === Import Special Elite font === */
+@import url('https://fonts.googleapis.com/css2?family=Special+Elite&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
 /* === CSS Reset === */
 * {
@@ -14,11 +16,12 @@
 
 /* === Root Theme Variables === */
 :root {
-  --color-bg: #121212;         /* deep background */
+  --color-bg: #292524;         /* deep background */
   --color-surface: #1E1E1E;    /* slightly lighter surface */
   --color-accent: #fbbf24;     /* pop accent (yellow/tan) */
   --color-accent-hover: #05b88b;
   --color-text: #E0E0E0;       /* light text */
+  --color-darktext: #121212;       /* dark text */
   --color-muted: #A0A0A0;      /* muted text */
 }
 
@@ -76,4 +79,8 @@ select:focus {
   outline: none;
   border-color: var(--color-accent);
   box-shadow: 0 0 0 2px rgba(6, 214, 160, 0.3); /* subtle accent glow */
+}
+
+.home-logo {
+  width: 400px;
 }

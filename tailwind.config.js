@@ -6,6 +6,7 @@ export default {
   theme: {
     extend: {
       colors: {
+        tealCustom: '#05b88b',
         black: "#000000",
         white: "#FFFFFF",
         gray: {
@@ -20,7 +21,11 @@ export default {
           800: "#404040",
           900: "#262626",
         }
-      }
+      },
+      fontFamily: {
+        inter: ["Inter", "sans-serif"],           // default site font
+        special: ["'Special Elite'", "cursive"], // your map/journaling font
+      },
     },
   },
   plugins: [],
