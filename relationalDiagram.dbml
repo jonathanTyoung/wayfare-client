@@ -1,0 +1,89 @@
+Table users {
+  id int [pk, increment]
+  username varchar [unique, not null]
+  first_name varchar
+  last_name varchar
+  email varchar [unique, not null]
+  password varchar [not null]
+  date_joined date
+  is_active int
+  isAdmin int
+  }
+
+  Table authors {
+  id int [pk, increment]
+  user_id int [ref: > users.id]
+  bio text
+  profile_image varchar
+  location varchar
+  website varchar
+}
+
+Table posts {
+  id integer [pk, increment]
+  author_id integer [ref: > authors.id] 
+  trip_id integer            
+  latitude decimal(9,6)                       
+  longitude decimal(9,6)
+  location_name varchar                           
+  post_type_id integer [ref: > post_categories.id] 
+  title varchar                                  
+  slug varchar [unique] 
+  short_description text                                             
+  created_at timestamp 
+  updated_at timestamp
+}
+
+
+Table photos {
+  id int [pk, increment]
+  post_id int [ref: > posts.id]
+  image_url varchar
+  caption varchar
+  uploaded_at timestamp
+}
+
+Table tags {
+  id int [pk, increment]
+  name varchar [unique, not null]
+}
+
+Table post_tags {
+  id int [pk, increment]
+  post_id int [ref: > posts.id]
+  tag_id int [ref: > tags.id]
+  indexes {
+    (post_id, tag_id) [pk]
+  }
+}
+
+Table followers {
+  pk int
+  follower_id int [ref: > users.id]
+  following_id int [ref: > users.id]
+  indexes {
+    (follower_id, following_id) [pk]
+  }
+}
+
+Table comments {
+  id int [pk, increment]
+  user_id int [ref: > users.id]
+  post_id int [ref: > posts.id]
+  text text
+  timestamp timestamp [default: `now()`]
+}
+Table trips {
+  id int [pk, increment]
+  owner_id int [ref: > users.id]
+  name varchar
+  start_date date
+  end_date data
+  cover_image_url text
+}
+
+Table post_categories {
+  id integer [pk, increment]
+  name varchar [not null, unique]
+}
+
