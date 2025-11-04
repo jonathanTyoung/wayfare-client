@@ -83,16 +83,23 @@ export const PostForm = ({
     mode,
   ]);
 
-  // Effect for debounced location search
+  // Effect for debounced location search with double-selection fix
   useEffect(() => {
-    const searchLocations = async () => {
-      if (debouncedLocation.length < 3) {
-        setLocationSuggestions([]);
-        setIsLoadingLocations(false);
-        return;
-      }
+    // Skip fetching if user already selected this location
+    if (selectedLocation?.name === debouncedLocation) {
+      setLocationSuggestions([]);
+      setIsLoadingLocations(false);
+      return;
+    }
 
-      // Increment request counter for race condition handling
+    // If input is too short, clear suggestions
+    if (debouncedLocation.length < 3) {
+      setLocationSuggestions([]);
+      setIsLoadingLocations(false);
+      return;
+    }
+
+    const searchLocations = async () => {
       const currentRequest = ++locationRequestRef.current;
       setIsLoadingLocations(true);
 
@@ -110,7 +117,6 @@ export const PostForm = ({
           setIsLoadingLocations(false);
         }
       } catch (err) {
-        // Only update if this is the latest request
         if (currentRequest === locationRequestRef.current) {
           console.error("Error fetching location suggestions:", err);
           setLocationSuggestions([]);
@@ -120,7 +126,7 @@ export const PostForm = ({
     };
 
     searchLocations();
-  }, [debouncedLocation]);
+  }, [debouncedLocation, selectedLocation]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;

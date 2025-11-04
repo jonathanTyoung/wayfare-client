@@ -1,31 +1,47 @@
-# React + Vite
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+# 🌍 Wayfare  
+*A geotagged storytelling platform built with Django REST Framework and React.*
 
-Currently, two official plugins are available:
+## 📖 Overview
+**Wayfare** lets users share experiences tied to real-world locations.  
+Each post can include a title, description, photos, and a geotag that displays as an interactive pin on a world map.  
+It’s designed to blend journaling, travel blogging, and social discovery into one visual experience.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+Users can:
+- Create, edit, and delete their own posts with photos and descriptions.
+- Explore experiences pinned to the map.
+- Like and bookmark other users’ posts.
+- View their profile and all their created posts.
+- Interact with posts through an image carousel and responsive UI.
 
-## Expanding the ESLint configuration
+---
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+## 🎥 Demo Walkthrough
+Take a quick look at Wayfare in action — a **3min demo video** showcasing user registration, post creation, the interactive map, likes/bookmarks, and profile management.  Recommend watching at 1.2x speed
+▶️ [Watch on Loom](https://www.loom.com/share/710ccbb6ebc84951ba08ce1465bf0cac)
 
+---
 
+## ⚙️ Tech Stack
+**Frontend:** React, Vite, SCSS, Axios  
+**Backend:** Django REST Framework, Cloudinary (for image storage)  
+**Authentication:** Django Token Authentication  
+**Mapping:** React Leaflet  
+**Other Tools:**  
+- Debounced search functionality for smoother input performance  
+- RESTful API endpoints for posts, comments, likes, and bookmarks  
+- Modular component-based design for scalability  
 
+---
 
+## 🚀 Getting Started
 
+### 1️⃣ Clone the Repositories
+Wayfare is organized into two separate repos:
+- **Client (frontend):** [wayfare-client](https://github.com/jonathanTyoung/wayfare-client)
+- **API (backend):** [wayfare-api](https://github.com/jonathanTyoung/wayfare-api)
 
-Things to elaborate on:
-
-CLIENT
-1. routing of form pages will take user back to wherever they entered the form from (e.g., "/home" vs "/profile") when user clicks on create/update or back buttons
-
-2. Debounce Method
-- a modern method used for fewer API calls  
-- used on the location search when user is filling out their form
-- used in the search bar for filtering posts #stretch goal yet to be achieved 
-
-SERVER
-1. handling of tags, i.e., when the user deletes a Post, the tags with it are deleted unless in use on another post. Tags are also always stored in DB in lowerCase format, and cannot be repeated
-
+Clone both into your workspace:
+```bash
+git clone https://github.com/jonathanTyoung/wayfare-client.git
+git clone https://github.com/jonathanTyoung/wayfare-api.git
