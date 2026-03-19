@@ -1,16 +1,17 @@
 import { useRef, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { API_URL } from "../data/Fetcher";
 
 export const Login = () => {
   // const [email, setEmail] = useState("ryanflynn@email.com");
-  const [username, setUsername] = useState("ryanflynn");
-  const [password, setPassword] = useState("flynn");
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
   const existDialog = useRef();
   const navigate = useNavigate();
 
   const handleLogin = (e) => {
     e.preventDefault();
-    fetch("http://localhost:8000/login", {
+    fetch(`${API_URL}/login`, {
       method: "POST",
       body: JSON.stringify({ username, password }),
       headers: {

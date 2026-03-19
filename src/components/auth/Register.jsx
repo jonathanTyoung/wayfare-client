@@ -1,6 +1,7 @@
 import { useRef, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import "./Login.css";
+import { API_URL } from "../data/Fetcher";
 
 export const Register = () => {
   const [email, setEmail] = useState("");
@@ -19,7 +20,7 @@ export const Register = () => {
     setErrorMessage("");
 
     try {
-      const response = await fetch("http://localhost:8000/register", {
+      const response = await fetch(`${API_URL}/register`, {
         method: "POST",
         body: JSON.stringify({
           username,
