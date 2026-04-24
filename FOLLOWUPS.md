@@ -7,8 +7,6 @@
       if intentional placeholders or safe to delete.
 
 ## From audit (not yet addressed)
-- [ ] react-router-dom is in devDependencies, should be dependencies
-- [ ] README claims Axios + SCSS, neither installed
 - [ ] TypeScript strict: false, .jsx/.tsx intermixed
 - [ ] ESLint doesn't cover .ts/.tsx
 - [ ] localStorage token read in ~20 places, bypasses UserContext
