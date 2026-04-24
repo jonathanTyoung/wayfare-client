@@ -1,16 +1,16 @@
-import { fetchWithResponse } from "./Fetcher";
+import { API_URL, fetchWithResponse } from "./Fetcher";
 
 export function getPosts() {
   const token = localStorage.getItem('wayfare_token');
   return fetchWithResponse('posts', {
     headers: {
-      Authorization: `Token ${token}`, // or 'Bearer' if JWT
+      Authorization: `Token ${token}`,
     }
   });
 }
 
 export async function createPost(postData, token) {
-  const response = await fetch("http://localhost:8000/posts", {
+  const response = await fetch(`${API_URL}/posts`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -30,7 +30,7 @@ export async function createPost(postData, token) {
 export async function deletePost(id: number) {
   const token = localStorage.getItem("wayfare_token");
 
-  const response = await fetch(`http://localhost:8000/posts/${id}`, {
+  const response = await fetch(`${API_URL}/posts/${id}`, {
     method: "DELETE",
     headers: {
       Authorization: `Token ${token}`,
@@ -45,12 +45,11 @@ export async function deletePost(id: number) {
 }
 
 export async function getPostById(postId) {
-  const token = localStorage.getItem("wayfare_token")
-  const response = await fetch(`http://localhost:8000/posts/${postId}`, {
+  const token = localStorage.getItem("wayfare_token");
+  const response = await fetch(`${API_URL}/posts/${postId}`, {
     headers: {
       Authorization: `Token ${token}`,
       "Content-Type": "application/json",
-      // include auth token if needed
     },
   });
   if (!response.ok) {
@@ -58,7 +57,6 @@ export async function getPostById(postId) {
   }
   return response.json();
 }
-
 
 export async function updatePost(postId, updatedData, token) {
   return fetchWithResponse(`posts/${postId}`, {

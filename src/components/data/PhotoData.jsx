@@ -1,8 +1,5 @@
-import { API_URL, fetchWithResponse } from "./Fetcher"; // adjust path if needed
+import { API_URL, fetchWithResponse } from "./Fetcher";
 
-const API_RESOURCE = "photos";
-
-// GET all photos
 export async function getPhotos() {
   const token = localStorage.getItem("wayfare_token");
   return fetchWithResponse(`photos`, {
@@ -13,10 +10,9 @@ export async function getPhotos() {
   });
 }
 
-// DELETE a photo
 export async function deletePhoto(id) {
   const token = localStorage.getItem("wayfare_token");
-  return fetchWithResponse(`photos${id}/`, {
+  return fetchWithResponse(`photos/${id}`, {
     method: "DELETE",
     headers: {
       Authorization: `Token ${token}`,
@@ -29,18 +25,15 @@ export const uploadPhoto = async (postId, file, token) => {
   const formData = new FormData();
   formData.append("file", file);
 
-  const res = await fetch(
-    `http://localhost:8000/posts/${postId}/upload_photo`,
-    {
-      method: "POST",
-      headers: { Authorization: `Token ${token}` },
-      body: formData,
-    }
-  );
+  const res = await fetch(`${API_URL}/posts/${postId}/upload_photo`, {
+    method: "POST",
+    headers: { Authorization: `Token ${token}` },
+    body: formData,
+  });
 
   if (!res.ok) throw new Error("Photo upload failed");
 
-  return res.json(); // {id, url} returned from backend
+  return res.json();
 };
 
 export async function uploadPhotos(postId, files) {
@@ -52,5 +45,5 @@ export async function uploadPhotos(postId, files) {
     uploaded.push(res);
   }
 
-  return uploaded; // array of {id, url}
+  return uploaded;
 }

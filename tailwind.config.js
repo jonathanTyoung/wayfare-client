@@ -1,4 +1,3 @@
-// ESM syntax for tailwind.config.js
 export default {
   content: [
     "./src/**/*.{js,jsx,ts,tsx}",
@@ -6,25 +5,32 @@ export default {
   theme: {
     extend: {
       colors: {
-        tealCustom: '#05b88b',
-        black: "#000000",
-        white: "#FFFFFF",
-        gray: {
-          50: "#f9f9f9",
-          100: "#f0f0f0",
-          200: "#d9d9d9",
-          300: "#bfbfbf",
-          400: "#a6a6a6",
-          500: "#8c8c8c",
-          600: "#737373",
-          700: "#595959",
-          800: "#404040",
-          900: "#262626",
-        }
+        // Semantic tokens — match CSS variables in index.css
+        bg:      '#292524',
+        surface: '#1e1e1e',
+        'surface-raised': '#2a2a2a',
+        accent:  '#fbbf24',
+        'accent-hover': '#05b88b',
+        teal:    '#05b88b',
+        muted:   '#a0a0a0',
+
+        // Grays used throughout the app
+        stone: {
+          50:  '#fafaf9',
+          100: '#f5f5f4',
+          200: '#e7e5e4',
+          300: '#d6d3d1',
+          400: '#a8a29e',
+          500: '#78716c',
+          600: '#57534e',
+          700: '#44403c',
+          800: '#292524',
+          900: '#1c1917',
+        },
       },
       fontFamily: {
-        inter: ["Inter", "sans-serif"],           // default site font
-        special: ["'Special Elite'", "cursive"], // your map/journaling font
+        sans:    ['Inter', 'sans-serif'],
+        special: ["'Special Elite'", 'cursive'],
       },
     },
   },

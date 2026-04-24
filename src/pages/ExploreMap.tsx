@@ -15,7 +15,7 @@ export const ExploreMap = () => {
 
   const handleAddPost = async (newPost) => {
     // You could have a createPost function too
-    const token = localStorage.getItem("token")
+    const token = localStorage.getItem("wayfare_token")
     const savedPost = await createPost(newPost, token);
     console.log("savedPost:", savedPost);
     setPosts((prev) => [...prev, savedPost]);

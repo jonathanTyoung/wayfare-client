@@ -1,7 +1,8 @@
 import { useEffect, useState, useRef } from "react";
 import { useParams, useNavigate, Link } from "react-router-dom";
-import { getPostById } from "../data/PostData";
+import { getPostById, deletePost } from "../data/PostData";
 import { getCurrentUser } from "../data/UserData";
+import { CommentSection } from "./CommentSection";
 import {
   ArrowLeft,
   MapPin,
@@ -64,7 +65,7 @@ export const PostDetails = () => {
   const isOwner =
     currentUser &&
     post &&
-    (currentUser.id === post.userId || currentUser.id === post.traveler?.id);
+    currentUser.username === post.traveler?.username;
 
   const handleCopyLink = () => {
     const url = `${window.location.origin}/posts/${postId}`;
@@ -194,9 +195,16 @@ export const PostDetails = () => {
                       Edit Story
                     </Link>
                     <button
-                      onClick={() => {
+                      onClick={async () => {
                         setMenuOpen(false);
-                        alert("Deleted 🗑️");
+                        if (!window.confirm("Delete this story? This cannot be undone.")) return;
+                        try {
+                          await deletePost(post.id);
+                          navigate("/home");
+                        } catch (err) {
+                          console.error(err);
+                          alert("Failed to delete story. Please try again.");
+                        }
                       }}
                       className="w-full text-left block px-4 py-2 text-sm text-red-400 hover:bg-red-600 hover:text-white rounded-b-md"
                     >
@@ -380,8 +388,11 @@ export const PostDetails = () => {
                 </button>
                 <span className="text-white">{likesCount}</span>
 
-                {/* Comment Button */}
-                <button className="bg-yellow-300 hover:bg-yellow-400 p-2.5 transition-colors">
+                {/* Comment Button — scrolls to section */}
+                <button
+                  className="bg-yellow-300 hover:bg-yellow-400 p-2.5 transition-colors"
+                  onClick={() => document.getElementById("comments-section")?.scrollIntoView({ behavior: "smooth" })}
+                >
                   <MessageCircle className="w-5 h-5 text-black" />
                 </button>
                 <span className="text-white">{comments.length}</span>
@@ -433,67 +444,13 @@ export const PostDetails = () => {
 
 
         {/* Comments */}
-        <section className="mt-12 bg-gradient-to-br from-stone-800 to-stone-900 border border-stone-700/30 shadow-2xl px-8 py-12 rounded-xl">
-          <div className="flex items-center gap-3 mb-10">
-            <MessageCircle className="w-6 h-6 text-amber-400" />
-            <h3 className="text-2xl font-bold text-white">Comments</h3>
-            <span className="bg-stone-700/50 text-amber-200 text-sm px-3 py-1 rounded-full ml-auto">
-              {comments.length}
-            </span>
-          </div>
-
-          {comments.length > 0 ? (
-            <div className="space-y-6">
-              {comments.map((comment, index) => (
-                <div
-                  key={comment.id}
-                  className="group bg-gradient-to-r from-stone-900/80 to-stone-800/60 border border-stone-700/40 p-6 rounded-xl hover:border-amber-500/30 transition-all duration-300 hover:shadow-lg backdrop-blur-sm"
-                >
-                  <div className="flex items-start gap-4">
-                    <div className="w-10 h-10 bg-gradient-to-br from-amber-500 to-amber-600 rounded-full flex items-center justify-center text-white font-bold text-sm shadow-md">
-                      {comment.traveler.username.charAt(0).toUpperCase()}
-                    </div>
-                    <div className="flex-1 min-w-0">
-                      <div className="flex items-center gap-3 mb-3">
-                        <span className="text-amber-200 font-semibold text-base">
-                          {comment.traveler.username}
-                        </span>
-                        <span className="text-stone-400 text-sm">
-                          {comment.created_at
-                            ? new Date(comment.created_at).toLocaleDateString(
-                                "en-US",
-                                {
-                                  month: "short",
-                                  day: "numeric",
-                                  year: "numeric",
-                                }
-                              )
-                            : "Just now"}
-                        </span>
-                      </div>
-                      <p className="text-stone-200 leading-relaxed text-base">
-                        {comment.content}
-                      </p>
-                    </div>
-                  </div>
-                </div>
-              ))}
-            </div>
-          ) : (
-            <div className="text-center py-20 border-2 border-dashed border-stone-700/50 rounded-xl bg-stone-900/30">
-              <div className="w-16 h-16 bg-stone-800/50 rounded-full flex items-center justify-center mx-auto mb-6">
-                <MessageCircle className="w-8 h-8 text-stone-500" />
-              </div>
-              <h4 className="text-white text-xl font-semibold mb-3">
-                No comments yet
-              </h4>
-              <p className="text-stone-400 text-base max-w-md mx-auto leading-relaxed">
-                Be the first to share your thoughts about this story. Your
-                insights could inspire other travelers.
-              </p>
-            </div>
-          )}
-        </section>
+        <div id="comments-section">
+          <CommentSection
+            postId={post.id}
+            initialComments={comments}
+            currentUser={currentUser}
+          />
+        </div>
       </div>
     </div>
   );
