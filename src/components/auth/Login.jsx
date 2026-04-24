@@ -3,7 +3,6 @@ import { Link, useNavigate } from "react-router-dom";
 import { API_URL } from "../data/Fetcher";
 
 export const Login = () => {
-  // const [email, setEmail] = useState("ryanflynn@email.com");
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const existDialog = useRef();

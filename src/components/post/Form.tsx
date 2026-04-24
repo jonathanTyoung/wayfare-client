@@ -184,7 +184,6 @@ export const PostForm = ({
 
       // Create or update the post
       const createdOrUpdatedPost = await onSubmit(postData);
-      console.log("Post creation response:", createdOrUpdatedPost);
       if (!createdOrUpdatedPost?.id) {
         throw new Error("Post creation failed: missing post ID.");
       }

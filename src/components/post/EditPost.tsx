@@ -42,7 +42,6 @@ export const EditPost = () => {
     try {
       // PATCH the post and return the updated object
       const updatedPost = await updatePost(postId, updatedData, token);
-      console.log("Post updated successfully:", updatedPost);
 
       // Return the updated post so PostForm can use its id for photo upload
       return updatedPost;
@@ -121,7 +120,6 @@ export const EditPost = () => {
             categories={categories}
             initialData={post}
             onSubmit={handleUpdatePost}
-            onSuccess={() => console.log("Post updated!")}
             mode="edit"
             onReset={handleBack}
           />

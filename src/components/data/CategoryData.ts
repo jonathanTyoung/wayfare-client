@@ -10,15 +10,3 @@ export function getCategories() {
     }
   });
 }
-
-
-// export const getCategories = () => {
-//   const token = localStorage.getItem('wayfare_token');
-  
-//   return fetchWithResponse("categories", {
-//     headers: {
-//       "Authorization": `Token ${token}`,
-//       "Content-Type": "application/json"
-//     }
-//   });
-// };

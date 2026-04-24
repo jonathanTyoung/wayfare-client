@@ -180,7 +180,6 @@ export const Profile: React.FC = () => {
 
     try {
       const createdPost = await createPost(formData, token);
-      console.log("Post creation response:", createdPost);
 
       if (!createdPost?.id) {
         throw new Error("Post creation failed: missing post ID.");

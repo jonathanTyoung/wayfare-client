@@ -84,13 +84,11 @@ export const PostDetails = () => {
 
     try {
       if (bookmarkedByUser) {
-        const result = await unbookmarkPost(post.id, token);
-        console.log(result.status); // always safe
+        await unbookmarkPost(post.id, token);
         setBookmarkedByUser(false);
         setBookmarksCount((prev) => Math.max(prev - 1, 0));
       } else {
-        const result = await bookmarkPost(post.id, token);
-        console.log(result?.status); // always safe
+        await bookmarkPost(post.id, token);
         setBookmarkedByUser(true);
         setBookmarksCount((prev) => prev + 1);
       }
@@ -219,15 +217,6 @@ export const PostDetails = () => {
                     >
                       Copy Link
                     </button>
-                    {/* <button
-                      onClick={() => {
-                        setMenuOpen(false);
-                        alert("Liked ❤️");
-                      }}
-                      className="w-full text-left block px-4 py-2 text-sm text-black-200 hover:bg-gray-700 hover:text-white"
-                    >
-                      Like
-                    </button> */}
                     <button
                       onClick={() => {
                         handleBookmarkToggle();

@@ -1,5 +1,5 @@
 // MapComponent.jsx
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { MapContainer, TileLayer, Marker, Popup, useMap } from "react-leaflet";
 import L from "leaflet";
@@ -88,40 +88,6 @@ export const MapComponent = ({ trips, posts }) => {
           attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
         />
         <SetMapCenter lat={centerLat} lng={centerLng} />
-
-        {/* Trips markers (blue)
-        {trips.map((trip) => (
-          <Marker
-            key={trip.id}
-            position={[Number(trip.latitude), Number(trip.longitude)]}
-            icon={blueIcon}
-          >
-            <Popup>
-              <div style={{ minWidth: "200px" }}>
-                <h3 style={{ fontWeight: "bold", marginBottom: "8px" }}>
-                  {trip.title}
-                </h3>
-                <p style={{ marginBottom: "8px", color: "#555" }}>
-                  {trip.short_description}
-                </p>
-                <button
-                  onClick={() => navigate(`/trips/${trip.id}`)}
-                  style={{
-                    marginTop: "8px",
-                    padding: "6px 12px",
-                    backgroundColor: "#007bff",
-                    color: "#fff",
-                    border: "none",
-                    borderRadius: "6px",
-                    cursor: "pointer",
-                  }}
-                >
-                  View Trip
-                </button>
-              </div>
-            </Popup>
-          </Marker>
-        ))} */}
 
         {/* Posts markers (red) */}
         {posts

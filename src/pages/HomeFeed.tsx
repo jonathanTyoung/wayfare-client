@@ -72,7 +72,6 @@ const CreatePostModal = ({
               onSubmit={onSubmit}
               onSuccess={onClose}
               mode="create"
-              // travelerId={currentUserTravelerId} // <-- pass the traveler ID here
             />
           )}
         </div>
@@ -141,7 +140,6 @@ export const HomeFeed = () => {
 
     try {
       const createdPost = await createPost(formData, token);
-      console.log("Post creation response:", createdPost);
 
       if (!createdPost?.id) {
         throw new Error("Post creation failed: missing post ID.");

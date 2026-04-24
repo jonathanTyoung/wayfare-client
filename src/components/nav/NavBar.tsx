@@ -1,5 +1,4 @@
 // NavBar.tsx
-import React, { useState } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 import { Search } from "lucide-react";
 import { SearchBar } from "../search/SearchBar";
@@ -27,18 +26,6 @@ export const NavBar = ({
     <nav className="bg-[#292524] text-white p-4 flex flex-col gap-2 sticky top-0 z-50">
       <div className="flex justify-between items-center">
         <div className="flex items-center gap-4">
-          {/* <div
-            className="font-bold text-xl cursor-pointer"
-            onClick={() => navigate("/home")}
-          >
-            Wayfare
-          </div> */}
-          {/* {token && (
-            <div className="flex items-center gap-2">
-              <NavLink to="/home">Home</NavLink>
-              <NavLink to="/profile">Profile</NavLink>
-            </div>
-          )} */}
         </div>
 
         <div className="flex items-center gap-2">
