@@ -23,7 +23,7 @@ Take a quick look at Wayfare in action — a **3min demo video** showcasing user
 ---
 
 ## ⚙️ Tech Stack
-**Frontend:** React, Vite, SCSS, Axios  
+**Frontend:** React, Vite, Tailwind CSS, Fetch API  
 **Backend:** Django REST Framework, Cloudinary (for image storage)  
 **Authentication:** Django Token Authentication  
 **Mapping:** React Leaflet  
