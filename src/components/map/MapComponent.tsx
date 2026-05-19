@@ -33,18 +33,17 @@ export const blueIcon = new L.Icon({
   shadowSize: [41, 41],
 });
 
+// Amber teardrop pin. Variable name kept as `redIcon` to preserve
+// the module's public export shape; visually it is the app-accent pin.
 export const redIcon = new L.Icon({
   iconUrl:
     "data:image/svg+xml;base64," +
-    btoa(`<svg xmlns="http://www.w3.org/2000/svg" width="30" height="45" viewBox="0 0 30 45">
-      <path d="M15 0C6.716 0 0 9.036 0 20.125 0 29 15 45 15 45s15-16 15-24.875C30 9.036 23.284 0 15 0z" fill="#ff4d4f"/>
-      <circle cx="15" cy="15" r="7" fill="white"/>
+    btoa(`<svg xmlns="http://www.w3.org/2000/svg" width="20" height="28" viewBox="0 0 20 28">
+      <path d="M10 0C4.48 0 0 4.48 0 10c0 5 5 11 10 18c5-7 10-13 10-18C20 4.48 15.52 0 10 0z" fill="#fbbf24" stroke="#292524" stroke-width="1"/>
     </svg>`),
-  iconSize: [30, 45],
-  iconAnchor: [15, 45],
-  popupAnchor: [0, -40],
-  shadowUrl,
-  shadowSize: [41, 41],
+  iconSize: [20, 28],
+  iconAnchor: [10, 28],
+  popupAnchor: [0, -26],
 });
 
 // Helper to update map center dynamically
@@ -65,31 +64,19 @@ export const MapComponent = ({ trips, posts }) => {
   const centerLng = Number(params.get("lng")) || -74.006;
 
   return (
-    <div
-      style={{
-        height: "96vh",
-        width: "100%",
-        padding: "60px",
-        background: "#292524",
-        borderRadius: "12px",
-        overflow: "hidden",
-        boxShadow: "0 4px 20px rgba(0,0,0,0.2)",
-        border: "1px solid #e0e0e0",
-        zIndex: 10,
-      }}
-    >
+    <div className="h-[96vh] w-full bg-app-bg rounded-xl overflow-hidden border border-stone-700 shadow-lg z-10">
       <MapContainer
         center={[centerLat, centerLng]}
         zoom={13}
-        style={{ height: "100%", width: "100%" }}
+        className="h-full w-full"
       >
         <TileLayer
-          url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-          attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+          url="https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png"
+          attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>'
         />
         <SetMapCenter lat={centerLat} lng={centerLng} />
 
-        {/* Posts markers (red) */}
+        {/* Posts markers (amber) */}
         {posts
           .filter((post) => !post.trip_id)
           .map((post) => (
@@ -99,24 +86,16 @@ export const MapComponent = ({ trips, posts }) => {
               icon={redIcon}
             >
               <Popup>
-                <div style={{ minWidth: "200px" }}>
-                  <h3 style={{ fontWeight: "bold", marginBottom: "8px" }}>
+                <div className="min-w-[220px] p-3 bg-app-surface text-stone-100">
+                  <h3 className="font-special text-lg leading-tight mb-1">
                     {post.title}
                   </h3>
-                  <p style={{ marginBottom: "8px", color: "#555" }}>
+                  <p className="text-app-muted text-sm mb-3">
                     {post.short_description}
                   </p>
                   <button
                     onClick={() => navigate(`/posts/${post.id}`)}
-                    style={{
-                      marginTop: "8px",
-                      padding: "6px 12px",
-                      backgroundColor: "#ff0000",
-                      color: "#fff",
-                      border: "none",
-                      borderRadius: "6px",
-                      cursor: "pointer",
-                    }}
+                    className="px-3 py-1.5 rounded-md bg-app-accent text-stone-900 text-sm font-medium hover:bg-app-accent-hover transition-colors"
                   >
                     View Post
                   </button>

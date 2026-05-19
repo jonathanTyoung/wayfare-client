@@ -104,3 +104,30 @@ select:focus {
 .home-logo {
   width: 400px;
 }
+
+/* === Leaflet popup theme override ===
+   Leaflet ships a white popup wrapper + tip. On dark tiles with a dark
+   inner card it reads as a dark sticker on a white sticker, so we
+   re-theme the wrapper itself to match the app surface. */
+.leaflet-popup-content-wrapper,
+.leaflet-popup-tip {
+  background-color: var(--color-surface);
+  color: var(--color-text);
+}
+
+.leaflet-popup-content-wrapper {
+  border-radius: 8px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
+}
+
+.leaflet-popup-content {
+  margin: 0;
+}
+
+.leaflet-container a.leaflet-popup-close-button {
+  color: var(--color-muted);
+}
+
+.leaflet-container a.leaflet-popup-close-button:hover {
+  color: var(--color-accent);
+}

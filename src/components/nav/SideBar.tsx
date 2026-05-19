@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { FiSearch, FiPlus, FiHome, FiUser, FiMap } from "react-icons/fi";
-import logo from "../../assets/park-jon.svg";
 import { PostForm } from "../post/Form.tsx";
 import { useUserContext } from "../../context/UserContext.tsx";
 import { getCategories } from "../data/CategoryData.ts";
@@ -108,15 +107,6 @@ export const Sidebar: React.FC<SidebarProps> = ({ openSearch }) => {
   return (
     <>
       <aside className="w-20 bg-app-bg border-r border-stone-500/10 flex flex-col p-4 sticky top-0 h-screen overflow-y-auto">
-        {/* Logo at the very top */}
-        <Link to="/home" className="mb-6 flex justify-center" title="Home">
-          <img
-            src={logo}
-            alt="Wayfare Logo"
-            className="w-10 h-10 hover:opacity-80 transition-opacity"
-          />
-        </Link>
-
         <nav className="flex flex-col gap-2 items-center justify-center h-full">
           <Link
             to="/home"
