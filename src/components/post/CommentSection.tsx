@@ -162,9 +162,9 @@ export function CommentSection({ postId, initialComments, currentUser }: Props) 
     <section className="mt-12 bg-gradient-to-br from-stone-800 to-stone-900 border border-stone-700/30 shadow-2xl px-8 py-12 rounded-xl">
       {/* Header */}
       <div className="flex items-center gap-3 mb-10">
-        <MessageCircle className="w-6 h-6 text-amber-400" />
+        <MessageCircle className="w-6 h-6 text-app-accent" />
         <h3 className="text-2xl font-bold text-white">Comments</h3>
-        <span className="bg-stone-700/50 text-amber-200 text-sm px-3 py-1 rounded-full ml-auto">
+        <span className="bg-stone-700/50 text-app-accent text-sm px-3 py-1 rounded-full ml-auto">
           {totalCount}
         </span>
       </div>
@@ -172,7 +172,7 @@ export function CommentSection({ postId, initialComments, currentUser }: Props) 
       {/* Input */}
       {currentUser && (
         <form onSubmit={handleSubmit} className="mb-10 flex gap-3 items-start">
-          <div className="w-9 h-9 bg-gradient-to-br from-amber-500 to-amber-600 rounded-full flex items-center justify-center text-white font-bold text-sm shrink-0 mt-0.5">
+          <div className="w-9 h-9 bg-app-accent rounded-full flex items-center justify-center text-white font-bold text-sm shrink-0 mt-0.5">
             {currentUser.username.charAt(0).toUpperCase()}
           </div>
           <div className="flex-1 flex gap-2">
@@ -181,12 +181,12 @@ export function CommentSection({ postId, initialComments, currentUser }: Props) 
               onChange={(e) => setInput(e.target.value)}
               placeholder="Add a comment…"
               maxLength={1000}
-              className="flex-1 bg-stone-900/60 border border-stone-700/50 rounded-lg px-4 py-2.5 text-sm text-stone-200 placeholder-stone-500 focus:border-amber-500/50 focus:outline-none"
+              className="flex-1 bg-stone-900/60 border border-stone-700/50 rounded-lg px-4 py-2.5 text-sm text-stone-200 placeholder-stone-500 focus:border-app-accent/50 focus:outline-none"
             />
             <button
               type="submit"
               disabled={!input.trim() || submitting}
-              className="bg-amber-500 hover:bg-amber-400 disabled:opacity-40 disabled:cursor-not-allowed text-black font-semibold px-4 py-2 rounded-lg text-sm transition-colors"
+              className="bg-app-accent hover:bg-app-accent-hover disabled:opacity-40 disabled:cursor-not-allowed text-black font-semibold px-4 py-2 rounded-lg text-sm transition-colors"
             >
               Post
             </button>
@@ -200,14 +200,14 @@ export function CommentSection({ postId, initialComments, currentUser }: Props) 
           {comments.map((comment) => (
             <div key={comment.id}>
               {/* Comment */}
-              <div className="group bg-gradient-to-r from-stone-900/80 to-stone-800/60 border border-stone-700/40 p-5 rounded-xl hover:border-amber-500/20 transition-all duration-300">
+              <div className="group bg-gradient-to-r from-stone-900/80 to-stone-800/60 border border-stone-700/40 p-5 rounded-xl hover:border-app-accent/20 transition-all duration-300">
                 <div className="flex items-start gap-4">
-                  <div className="w-9 h-9 bg-gradient-to-br from-amber-500 to-amber-600 rounded-full flex items-center justify-center text-white font-bold text-sm shrink-0">
+                  <div className="w-9 h-9 bg-app-accent rounded-full flex items-center justify-center text-white font-bold text-sm shrink-0">
                     {comment.traveler.username.charAt(0).toUpperCase()}
                   </div>
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center gap-3 mb-1.5">
-                      <span className="text-amber-200 font-semibold text-sm">
+                      <span className="text-app-accent font-semibold text-sm">
                         {comment.traveler.username}
                       </span>
                       <span className="text-stone-500 text-xs">
@@ -222,7 +222,7 @@ export function CommentSection({ postId, initialComments, currentUser }: Props) 
                               setReplyingTo({ id: comment.id, username: comment.traveler.username });
                               setReplyInput(`@${comment.traveler.username} `);
                             }}
-                            className="text-stone-400 hover:text-amber-400 text-xs px-2 py-1 rounded transition-colors bg-transparent"
+                            className="text-stone-400 hover:text-app-accent text-xs px-2 py-1 rounded transition-colors bg-transparent"
                           >
                             Reply
                           </button>

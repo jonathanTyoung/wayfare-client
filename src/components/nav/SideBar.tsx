@@ -22,7 +22,7 @@ const CreatePostModal = ({
 
   return (
     <div className="fixed inset-0 bg-black/70 flex items-center justify-center z-[9999] p-4">
-      <div className="bg-app-bg shadow-2xl max-w-4xl w-full max-h-[90vh] overflow-hidden border border-stone-600">
+      <div className="bg-app-bg shadow-2xl max-w-4xl w-full max-h-[90vh] overflow-hidden rounded-xl border border-stone-700/60">
         {/* Header */}
         <div className="bg-stone-900 px-6 py-4 border-b border-stone-700">
           <div className="flex items-center justify-between">

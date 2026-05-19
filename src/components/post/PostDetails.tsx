@@ -349,8 +349,8 @@ export const PostDetails = () => {
                 <button
                   className={`p-2.5 transition-colors ${
                     likedByUser
-                      ? "bg-app-accent hover:bg-app-accent-hover"
-                      : "bg-app-accent hover:bg-app-accent-hover"
+                      ? "bg-app-accent hover:bg-app-accent-hover text-stone-900"
+                      : "bg-stone-700 hover:bg-stone-600 text-stone-300"
                   }`}
                   onClick={async () => {
                     const token = localStorage.getItem("wayfare_token");
@@ -373,7 +373,7 @@ export const PostDetails = () => {
                     }
                   }}
                 >
-                  <Heart className="w-5 h-5 text-stone-900" />
+                  <Heart className="w-5 h-5" />
                 </button>
                 <span className="text-stone-100">{likesCount}</span>
 

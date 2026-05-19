@@ -113,17 +113,15 @@ export const EditPost = () => {
         </div>
       </header>
 
-      {/* Form Container */}
+      {/* Form Container — Form renders its own card */}
       <div className="max-w-4xl mx-auto px-6 py-8">
-        <div className="bg-stone-800/30 border border-stone-600/20 p-8">
-          <PostForm
-            categories={categories}
-            initialData={post}
-            onSubmit={handleUpdatePost}
-            mode="edit"
-            onReset={handleBack}
-          />
-        </div>
+        <PostForm
+          categories={categories}
+          initialData={post}
+          onSubmit={handleUpdatePost}
+          mode="edit"
+          onReset={handleBack}
+        />
       </div>
     </div>
   );
