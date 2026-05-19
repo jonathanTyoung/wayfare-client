@@ -96,29 +96,29 @@ export function PostCard({
   const hasLocation = post.latitude && post.longitude;
 
   return (
-    <article className="w-full max-w-2xl mx-auto mb-8 bg-[#292524] rounded-lg border border-gray-600/30 backdrop-blur-sm p-8">
+    <article className="w-full max-w-2xl mx-auto mb-8 bg-app-bg rounded-lg border border-stone-600/30 backdrop-blur-sm p-8">
       {/* HEADER */}
       <header className="mb-4 flex justify-between items-start gap-4">
         <div className="flex-1">
-          <div className="inline-flex items-center gap-3 mb-3 px-3 py-2 bg-gray-700/30 border border-gray-600/40 rounded-lg text-xs">
+          <div className="inline-flex items-center gap-3 mb-3 px-3 py-2 bg-stone-700/30 border border-stone-600/40 rounded-lg text-xs">
             <div className="flex items-center gap-2">
               <div className="w-6 h-6 bg-gradient-to-br from-blue-500 to-blue-600 rounded-full flex items-center justify-center text-xs font-medium text-white">
                 {post.traveler?.name?.charAt(0)?.toUpperCase() || "?"}
               </div>
-              <span className="text-gray-200 font-medium">
+              <span className="text-stone-200 font-medium">
                 {post.traveler?.name || "Unknown Traveler"}
               </span>
-              <div className="w-px h-4 bg-gray-600"></div>
-              <span className="text-gray-200 font-medium">
+              <div className="w-px h-4 bg-stone-600"></div>
+              <span className="text-stone-200 font-medium">
                 {post.category.name || "Unknown Traveler"}
               </span>
-              <div className="w-px h-4 bg-gray-600"></div>
-              <span className="text-gray-200 font-medium">
+              <div className="w-px h-4 bg-stone-600"></div>
+              <span className="text-stone-200 font-medium">
                 {post.location_name || "Unknown Traveler"}
               </span>
             </div>
-            <div className="w-px h-4 bg-gray-600"></div>
-            <span className="text-gray-300">
+            <div className="w-px h-4 bg-stone-600"></div>
+            <span className="text-stone-300">
               {post.updated_at
                 ? new Date(post.updated_at).toLocaleDateString("en-US", {
                     month: "short",
@@ -129,10 +129,10 @@ export function PostCard({
             </span>
           </div>
 
-          <h2 className="text-2xl font-bold text-white leading-tight hover:text-gray-300 transition-colors">
+          <h2 className="text-2xl font-bold text-white leading-tight hover:text-stone-300 transition-colors">
             <Link
               to={`/posts/${post.id}`}
-              className="no-underline text-inherit hover:text-gray-300"
+              className="no-underline text-inherit hover:text-stone-300"
             >
               {post.title}
             </Link>
@@ -143,20 +143,20 @@ export function PostCard({
         <div className="relative flex-shrink-0" ref={menuRef}>
           <button
             onClick={() => setMenuOpen(!menuOpen)}
-            className="p-2 rounded-full hover:bg-gray-700/50 transition-colors text-black-400 hover:text-gray-200"
+            className="p-2 rounded-full hover:bg-stone-700/50 transition-colors text-black-400 hover:text-stone-200"
           >
             <HiDotsVertical className="w-5 h-5" />
           </button>
 
           {menuOpen && (
-            <div className="absolute right-0 top-full mt-2 w-48 bg-[#1f1f1f] border border-gray-600/50 rounded-lg shadow-xl z-20 py-1">
+            <div className="absolute right-0 top-full mt-2 w-48 bg-app-surface border border-stone-600/50 rounded-lg shadow-xl z-20 py-1">
               {isOwner ? (
                 <>
                   <Link
                     to={`/posts/${post.id}/edit`}
                     state={{ from: window.location.pathname }}
                     onClick={() => setMenuOpen(false)}
-                    className="block px-4 py-3 text-sm text-black-200 hover:bg-gray-700/50 transition-colors border-b border-gray-600/30 last:border-b-0"
+                    className="block px-4 py-3 text-sm text-black-200 hover:bg-stone-700/50 transition-colors border-b border-stone-600/30 last:border-b-0"
                   >
                     Edit Post
                   </Link>
@@ -174,7 +174,7 @@ export function PostCard({
                 <>
                   <button
                     onClick={handleCopyLink}
-                    className="w-full text-left px-4 py-3 text-sm text-black-200 hover:bg-gray-700/50 transition-colors border-b border-gray-600/30"
+                    className="w-full text-left px-4 py-3 text-sm text-black-200 hover:bg-stone-700/50 transition-colors border-b border-stone-600/30"
                   >
                     Copy Link
                   </button>
@@ -183,14 +183,14 @@ export function PostCard({
                       toggleBookmark();
                       setMenuOpen(false);
                     }}
-                    className="w-full text-left px-4 py-3 text-sm text-black-200 hover:bg-gray-700/50 transition-colors border-b border-gray-600/30"
+                    className="w-full text-left px-4 py-3 text-sm text-black-200 hover:bg-stone-700/50 transition-colors border-b border-stone-600/30"
                   >
                     {bookmarked ? "Remove Bookmark 📌" : "Bookmark 📌"}
                   </button>
                   <Link
                     to={`/posts/${post.id}`}
                     onClick={() => setMenuOpen(false)}
-                    className="block px-4 py-3 text-sm text-gray-200 hover:bg-gray-700/50 transition-colors"
+                    className="block px-4 py-3 text-sm text-stone-200 hover:bg-stone-700/50 transition-colors"
                   >
                     View Post
                   </Link>
@@ -202,7 +202,7 @@ export function PostCard({
       </header>
 
       {/* DESCRIPTION */}
-      <p className="text-gray-300 leading-relaxed text-base line-clamp-3 mb-5">
+      <p className="text-stone-300 leading-relaxed text-base line-clamp-3 mb-5">
         {post.short_description || "No description provided."}
       </p>
 
@@ -216,7 +216,7 @@ export function PostCard({
           />
         </div>
       ) : (
-        <div className="mb-5 rounded-lg border-2 border-dashed border-gray-600/40 p-8 text-center text-gray-500 text-xs">
+        <div className="mb-5 rounded-lg border-2 border-dashed border-stone-600/40 p-8 text-center text-stone-500 text-xs">
           This story doesn't include any photos
         </div>
       )}
@@ -229,7 +229,7 @@ export function PostCard({
             <button
               key={index}
               onClick={() => handleTagClick(tag.name || tag)}
-              className="px-3 py-1 text-xs font-medium bg-gray-700/50 text-gray-300 rounded-full hover:bg-blue-900/30 hover:text-blue-300 transition-colors"
+              className="px-3 py-1 text-xs font-medium bg-stone-700/50 text-stone-300 rounded-full hover:bg-blue-900/30 hover:text-blue-300 transition-colors"
             >
               #{typeof tag === "string" ? tag : tag.name}
             </button>

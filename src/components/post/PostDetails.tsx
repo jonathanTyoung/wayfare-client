@@ -116,7 +116,7 @@ export const PostDetails = () => {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-[#292524] flex items-center justify-center">
+      <div className="min-h-screen bg-app-bg flex items-center justify-center">
         <div className="text-center">
           <div className="w-8 h-8 border-2 border-stone-600 border-t-stone-100 animate-spin mx-auto mb-4"></div>
           <p className="text-stone-400">Loading story...</p>
@@ -127,7 +127,7 @@ export const PostDetails = () => {
 
   if (error || !post) {
     return (
-      <div className="min-h-screen bg-[#292524] flex items-center justify-center">
+      <div className="min-h-screen bg-app-bg flex items-center justify-center">
         <div className="text-center max-w-md">
           <div className="w-16 h-16 bg-stone-800 border border-stone-600 flex items-center justify-center mx-auto mb-6">
             <span className="text-2xl text-stone-400">📖</span>
@@ -140,7 +140,7 @@ export const PostDetails = () => {
           </p>
           <button
             onClick={() => navigate("/home")}
-            className="bg-stone-100 hover:bg-stone-200 text-[#292524] px-6 py-2.5 font-medium transition-colors border border-stone-100"
+            className="bg-stone-100 hover:bg-stone-200 text-stone-900 px-6 py-2.5 font-medium transition-colors border border-stone-100"
           >
             Back to Posts
           </button>
@@ -151,9 +151,9 @@ export const PostDetails = () => {
   const hasLocation = post.latitude && post.longitude;
 
   return (
-    <div className="min-h-screen bg-[#292524] relative">
+    <div className="min-h-screen bg-app-bg relative">
       {/* Header */}
-      <header className="border-b border-stone-600/10 bg-[#292524] sticky top-0 z-40 backdrop-blur-sm">
+      <header className="border-b border-stone-600/10 bg-app-bg sticky top-0 z-40 backdrop-blur-sm">
         <div className="max-w-2xl mx-auto px-6 py-4 flex items-center">
           <button
             onClick={() => navigate(-1)}
@@ -172,23 +172,23 @@ export const PostDetails = () => {
           <div className="absolute top-4 right-4" ref={menuRef}>
             <button
               onClick={() => setMenuOpen((prev) => !prev)}
-              className="p-2 rounded-full hover:bg-gray-700 transition-colors bg-transparent"
+              className="p-2 rounded-full hover:bg-stone-700 transition-colors bg-transparent"
             >
               <HiDotsVertical
                 size={22}
-                className="text-[#fbbf24] hover:text-gray-200"
+                className="text-app-accent hover:text-stone-200"
               />
             </button>
 
             {menuOpen && (
-              <div className="absolute right-0 mt-2 w-40 bg-[#1f1f1f] border border-gray-700 rounded-md shadow-lg z-50">
+              <div className="absolute right-0 mt-2 w-40 bg-app-surface border border-stone-700 rounded-md shadow-lg z-50">
                 {isOwner ? (
                   <>
                     <Link
                       to={`/posts/${postId}/edit`}
                       state={{ fromPostId: postId }}
                       onClick={() => setMenuOpen(false)}
-                      className="block px-4 py-2 text-sm text-black-200 hover:bg-gray-700 hover:text-white rounded-t-md"
+                      className="block px-4 py-2 text-sm text-black-200 hover:bg-stone-700 hover:text-white rounded-t-md"
                     >
                       Edit Story
                     </Link>
@@ -213,7 +213,7 @@ export const PostDetails = () => {
                   <>
                     <button
                       onClick={handleCopyLink}
-                      className="w-full text-left block px-4 py-2 text-sm text-black-200 hover:bg-gray-700 hover:text-white rounded-t-md"
+                      className="w-full text-left block px-4 py-2 text-sm text-black-200 hover:bg-stone-700 hover:text-white rounded-t-md"
                     >
                       Copy Link
                     </button>
@@ -222,7 +222,7 @@ export const PostDetails = () => {
                         handleBookmarkToggle();
                         setMenuOpen(false);
                       }}
-                      className="w-full text-left block px-4 py-2 text-sm text-black-200 hover:bg-gray-700 hover:text-white"
+                      className="w-full text-left block px-4 py-2 text-sm text-black-200 hover:bg-stone-700 hover:text-white"
                     >
                       {bookmarkedByUser ? "Remove Bookmark" : "Save"}
                     </button>
@@ -389,7 +389,7 @@ export const PostDetails = () => {
                 {/* Share Button */}
                 <button
                   onClick={handleCopyLink}
-                  className="w-full text-left px-4 py-3 text-sm text-black-200 hover:bg-gray-700/50 transition-colors border-b border-gray-600/30"
+                  className="w-full text-left px-4 py-3 text-sm text-black-200 hover:bg-stone-700/50 transition-colors border-b border-stone-600/30"
                 >
                   <Share2 className="w-5 h-5 text-black" />
                 </button>

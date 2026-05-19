@@ -58,9 +58,9 @@ export const SearchResults = () => {
   }, [query, tag]);
 
   return (
-    <div className="min-h-screen bg-[#292524] py-12 px-6">
+    <div className="min-h-screen bg-app-bg py-12 px-6">
       <div className="max-w-4xl mx-auto">
-        <h2 className="text-3xl font-bold mb-8 text-[#f9f5eb]">
+        <h2 className="text-3xl font-bold mb-8 text-stone-100">
           Search Results {query ? `for "${query}"` : ""}
         </h2>
 
@@ -80,7 +80,7 @@ export const SearchResults = () => {
             ))}
           </div>
         ) : (
-          <p className="text-[#78716c] text-lg text-center py-8">
+          <p className="text-app-muted text-lg text-center py-8">
             No posts found.
           </p>
         )}

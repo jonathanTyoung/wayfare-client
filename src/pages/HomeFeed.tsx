@@ -38,7 +38,7 @@ const CreatePostModal = ({
 
   return (
     <div className="fixed inset-0 bg-black/70 flex items-center justify-center z-50 p-4">
-      <div className="bg-[#292524] shadow-2xl max-w-4xl w-full max-h-[90vh] overflow-hidden border border-stone-600">
+      <div className="bg-app-bg shadow-2xl max-w-4xl w-full max-h-[90vh] overflow-hidden border border-stone-600">
         {/* Header */}
         <div className="bg-stone-900 px-6 py-4 border-b border-stone-700">
           <div className="flex items-center justify-between">
@@ -60,7 +60,7 @@ const CreatePostModal = ({
         </div>
 
         {/* Content */}
-        <div className="p-6 overflow-y-auto max-h-[calc(90vh-80px)] bg-[#292524]">
+        <div className="p-6 overflow-y-auto max-h-[calc(90vh-80px)] bg-app-bg">
           {loading ? (
             <div className="flex flex-col items-center justify-center py-12">
               <div className="w-6 h-6 border-2 border-stone-600 border-t-stone-100 animate-spin mb-3"></div>
@@ -215,7 +215,7 @@ export const HomeFeed = () => {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-[#292524]">
+      <div className="min-h-screen flex items-center justify-center bg-app-bg">
         <div className="text-center max-w-md">
           <div className="w-8 h-8 border-2 border-stone-600 border-t-stone-100 animate-spin mx-auto mb-4"></div>
           <h2 className="text-xl font-semibold text-stone-100 mb-2">
@@ -228,9 +228,9 @@ export const HomeFeed = () => {
   }
 
   return (
-    <div className="min-h-screen bg-[#292524]">
+    <div className="min-h-screen bg-app-bg">
       {/* Proper Homepage Header */}
-      <header className="border-b border-stone-600/20 bg-[#292524]">
+      <header className="border-b border-stone-600/20 bg-app-bg">
         <div className="max-w-4xl mx-auto px-6 py-8 text-center">
           <h1 className="text-4xl font-special font-bold text-stone-100 tracking-tight mb-2">
             Wayfare
@@ -240,7 +240,7 @@ export const HomeFeed = () => {
           </p>
           <button
             onClick={openModal}
-            className="bg-stone-100 hover:bg-stone-200 text-[#292524] px-6 py-2.5 font-medium transition-colors border border-stone-100"
+            className="bg-stone-100 hover:bg-stone-200 text-stone-900 px-6 py-2.5 font-medium transition-colors border border-stone-100"
           >
             Share Your Story
           </button>
@@ -248,7 +248,7 @@ export const HomeFeed = () => {
       </header>
 
       {/* Navigation — sticks to the top of <main>, directly below the NavBar */}
-      <nav className="border-b border-stone-600/20 bg-[#292524] sticky top-0 z-30">
+      <nav className="border-b border-stone-600/20 bg-app-bg sticky top-0 z-30">
         <div className="max-w-4xl mx-auto px-6 py-4">
           <div className="flex items-center gap-8 text-sm">
             <span className="text-stone-100 font-medium border-b-2 border-stone-100 pb-2">
@@ -310,7 +310,7 @@ export const HomeFeed = () => {
             </p>
             <button
               onClick={openModal}
-              className="inline-flex items-center gap-2 bg-stone-100 hover:bg-stone-200 text-[#292524] px-5 py-2.5 font-medium transition-colors border border-stone-100"
+              className="inline-flex items-center gap-2 bg-stone-100 hover:bg-stone-200 text-stone-900 px-5 py-2.5 font-medium transition-colors border border-stone-100"
             >
               Start your journey
             </button>

@@ -64,7 +64,7 @@ export const SearchBar = ({ onClose }: SearchBarProps) => {
   return (
     <div
       ref={containerRef}
-      className="relative flex items-center bg-gray-800 rounded overflow-hidden w-full max-w-md"
+      className="relative flex items-center bg-stone-800 rounded overflow-hidden w-full max-w-md"
     >
       <input
         type="text"
@@ -72,11 +72,11 @@ export const SearchBar = ({ onClose }: SearchBarProps) => {
         onChange={handleChange}
         onKeyDown={handleKeyDown}
         placeholder="Search by Title, Category, Traveler, etc..."
-        className="flex-1 px-3 py-2 text-white bg-gray-800 focus:outline-none"
+        className="flex-1 px-3 py-2 text-white bg-stone-800 focus:outline-none"
       />
       <button
         onClick={onClose}
-        className="px-3 py-2 text-gray-400 hover:text-white font-bold"
+        className="px-3 py-2 text-stone-400 hover:text-white font-bold"
       >
         ×
       </button>
@@ -92,11 +92,11 @@ export const SearchBar = ({ onClose }: SearchBarProps) => {
 
       {/* Suggestions Dropdown */}
       {showDropdown && suggestions.length > 0 && (
-        <ul className="absolute top-full left-0 w-full bg-gray-700 text-white z-10 rounded-b shadow-lg max-h-60 overflow-y-auto">
+        <ul className="absolute top-full left-0 w-full bg-stone-700 text-white z-10 rounded-b shadow-lg max-h-60 overflow-y-auto">
           {suggestions.map((s) => (
             <li
               key={s}
-              className="px-3 py-2 hover:bg-gray-600 cursor-pointer"
+              className="px-3 py-2 hover:bg-stone-600 cursor-pointer"
               onClick={() => {
                 setQuery(s);
                 handleSearch(s);

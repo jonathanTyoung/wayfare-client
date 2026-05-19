@@ -66,7 +66,7 @@ const CreatePostModal: React.FC<CreatePostModalProps> = ({
 
   return (
     <div className="fixed inset-0 bg-black/70 flex items-center justify-center z-[9999] p-4">
-      <div className="bg-[#292524] shadow-2xl max-w-4xl w-full max-h-[90vh] overflow-hidden border border-stone-600">
+      <div className="bg-app-bg shadow-2xl max-w-4xl w-full max-h-[90vh] overflow-hidden border border-stone-600">
         {/* Header */}
         <div className="bg-stone-900 px-6 py-4 border-b border-stone-700">
           <div className="flex items-center justify-between">
@@ -88,7 +88,7 @@ const CreatePostModal: React.FC<CreatePostModalProps> = ({
         </div>
 
         {/* Content */}
-        <div className="p-6 overflow-y-auto max-h-[calc(90vh-80px)] bg-[#292524]">
+        <div className="p-6 overflow-y-auto max-h-[calc(90vh-80px)] bg-app-bg">
           {loading ? (
             <div className="flex flex-col items-center justify-center py-12">
               <div className="w-6 h-6 border-2 border-stone-600 border-t-stone-100 animate-spin mb-3"></div>
@@ -215,10 +215,10 @@ export const Profile: React.FC = () => {
   // --- Render ---
   if (loadingProfile) {
     return (
-      <div className="min-h-screen bg-[#292524] flex items-center justify-center">
+      <div className="min-h-screen bg-app-bg flex items-center justify-center">
         <div className="flex flex-col items-center">
-          <div className="w-8 h-8 border-2 border-[#78716c]/30 border-t-[#14b8a6] rounded-full animate-spin mb-4"></div>
-          <p className="text-[#d6d3d1]">Loading profile...</p>
+          <div className="w-8 h-8 border-2 border-app-muted/30 border-t-teal rounded-full animate-spin mb-4"></div>
+          <p className="text-stone-300">Loading profile...</p>
         </div>
       </div>
     );
@@ -226,7 +226,7 @@ export const Profile: React.FC = () => {
 
   if (error) {
     return (
-      <div className="min-h-screen bg-[#292524] flex items-center justify-center">
+      <div className="min-h-screen bg-app-bg flex items-center justify-center">
         <p className="text-red-400">{error}</p>
       </div>
     );
@@ -234,14 +234,14 @@ export const Profile: React.FC = () => {
 
   if (!userProfile) {
     return (
-      <div className="min-h-screen bg-[#292524] flex items-center justify-center">
-        <p className="text-[#d6d3d1]">No profile found</p>
+      <div className="min-h-screen bg-app-bg flex items-center justify-center">
+        <p className="text-stone-300">No profile found</p>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-[#292524]">
+    <div className="min-h-screen bg-app-bg">
       <div className="max-w-6xl mx-auto px-6 py-12">
         {/* Profile Header */}
         <div className="mb-12">
@@ -253,10 +253,10 @@ export const Profile: React.FC = () => {
                   <img
                     src={userProfile.user.avatarUrl}
                     alt={`${userProfile.user.name}'s avatar`}
-                    className="w-20 h-20 rounded-full object-cover ring-4 ring-[#14b8a6] shadow-lg hover:ring-[#fbbf24] transition-all duration-300"
+                    className="w-20 h-20 rounded-full object-cover ring-4 ring-teal shadow-lg hover:ring-app-accent transition-all duration-300"
                   />
                 ) : (
-                  <div className="w-20 h-20 bg-gradient-to-br from-[#14b8a6] to-[#0f766e] text-white rounded-full flex items-center justify-center font-bold shadow-lg ring-4 ring-[#14b8a6]/20 hover:ring-[#fbbf24]/40 hover:scale-105 transition-all duration-300 text-2xl">
+                  <div className="w-20 h-20 bg-gradient-to-br from-teal to-teal-hover text-white rounded-full flex items-center justify-center font-bold shadow-lg ring-4 ring-teal/20 hover:ring-app-accent/40 hover:scale-105 transition-all duration-300 text-2xl">
                     {userProfile.user?.name
                       ? userProfile.user.name.trim().charAt(0).toUpperCase()
                       : "?"}
@@ -266,33 +266,33 @@ export const Profile: React.FC = () => {
 
               {/* Profile Info */}
               <div className="flex-1">
-                <h1 className="text-4xl font-bold text-[#fafaf9] mb-3">
+                <h1 className="text-4xl font-bold text-stone-50 mb-3">
                   {userProfile.user?.name}
                 </h1>
                 {userProfile.traveler?.location && (
-                  <p className="text-[#d6d3d1] mb-3 flex items-center gap-2">
-                    <span className="text-[#fbbf24]">📍</span>
+                  <p className="text-stone-300 mb-3 flex items-center gap-2">
+                    <span className="text-app-accent">📍</span>
                     {userProfile.traveler.location}
                   </p>
                 )}
                 {userProfile.traveler?.bio && (
-                  <p className="text-[#d6d3d1] leading-relaxed mb-4 max-w-2xl">
+                  <p className="text-stone-300 leading-relaxed mb-4 max-w-2xl">
                     {userProfile.traveler.bio}
                   </p>
                 )}
                 <div className="flex items-center gap-8 text-sm">
-                  <div className="text-[#d6d3d1]">
-                    <span className="font-bold text-[#fbbf24]">
+                  <div className="text-stone-300">
+                    <span className="font-bold text-app-accent">
                       {posts.length}
                     </span>{" "}
                     posts
                   </div>
-                  <div className="text-[#d6d3d1]">
-                    <span className="font-bold text-[#14b8a6]">0</span>{" "}
+                  <div className="text-stone-300">
+                    <span className="font-bold text-teal">0</span>{" "}
                     following
                   </div>
-                  <div className="text-[#d6d3d1]">
-                    <span className="font-bold text-[#14b8a6]">0</span>{" "}
+                  <div className="text-stone-300">
+                    <span className="font-bold text-teal">0</span>{" "}
                     followers
                   </div>
                 </div>
@@ -303,13 +303,13 @@ export const Profile: React.FC = () => {
             <div className="flex gap-3 flex-shrink-0">
               <Link
                 to="/edit-profile"
-                className="inline-flex items-center gap-2 bg-gray-700 hover:bg-gray-600 text-[#fafaf9] px-4 py-2 rounded-lg text-sm font-medium transition-colors border border-gray-600"
+                className="inline-flex items-center gap-2 bg-stone-700 hover:bg-stone-600 text-stone-50 px-4 py-2 rounded-lg text-sm font-medium transition-colors border border-stone-600"
               >
                 Edit profile
               </Link>
             </div>
           </div>
-          <div className="border-t border-gray-700"></div>
+          <div className="border-t border-stone-700"></div>
         </div>
 
         {/* Create Post Modal */}
@@ -325,8 +325,8 @@ export const Profile: React.FC = () => {
         <div>
           <div className="flex items-center justify-between mb-8">
             <div>
-              <h2 className="text-2xl font-bold text-[#fafaf9] mb-1">Posts</h2>
-              <p className="text-[#d6d3d1]">
+              <h2 className="text-2xl font-bold text-stone-50 mb-1">Posts</h2>
+              <p className="text-stone-300">
                 {posts.length === 0
                   ? "No posts shared yet"
                   : `${posts.length} ${
@@ -338,24 +338,24 @@ export const Profile: React.FC = () => {
 
           {loadingPosts ? (
             <div className="flex flex-col items-center justify-center py-16">
-              <div className="w-8 h-8 border-2 border-[#78716c]/30 border-t-[#14b8a6] rounded-full animate-spin mb-4"></div>
-              <p className="text-[#d6d3d1]">Loading posts...</p>
+              <div className="w-8 h-8 border-2 border-app-muted/30 border-t-teal rounded-full animate-spin mb-4"></div>
+              <p className="text-stone-300">Loading posts...</p>
             </div>
           ) : posts.length === 0 ? (
             <div className="text-center py-16">
-              <div className="w-16 h-16 bg-gray-700 rounded-full flex items-center justify-center mx-auto mb-6">
-                <span className="text-2xl text-[#d6d3d1]">✏️</span>
+              <div className="w-16 h-16 bg-stone-700 rounded-full flex items-center justify-center mx-auto mb-6">
+                <span className="text-2xl text-stone-300">✏️</span>
               </div>
-              <h3 className="text-xl font-bold text-[#fafaf9] mb-3">
+              <h3 className="text-xl font-bold text-stone-50 mb-3">
                 Share your first story
               </h3>
-              <p className="text-[#d6d3d1] mb-8 max-w-md mx-auto">
+              <p className="text-stone-300 mb-8 max-w-md mx-auto">
                 Tell the world about your travel experiences and connect with
                 fellow adventurers.
               </p>
               <button
                 onClick={openModal}
-                className="inline-flex items-center gap-2 bg-[#05b88b] hover:bg-[#fbbf24] text-[#1E1E1E] px-6 py-3 rounded-lg font-medium transition-colors shadow-lg hover:shadow-xl"
+                className="inline-flex items-center gap-2 bg-teal hover:bg-app-accent text-stone-900 px-6 py-3 rounded-lg font-medium transition-colors shadow-lg hover:shadow-xl"
               >
                 Write your first story
               </button>
@@ -365,7 +365,7 @@ export const Profile: React.FC = () => {
               {posts.map((post) => (
                 <div
                   key={post.id}
-                  className="bg-gray-800/50 border border-gray-700/50 rounded-xl p-8 hover:bg-gray-800/70 hover:border-gray-600/50 transition-all duration-200"
+                  className="bg-stone-800/50 border border-stone-700/50 rounded-xl p-8 hover:bg-stone-800/70 hover:border-stone-600/50 transition-all duration-200"
                 >
                   <PostCard
                     post={post}
@@ -393,7 +393,7 @@ export const Profile: React.FC = () => {
                           from: "profile",
                           userId: post.traveler?.id ?? null,
                         }}
-                        className="text-[#14b8a6] hover:text-[#fbbf24] text-sm font-medium transition-colors"
+                        className="text-teal hover:text-app-accent text-sm font-medium transition-colors"
                       >
                         Edit
                       </Link>

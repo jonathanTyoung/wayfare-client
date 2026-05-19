@@ -53,7 +53,7 @@ export const EditPost = () => {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-[#292524] flex items-center justify-center">
+      <div className="min-h-screen bg-app-bg flex items-center justify-center">
         <div className="text-center">
           <div className="w-8 h-8 border-2 border-stone-600 border-t-stone-100 animate-spin mx-auto mb-4"></div>
           <h2 className="text-xl font-semibold text-stone-100 mb-2">
@@ -67,7 +67,7 @@ export const EditPost = () => {
 
   if (!post) {
     return (
-      <div className="min-h-screen bg-[#292524] flex items-center justify-center">
+      <div className="min-h-screen bg-app-bg flex items-center justify-center">
         <div className="text-center max-w-md">
           <div className="w-16 h-16 bg-stone-800 border border-stone-600 flex items-center justify-center mx-auto mb-6">
             <span className="text-2xl text-stone-400">📝</span>
@@ -80,7 +80,7 @@ export const EditPost = () => {
           </p>
           <button
             onClick={handleBack}
-            className="bg-stone-100 hover:bg-stone-200 text-[#292524] px-6 py-2.5 font-medium transition-colors border border-stone-100"
+            className="bg-stone-100 hover:bg-stone-200 text-stone-900 px-6 py-2.5 font-medium transition-colors border border-stone-100"
           >
             Back to Posts
           </button>
@@ -90,9 +90,9 @@ export const EditPost = () => {
   }
 
   return (
-    <div className="min-h-screen bg-[#292524]">
+    <div className="min-h-screen bg-app-bg">
       {/* Header */}
-      <header className="border-b border-stone-600/20 bg-[#292524] sticky top-0 z-40">
+      <header className="border-b border-stone-600/20 bg-app-bg sticky top-0 z-40">
         <div className="max-w-4xl mx-auto px-6 py-6">
           <div className="flex items-center justify-between">
             <div>
