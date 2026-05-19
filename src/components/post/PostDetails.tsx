@@ -167,7 +167,7 @@ export const PostDetails = () => {
 
       {/* Main Article */}
       <div className="max-w-2xl mx-auto px-6 py-12">
-        <article className="shadow-sm border border-white/50 relative rounded-lg overflow-hidden">
+        <article className="shadow-xl border border-stone-700/60 relative rounded-lg overflow-hidden">
           {/* Top Right Menu */}
           <div className="absolute top-4 right-4" ref={menuRef}>
             <button
@@ -251,8 +251,8 @@ export const PostDetails = () => {
             {/* Author & Meta */}
             <div className="flex items-center justify-between mb-12 pb-8 border-b border-stone-600/20">
               <div className="flex items-center gap-4">
-                <div className="w-12 h-12 bg-stone-300 flex items-center justify-center rounded-full">
-                  <User className="w-6 h-6 text-stone-700" />
+                <div className="w-12 h-12 bg-app-accent flex items-center justify-center rounded-full">
+                  <User className="w-6 h-6 text-stone-900" />
                 </div>
                 <div>
                   <div className="font-medium text-stone-100 text-lg">
@@ -343,86 +343,85 @@ export const PostDetails = () => {
 
           {/* Action Footer */}
           <div className="px-12 py-8 border-t border-stone-600/20">
-            <div className="flex items-center justify-between">
-              <div className="flex items-center gap-6">
-                {/* Like Button */}
-                <button
-                  className={`p-2.5 transition-colors ${
-                    likedByUser
-                      ? "bg-app-accent hover:bg-app-accent-hover text-stone-900"
-                      : "bg-stone-700 hover:bg-stone-600 text-stone-300"
-                  }`}
-                  onClick={async () => {
-                    const token = localStorage.getItem("wayfare_token");
-                    if (!currentUser || !token)
-                      return alert("You need to log in");
+            <div className="flex items-center gap-6">
+              {/* Like Button */}
+              <button
+                className={`p-2.5 rounded-lg transition-colors ${
+                  likedByUser
+                    ? "bg-app-accent hover:bg-app-accent-hover text-stone-900"
+                    : "bg-stone-700 hover:bg-stone-600 text-stone-300"
+                }`}
+                onClick={async () => {
+                  const token = localStorage.getItem("wayfare_token");
+                  if (!currentUser || !token)
+                    return alert("You need to log in");
 
-                    try {
-                      if (likedByUser) {
-                        await unlikePost(post.id, token);
-                        setLikedByUser(false);
-                        setLikesCount((prev) => prev - 1);
-                      } else {
-                        await likePost(post.id, token);
-                        setLikedByUser(true);
-                        setLikesCount((prev) => prev + 1);
-                      }
-                    } catch (err) {
-                      console.error(err);
-                      alert("Something went wrong, please try again");
+                  try {
+                    if (likedByUser) {
+                      await unlikePost(post.id, token);
+                      setLikedByUser(false);
+                      setLikesCount((prev) => prev - 1);
+                    } else {
+                      await likePost(post.id, token);
+                      setLikedByUser(true);
+                      setLikesCount((prev) => prev + 1);
                     }
-                  }}
-                >
-                  <Heart className="w-5 h-5" />
-                </button>
-                <span className="text-stone-100">{likesCount}</span>
+                  } catch (err) {
+                    console.error(err);
+                    alert("Something went wrong, please try again");
+                  }
+                }}
+              >
+                <Heart className="w-5 h-5" />
+              </button>
+              <span className="text-stone-100">{likesCount}</span>
 
-                {/* Comment Button — scrolls to section */}
-                <button
-                  className="bg-app-accent hover:bg-app-accent-hover p-2.5 transition-colors"
-                  onClick={() => document.getElementById("comments-section")?.scrollIntoView({ behavior: "smooth" })}
-                >
-                  <MessageCircle className="w-5 h-5 text-stone-900" />
-                </button>
-                <span className="text-stone-100">{comments.length}</span>
+              {/* Comment Button — scrolls to section */}
+              <button
+                className="bg-app-accent hover:bg-app-accent-hover p-2.5 rounded-lg transition-colors"
+                onClick={() => document.getElementById("comments-section")?.scrollIntoView({ behavior: "smooth" })}
+              >
+                <MessageCircle className="w-5 h-5 text-stone-900" />
+              </button>
+              <span className="text-stone-100">{comments.length}</span>
 
-                {/* Share Button */}
-                <button
-                  onClick={handleCopyLink}
-                  className="w-full text-left px-4 py-3 text-sm text-stone-200 hover:bg-stone-700/50 transition-colors border-b border-stone-600/30"
-                >
-                  <Share2 className="w-5 h-5 text-stone-300" />
-                </button>
+              {/* Share Button — tertiary utility, neutral surface */}
+              <button
+                onClick={handleCopyLink}
+                className="p-2.5 rounded-lg bg-stone-700 hover:bg-stone-600 transition-colors"
+              >
+                <Share2 className="w-5 h-5 text-stone-300" />
+              </button>
 
-                {/* Bookmark Button */}
-                <button
-                  className={`p-2.5 transition-colors ${
-                    bookmarkedByUser
-                      ? "bg-teal hover:bg-teal-hover"
-                      : "bg-app-accent hover:bg-app-accent-hover"
-                  }`}
-                  onClick={handleBookmarkToggle}
-                >
-                  <Bookmark className="w-5 h-5 text-stone-900" />
-                </button>
-                <span className="text-stone-100">{bookmarksCount}</span>
-              </div>
-          {/* VIEW ON MAP */}
-          {hasLocation && (
-            <button
-              onClick={() =>
-                navigate(
-                  `/explore?lat=${encodeURIComponent(
-                    post.latitude
-                  )}&lng=${encodeURIComponent(post.longitude)}`
-                )
-              }
-              className="px-4 py-2 text-sm font-medium text-stone-300 hover:text-teal hover:bg-teal/10 rounded-md transition-colors flex-shrink-0"
-            >
-              View on Map
-            </button>
-          )}
+              {/* Bookmark Button */}
+              <button
+                className={`p-2.5 rounded-lg transition-colors ${
+                  bookmarkedByUser
+                    ? "bg-teal hover:bg-teal-hover"
+                    : "bg-app-accent hover:bg-app-accent-hover"
+                }`}
+                onClick={handleBookmarkToggle}
+              >
+                <Bookmark className="w-5 h-5 text-stone-900" />
+              </button>
+              <span className="text-stone-100">{bookmarksCount}</span>
             </div>
+
+            {/* View on Map — secondary text link, different action class than the social cluster */}
+            {hasLocation && (
+              <button
+                onClick={() =>
+                  navigate(
+                    `/explore?lat=${encodeURIComponent(
+                      post.latitude
+                    )}&lng=${encodeURIComponent(post.longitude)}`
+                  )
+                }
+                className="mt-6 text-sm text-teal hover:text-teal-hover transition-colors bg-transparent"
+              >
+                View on Map
+              </button>
+            )}
           </div>
 
 
