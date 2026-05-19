@@ -157,7 +157,7 @@ export const PostDetails = () => {
         <div className="max-w-2xl mx-auto px-6 py-4 flex items-center">
           <button
             onClick={() => navigate(-1)}
-            className="flex items-center gap-2 text-black hover:text-stone-200 transition-colors text-sm"
+            className="flex items-center gap-2 text-stone-300 hover:text-stone-100 transition-colors text-sm"
           >
             <ArrowLeft className="w-4 h-4" />
             Back
@@ -188,7 +188,7 @@ export const PostDetails = () => {
                       to={`/posts/${postId}/edit`}
                       state={{ fromPostId: postId }}
                       onClick={() => setMenuOpen(false)}
-                      className="block px-4 py-2 text-sm text-black-200 hover:bg-stone-700 hover:text-white rounded-t-md"
+                      className="block px-4 py-2 text-sm text-stone-200 hover:bg-stone-700 hover:text-stone-100 rounded-t-md"
                     >
                       Edit Story
                     </Link>
@@ -204,7 +204,7 @@ export const PostDetails = () => {
                           alert("Failed to delete story. Please try again.");
                         }
                       }}
-                      className="w-full text-left block px-4 py-2 text-sm text-red-400 hover:bg-red-600 hover:text-white rounded-b-md"
+                      className="w-full text-left block px-4 py-2 text-sm text-red-400 hover:bg-red-600 hover:text-stone-100 rounded-b-md"
                     >
                       Delete Story
                     </button>
@@ -213,7 +213,7 @@ export const PostDetails = () => {
                   <>
                     <button
                       onClick={handleCopyLink}
-                      className="w-full text-left block px-4 py-2 text-sm text-black-200 hover:bg-stone-700 hover:text-white rounded-t-md"
+                      className="w-full text-left block px-4 py-2 text-sm text-stone-200 hover:bg-stone-700 hover:text-stone-100 rounded-t-md"
                     >
                       Copy Link
                     </button>
@@ -222,7 +222,7 @@ export const PostDetails = () => {
                         handleBookmarkToggle();
                         setMenuOpen(false);
                       }}
-                      className="w-full text-left block px-4 py-2 text-sm text-black-200 hover:bg-stone-700 hover:text-white"
+                      className="w-full text-left block px-4 py-2 text-sm text-stone-200 hover:bg-stone-700 hover:text-stone-100"
                     >
                       {bookmarkedByUser ? "Remove Bookmark" : "Save"}
                     </button>
@@ -236,14 +236,14 @@ export const PostDetails = () => {
           <div className="px-12 py-16">
             {post.category?.name && (
               <div className="mb-4">
-                <span className="text-yellow-300 text-sm font-medium tracking-wide uppercase">
+                <span className="text-app-accent text-sm font-medium tracking-wide uppercase">
                   {post.category.name}
                 </span>
               </div>
             )}
 
             {post.title && (
-              <h1 className="text-5xl font-bold text-white mb-12 leading-tight tracking-tight">
+              <h1 className="text-5xl font-bold text-stone-100 mb-12 leading-tight tracking-tight">
                 {post.title}
               </h1>
             )}
@@ -255,7 +255,7 @@ export const PostDetails = () => {
                   <User className="w-6 h-6 text-stone-700" />
                 </div>
                 <div>
-                  <div className="font-medium text-white text-lg">
+                  <div className="font-medium text-stone-100 text-lg">
                     {post.traveler?.username ||
                       post.traveler?.name ||
                       "Anonymous Traveler"}
@@ -285,7 +285,7 @@ export const PostDetails = () => {
               </div>
               <div>
                 {!isOwner && (
-                  <button className="bg-white hover:bg-stone-100 text-black px-6 py-2 text-sm font-medium transition-colors">
+                  <button className="bg-app-surface hover:bg-stone-700 text-stone-100 px-6 py-2 text-sm font-medium transition-colors">
                     Follow
                   </button>
                 )}
@@ -309,7 +309,7 @@ export const PostDetails = () => {
             {/* Long Description */}
             {post.long_form_description && (
               <div className="mb-16">
-                <div className="text-white text-xl leading-relaxed whitespace-pre-wrap font-light tracking-wide">
+                <div className="text-stone-100 text-xl leading-relaxed whitespace-pre-wrap font-light tracking-wide">
                   {post.long_form_description}
                 </div>
               </div>
@@ -325,7 +325,7 @@ export const PostDetails = () => {
                       <button
                         key={tag.id}
                         onClick={() => handleTagClick(tag.name)}
-                        className="text-black hover:text-yellow-300 transition-colors text-sm underline"
+                        className="text-stone-300 hover:text-app-accent transition-colors text-sm underline"
                         title={`View posts tagged with #${tag.name}`}
                       >
                         #{tag.name}
@@ -349,8 +349,8 @@ export const PostDetails = () => {
                 <button
                   className={`p-2.5 transition-colors ${
                     likedByUser
-                      ? "bg-red-500 hover:bg-red-600"
-                      : "bg-yellow-300 hover:bg-yellow-400"
+                      ? "bg-app-accent hover:bg-app-accent-hover"
+                      : "bg-app-accent hover:bg-app-accent-hover"
                   }`}
                   onClick={async () => {
                     const token = localStorage.getItem("wayfare_token");
@@ -373,39 +373,39 @@ export const PostDetails = () => {
                     }
                   }}
                 >
-                  <Heart className="w-5 h-5 text-black" />
+                  <Heart className="w-5 h-5 text-stone-900" />
                 </button>
-                <span className="text-white">{likesCount}</span>
+                <span className="text-stone-100">{likesCount}</span>
 
                 {/* Comment Button — scrolls to section */}
                 <button
-                  className="bg-yellow-300 hover:bg-yellow-400 p-2.5 transition-colors"
+                  className="bg-app-accent hover:bg-app-accent-hover p-2.5 transition-colors"
                   onClick={() => document.getElementById("comments-section")?.scrollIntoView({ behavior: "smooth" })}
                 >
-                  <MessageCircle className="w-5 h-5 text-black" />
+                  <MessageCircle className="w-5 h-5 text-stone-900" />
                 </button>
-                <span className="text-white">{comments.length}</span>
+                <span className="text-stone-100">{comments.length}</span>
 
                 {/* Share Button */}
                 <button
                   onClick={handleCopyLink}
-                  className="w-full text-left px-4 py-3 text-sm text-black-200 hover:bg-stone-700/50 transition-colors border-b border-stone-600/30"
+                  className="w-full text-left px-4 py-3 text-sm text-stone-200 hover:bg-stone-700/50 transition-colors border-b border-stone-600/30"
                 >
-                  <Share2 className="w-5 h-5 text-black" />
+                  <Share2 className="w-5 h-5 text-stone-300" />
                 </button>
 
                 {/* Bookmark Button */}
                 <button
                   className={`p-2.5 transition-colors ${
                     bookmarkedByUser
-                      ? "bg-blue-500 hover:bg-blue-600"
-                      : "bg-yellow-300 hover:bg-yellow-400"
+                      ? "bg-teal hover:bg-teal-hover"
+                      : "bg-app-accent hover:bg-app-accent-hover"
                   }`}
                   onClick={handleBookmarkToggle}
                 >
-                  <Bookmark className="w-5 h-5 text-black" />
+                  <Bookmark className="w-5 h-5 text-stone-900" />
                 </button>
-                <span className="text-white">{bookmarksCount}</span>
+                <span className="text-stone-100">{bookmarksCount}</span>
               </div>
           {/* VIEW ON MAP */}
           {hasLocation && (
@@ -417,7 +417,7 @@ export const PostDetails = () => {
                   )}&lng=${encodeURIComponent(post.longitude)}`
                 )
               }
-              className="px-4 py-2 text-sm font-medium text-black-400 hover:text-blue-300 hover:bg-blue-900/20 rounded-md transition-colors flex-shrink-0"
+              className="px-4 py-2 text-sm font-medium text-stone-300 hover:text-teal hover:bg-teal/10 rounded-md transition-colors flex-shrink-0"
             >
               View on Map
             </button>

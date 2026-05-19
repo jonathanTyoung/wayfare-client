@@ -102,7 +102,7 @@ export function PostCard({
         <div className="flex-1">
           <div className="inline-flex items-center gap-3 mb-3 px-3 py-2 bg-stone-700/30 border border-stone-600/40 rounded-lg text-xs">
             <div className="flex items-center gap-2">
-              <div className="w-6 h-6 bg-gradient-to-br from-blue-500 to-blue-600 rounded-full flex items-center justify-center text-xs font-medium text-white">
+              <div className="w-6 h-6 bg-gradient-to-br from-teal to-teal-hover rounded-full flex items-center justify-center text-xs font-medium text-white">
                 {post.traveler?.name?.charAt(0)?.toUpperCase() || "?"}
               </div>
               <span className="text-stone-200 font-medium">
@@ -143,7 +143,7 @@ export function PostCard({
         <div className="relative flex-shrink-0" ref={menuRef}>
           <button
             onClick={() => setMenuOpen(!menuOpen)}
-            className="p-2 rounded-full hover:bg-stone-700/50 transition-colors text-black-400 hover:text-stone-200"
+            className="p-2 rounded-full hover:bg-stone-700/50 transition-colors text-stone-400 hover:text-stone-200"
           >
             <HiDotsVertical className="w-5 h-5" />
           </button>
@@ -156,7 +156,7 @@ export function PostCard({
                     to={`/posts/${post.id}/edit`}
                     state={{ from: window.location.pathname }}
                     onClick={() => setMenuOpen(false)}
-                    className="block px-4 py-3 text-sm text-black-200 hover:bg-stone-700/50 transition-colors border-b border-stone-600/30 last:border-b-0"
+                    className="block px-4 py-3 text-sm text-stone-200 hover:bg-stone-700/50 transition-colors border-b border-stone-600/30 last:border-b-0"
                   >
                     Edit Post
                   </Link>
@@ -165,7 +165,7 @@ export function PostCard({
                       removePost?.(post.id);
                       setMenuOpen(false);
                     }}
-                    className="w-full text-left px-4 py-3 text-sm text-black-400 hover:bg-red-900/30 transition-colors"
+                    className="w-full text-left px-4 py-3 text-sm text-red-400 hover:bg-red-900/30 transition-colors"
                   >
                     Delete Post
                   </button>
@@ -174,7 +174,7 @@ export function PostCard({
                 <>
                   <button
                     onClick={handleCopyLink}
-                    className="w-full text-left px-4 py-3 text-sm text-black-200 hover:bg-stone-700/50 transition-colors border-b border-stone-600/30"
+                    className="w-full text-left px-4 py-3 text-sm text-stone-200 hover:bg-stone-700/50 transition-colors border-b border-stone-600/30"
                   >
                     Copy Link
                   </button>
@@ -183,7 +183,7 @@ export function PostCard({
                       toggleBookmark();
                       setMenuOpen(false);
                     }}
-                    className="w-full text-left px-4 py-3 text-sm text-black-200 hover:bg-stone-700/50 transition-colors border-b border-stone-600/30"
+                    className="w-full text-left px-4 py-3 text-sm text-stone-200 hover:bg-stone-700/50 transition-colors border-b border-stone-600/30"
                   >
                     {bookmarked ? "Remove Bookmark 📌" : "Bookmark 📌"}
                   </button>
@@ -229,7 +229,7 @@ export function PostCard({
             <button
               key={index}
               onClick={() => handleTagClick(tag.name || tag)}
-              className="px-3 py-1 text-xs font-medium bg-stone-700/50 text-stone-300 rounded-full hover:bg-blue-900/30 hover:text-blue-300 transition-colors"
+              className="px-3 py-1 text-xs font-medium bg-stone-700/50 text-stone-300 rounded-full hover:bg-teal/10 hover:text-teal transition-colors"
             >
               #{typeof tag === "string" ? tag : tag.name}
             </button>
@@ -244,11 +244,11 @@ export function PostCard({
             className="flex items-center gap-1 px-3 py-1 rounded-md hover:bg-red-900/20 transition-colors"
           >
             {liked ? (
-              <HiHeart className="w-5 h-5 text-red-500" />
+              <HiHeart className="w-5 h-5 text-app-accent" />
             ) : (
-              <HiOutlineHeart className="w-5 h-5 text-black" />
+              <HiOutlineHeart className="w-5 h-5 text-stone-300" />
             )}
-            <span className="text-black text-sm">{likesCount}</span>
+            <span className="text-stone-300 text-sm">{likesCount}</span>
           </button>
 
           {/* VIEW ON MAP */}
@@ -261,7 +261,7 @@ export function PostCard({
                   )}&lng=${encodeURIComponent(post.longitude)}`
                 )
               }
-              className="px-4 py-2 text-sm font-medium text-black-400 hover:text-blue-300 hover:bg-blue-900/20 rounded-md transition-colors flex-shrink-0"
+              className="px-4 py-2 text-sm font-medium text-stone-300 hover:text-teal hover:bg-teal/10 rounded-md transition-colors flex-shrink-0"
             >
               View on Map
             </button>

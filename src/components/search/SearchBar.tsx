@@ -85,7 +85,7 @@ export const SearchBar = ({ onClose }: SearchBarProps) => {
           fetchSuggestions.cancel();
           handleSearch();
         }}
-        className="px-3 py-2 bg-teal-500 hover:bg-teal-600 transition text-white"
+        className="px-3 py-2 bg-teal hover:bg-teal-hover transition text-white"
       >
         Search
       </button>

@@ -255,12 +255,12 @@ export function CommentSection({ postId, initialComments, currentUser }: Props) 
                       className="group flex items-start gap-3 bg-stone-900/40 border border-stone-700/20 rounded-lg px-4 py-3"
                     >
                       <CornerDownRight className="w-3.5 h-3.5 text-stone-600 mt-0.5 shrink-0" />
-                      <div className="w-7 h-7 bg-gradient-to-br from-teal-500 to-teal-600 rounded-full flex items-center justify-center text-white font-bold text-xs shrink-0">
+                      <div className="w-7 h-7 bg-gradient-to-br from-teal to-teal-hover rounded-full flex items-center justify-center text-white font-bold text-xs shrink-0">
                         {reply.traveler.username.charAt(0).toUpperCase()}
                       </div>
                       <div className="flex-1 min-w-0">
                         <div className="flex items-center gap-2 mb-1">
-                          <span className="text-teal-300 font-semibold text-xs">
+                          <span className="text-teal font-semibold text-xs">
                             {reply.traveler.username}
                           </span>
                           <span className="text-stone-500 text-xs">
@@ -298,12 +298,12 @@ export function CommentSection({ postId, initialComments, currentUser }: Props) 
                     onChange={(e) => setReplyInput(e.target.value)}
                     placeholder={`Reply to @${replyingTo.username}…`}
                     maxLength={1000}
-                    className="flex-1 bg-stone-900/60 border border-teal-700/40 rounded-lg px-3 py-2 text-sm text-stone-200 placeholder-stone-500 focus:border-teal-500/50 focus:outline-none"
+                    className="flex-1 bg-stone-900/60 border border-teal/40 rounded-lg px-3 py-2 text-sm text-stone-200 placeholder-stone-500 focus:border-teal/50 focus:outline-none"
                   />
                   <button
                     type="submit"
                     disabled={!replyInput.trim()}
-                    className="bg-teal-600 hover:bg-teal-500 disabled:opacity-40 text-white text-xs font-semibold px-3 py-2 rounded-lg transition-colors"
+                    className="bg-teal hover:bg-teal-hover disabled:opacity-40 text-white text-xs font-semibold px-3 py-2 rounded-lg transition-colors"
                   >
                     Reply
                   </button>
