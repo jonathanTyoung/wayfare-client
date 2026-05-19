@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import { FiSearch, FiPlus } from "react-icons/fi";
-import Logo from "/assets/park-jon.svg"; // adjust path to your .svg
+import { FiSearch, FiPlus, FiHome, FiUser, FiMap } from "react-icons/fi";
+import logo from "../../assets/park-jon.svg";
 import { PostForm } from "../post/Form.tsx";
 import { useUserContext } from "../../context/UserContext.tsx";
 import { getCategories } from "../data/CategoryData.ts";
@@ -107,11 +107,11 @@ export const Sidebar: React.FC<SidebarProps> = ({ openSearch }) => {
 
   return (
     <>
-      <aside className="w-20 bg-[#292524] border-r border-[#78716c]/10 flex flex-col p-4 sticky top-0 h-screen overflow-y-auto">
+      <aside className="w-20 bg-app-bg border-r border-stone-500/10 flex flex-col p-4 sticky top-0 h-screen overflow-y-auto">
         {/* Logo at the very top */}
         <Link to="/home" className="mb-6 flex justify-center" title="Home">
           <img
-            src="src/assets/park-jon.svg"
+            src={logo}
             alt="Wayfare Logo"
             className="w-10 h-10 hover:opacity-80 transition-opacity"
           />
@@ -121,36 +121,36 @@ export const Sidebar: React.FC<SidebarProps> = ({ openSearch }) => {
           <Link
             to="/home"
             title="Home"
-            className="block p-3 rounded-md hover:bg-[#78716c]/10 transition-colors flex justify-center text-[#78716c] hover:text-[#2f3e46]"
+            className="p-3 rounded-md hover:bg-stone-500/10 transition-colors flex justify-center text-stone-500 hover:text-stone-100"
           >
-            🏠
+            <FiHome className="text-xl" />
           </Link>
           <Link
             to="/profile"
             title="Profile"
-            className="block p-3 rounded-md hover:bg-[#78716c]/10 transition-colors flex justify-center text-[#78716c] hover:text-[#2f3e46]"
+            className="p-3 rounded-md hover:bg-stone-500/10 transition-colors flex justify-center text-stone-500 hover:text-stone-100"
           >
-            👤
+            <FiUser className="text-xl" />
           </Link>
           <Link
             to="/explore"
             title="Explore Map"
-            className="block p-3 rounded-md hover:bg-[#78716c]/10 transition-colors flex justify-center text-[#78716c] hover:text-[#2f3e46]"
+            className="p-3 rounded-md hover:bg-stone-500/10 transition-colors flex justify-center text-stone-500 hover:text-stone-100"
           >
-            🗺️
+            <FiMap className="text-xl" />
           </Link>
 
           <button
             onClick={openSearch}
             title="Search"
-            className="p-3 rounded-md hover:bg-[#05b88b] transition-colors text-[#1E1E1E] hover:text-[#1E1E1E]"
+            className="p-3 rounded-md hover:bg-stone-500/10 transition-colors text-stone-500 hover:text-stone-100"
           >
             <FiSearch className="text-xl" />
           </button>
           <button
             onClick={openModal}
             title="Create Post"
-            className="p-3 rounded-md bg-[#05b88b] hover:bg-[#fbbf24] transition-colors text-[#1E1E1E] hover:text-[#1E1E1E]"
+            className="p-3 rounded-md bg-teal hover:bg-teal-hover transition-colors text-stone-900"
           >
             <FiPlus className="text-xl" />
           </button>

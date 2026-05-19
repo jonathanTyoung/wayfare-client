@@ -1,7 +1,7 @@
-// NavBar.tsx
-import { NavLink, useNavigate } from "react-router-dom";
+import { Link, NavLink, useNavigate } from "react-router-dom";
 import { Search } from "lucide-react";
 import { SearchBar } from "../search/SearchBar";
+import logo from "../../assets/park-jon.svg";
 
 interface NavBarProps {
   openSearch: () => void; // from Layout
@@ -23,23 +23,46 @@ export const NavBar = ({
   };
 
   return (
-    <nav className="bg-[#292524] text-white p-4 flex flex-col gap-2 sticky top-0 z-50">
-      <div className="flex justify-between items-center">
-        <div className="flex items-center gap-4">
-        </div>
+    <nav className="bg-app-bg text-white sticky top-0 z-50 border-b border-stone-700/40">
+      <div className="h-14 px-6 flex items-center justify-between">
+        <Link to="/home" className="flex items-center gap-3" title="Home">
+          <img src={logo} alt="Wayfare" className="h-8 w-8" />
+          <span className="font-special text-xl tracking-tight text-app-accent">
+            Wayfare
+          </span>
+        </Link>
 
         <div className="flex items-center gap-2">
           {token && (
-            <button onClick={openSearch} title="Search">
-              <Search className="w-6 h-6 text-white" />
+            <button
+              onClick={openSearch}
+              title="Search"
+              className="h-9 w-9 inline-flex items-center justify-center rounded-md text-stone-200 hover:text-app-accent hover:bg-stone-800/60 transition-colors"
+            >
+              <Search className="w-5 h-5" />
             </button>
           )}
           {token ? (
-            <button onClick={handleLogout}>Logout</button>
+            <button
+              onClick={handleLogout}
+              className="h-9 px-4 text-sm font-medium rounded-md text-stone-200 hover:text-app-accent hover:bg-stone-800/60 transition-colors"
+            >
+              Logout
+            </button>
           ) : (
             <>
-              <NavLink to="/login">Login</NavLink>
-              <NavLink to="/register">Register</NavLink>
+              <NavLink
+                to="/login"
+                className="h-9 px-4 inline-flex items-center text-sm font-medium rounded-md text-stone-200 hover:text-app-accent transition-colors"
+              >
+                Login
+              </NavLink>
+              <NavLink
+                to="/register"
+                className="h-9 px-4 inline-flex items-center text-sm font-medium rounded-md bg-teal text-stone-900 hover:bg-teal-hover transition-colors"
+              >
+                Register
+              </NavLink>
             </>
           )}
         </div>
@@ -47,7 +70,7 @@ export const NavBar = ({
 
       {/* Inline SearchBar inside NavBar */}
       {isSearchOpen && (
-        <div className="mt-2 relative max-w-md">
+        <div className="px-6 pb-3 relative max-w-md">
           <SearchBar onClose={closeSearch} />
         </div>
       )}
