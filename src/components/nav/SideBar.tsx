@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 import { FiSearch, FiPlus, FiHome, FiUser, FiMap } from "react-icons/fi";
 import { PostForm } from "../post/Form.tsx";
 import { useUserContext } from "../../context/UserContext.tsx";
@@ -108,39 +108,57 @@ export const Sidebar: React.FC<SidebarProps> = ({ openSearch }) => {
     <>
       <aside className="w-20 bg-app-bg border-r border-stone-500/10 flex flex-col p-4 sticky top-0 h-screen overflow-y-auto">
         <nav className="flex flex-col gap-2 items-center justify-center h-full">
-          <Link
+          <NavLink
             to="/home"
             title="Home"
-            className="p-3 rounded-md hover:bg-stone-500/10 transition-colors flex justify-center text-stone-500 hover:text-stone-100"
+            className={({ isActive }) =>
+              `p-3 rounded-lg flex justify-center transition-colors ${
+                isActive
+                  ? "text-app-accent bg-stone-800/60"
+                  : "text-stone-500 hover:text-stone-100 hover:bg-stone-800/40"
+              }`
+            }
           >
             <FiHome className="text-xl" />
-          </Link>
-          <Link
+          </NavLink>
+          <NavLink
             to="/profile"
             title="Profile"
-            className="p-3 rounded-md hover:bg-stone-500/10 transition-colors flex justify-center text-stone-500 hover:text-stone-100"
+            className={({ isActive }) =>
+              `p-3 rounded-lg flex justify-center transition-colors ${
+                isActive
+                  ? "text-app-accent bg-stone-800/60"
+                  : "text-stone-500 hover:text-stone-100 hover:bg-stone-800/40"
+              }`
+            }
           >
             <FiUser className="text-xl" />
-          </Link>
-          <Link
+          </NavLink>
+          <NavLink
             to="/explore"
             title="Explore Map"
-            className="p-3 rounded-md hover:bg-stone-500/10 transition-colors flex justify-center text-stone-500 hover:text-stone-100"
+            className={({ isActive }) =>
+              `p-3 rounded-lg flex justify-center transition-colors ${
+                isActive
+                  ? "text-app-accent bg-stone-800/60"
+                  : "text-stone-500 hover:text-stone-100 hover:bg-stone-800/40"
+              }`
+            }
           >
             <FiMap className="text-xl" />
-          </Link>
+          </NavLink>
 
           <button
             onClick={openSearch}
             title="Search"
-            className="p-3 rounded-md hover:bg-stone-500/10 transition-colors text-stone-500 hover:text-stone-100"
+            className="p-3 rounded-lg flex justify-center transition-colors text-stone-500 hover:text-stone-100 hover:bg-stone-800/40"
           >
             <FiSearch className="text-xl" />
           </button>
           <button
             onClick={openModal}
             title="Create Post"
-            className="p-3 rounded-md bg-teal hover:bg-teal-hover transition-colors text-stone-900"
+            className="p-3 rounded-lg bg-teal hover:bg-teal-hover transition-colors text-stone-900"
           >
             <FiPlus className="text-xl" />
           </button>

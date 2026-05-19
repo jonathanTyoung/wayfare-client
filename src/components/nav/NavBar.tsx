@@ -53,13 +53,25 @@ export const NavBar = ({
             <>
               <NavLink
                 to="/login"
-                className="h-9 px-4 inline-flex items-center text-sm font-medium rounded-md text-stone-200 hover:text-app-accent transition-colors"
+                className={({ isActive }) =>
+                  `h-9 px-4 inline-flex items-center text-sm font-medium rounded-md transition-colors ${
+                    isActive
+                      ? "text-app-accent underline underline-offset-4"
+                      : "text-stone-200 hover:text-app-accent"
+                  }`
+                }
               >
                 Login
               </NavLink>
               <NavLink
                 to="/register"
-                className="h-9 px-4 inline-flex items-center text-sm font-medium rounded-md bg-teal text-stone-900 hover:bg-teal-hover transition-colors"
+                className={({ isActive }) =>
+                  `h-9 px-4 inline-flex items-center text-sm font-medium rounded-md transition-colors ${
+                    isActive
+                      ? "text-app-accent underline underline-offset-4"
+                      : "bg-teal text-stone-900 hover:bg-teal-hover"
+                  }`
+                }
               >
                 Register
               </NavLink>
