@@ -222,7 +222,7 @@ export function CommentSection({ postId, initialComments, currentUser }: Props) 
                               setReplyingTo({ id: comment.id, username: comment.traveler.username });
                               setReplyInput(`@${comment.traveler.username} `);
                             }}
-                            className="text-stone-400 hover:text-app-accent text-xs px-2 py-1 rounded transition-colors bg-transparent"
+                            className="text-stone-400 hover:text-app-accent text-xs px-2 py-1 rounded-lg transition-colors bg-transparent"
                           >
                             Reply
                           </button>
@@ -252,7 +252,7 @@ export function CommentSection({ postId, initialComments, currentUser }: Props) 
                   {comment.replies.map((reply) => (
                     <div
                       key={reply.id}
-                      className="group flex items-start gap-3 bg-stone-900/40 border border-stone-700/20 rounded-lg px-4 py-3"
+                      className="group flex items-start gap-3 bg-stone-900/40 border border-stone-700/20 rounded-xl px-4 py-3"
                     >
                       <CornerDownRight className="w-3.5 h-3.5 text-stone-600 mt-0.5 shrink-0" />
                       <div className="w-7 h-7 bg-gradient-to-br from-teal to-teal-hover rounded-full flex items-center justify-center text-white font-bold text-xs shrink-0">

@@ -95,7 +95,7 @@ export const MapComponent = ({ trips, posts }) => {
                   </p>
                   <button
                     onClick={() => navigate(`/posts/${post.id}`)}
-                    className="px-3 py-1.5 rounded-md bg-app-accent text-stone-900 text-sm font-medium hover:bg-app-accent-hover transition-colors"
+                    className="px-3 py-1.5 rounded-lg bg-app-accent text-stone-900 text-sm font-medium hover:bg-app-accent-hover transition-colors"
                   >
                     View Post
                   </button>

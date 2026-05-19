@@ -76,18 +76,18 @@ export const Register = () => {
   };
 
   const inputClass =
-    "block w-full mt-1.5 px-3 py-2 rounded-md bg-app-bg border border-stone-700/60 text-stone-100 placeholder-stone-500 focus:outline-none focus:border-app-accent focus:ring-2 focus:ring-app-accent/20 disabled:opacity-60 disabled:cursor-not-allowed";
+    "block w-full mt-1.5 px-3 py-2 rounded-lg bg-app-bg border border-stone-700/60 text-stone-100 placeholder-stone-500 focus:outline-none focus:border-app-accent focus:ring-2 focus:ring-app-accent/20 disabled:opacity-60 disabled:cursor-not-allowed";
   const labelClass = "text-sm text-stone-300";
 
   return (
     <main className="min-h-screen flex flex-col items-center justify-center p-8 bg-app-bg">
       <dialog
         ref={errorDialog}
-        className="bg-app-surface text-stone-100 border border-stone-700/60 rounded-lg p-6 max-w-sm w-full flex-col items-center gap-4 shadow-2xl open:flex [&::backdrop]:bg-black/60 [&::backdrop]:backdrop-blur-sm"
+        className="bg-app-surface text-stone-100 border border-stone-700/60 rounded-xl p-6 max-w-sm w-full flex-col items-center gap-4 shadow-2xl open:flex [&::backdrop]:bg-black/60 [&::backdrop]:backdrop-blur-sm"
       >
         <div>{errorMessage}</div>
         <button
-          className="px-4 py-1.5 rounded-md bg-transparent border border-stone-700/60 text-stone-400 hover:bg-stone-800/50 hover:text-stone-100 transition-colors text-sm"
+          className="px-4 py-1.5 rounded-lg bg-transparent border border-stone-700/60 text-stone-400 hover:bg-stone-800/50 hover:text-stone-100 transition-colors text-sm"
           onClick={() => errorDialog.current.close()}
         >
           Close
@@ -185,7 +185,7 @@ export const Register = () => {
           <fieldset>
             <button
               type="submit"
-              className={`w-full px-4 py-2.5 rounded-md font-medium transition-colors ${
+              className={`w-full px-6 py-3 rounded-lg font-medium transition-colors ${
                 isLoading
                   ? "bg-stone-600 text-stone-400 cursor-not-allowed"
                   : "bg-app-accent text-stone-900 hover:bg-app-accent-hover"

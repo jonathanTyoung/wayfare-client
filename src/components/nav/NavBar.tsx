@@ -37,7 +37,7 @@ export const NavBar = ({
             <button
               onClick={openSearch}
               title="Search"
-              className="h-9 w-9 inline-flex items-center justify-center rounded-md text-stone-200 hover:text-app-accent hover:bg-stone-800/60 transition-colors"
+              className="h-9 w-9 inline-flex items-center justify-center rounded-lg text-stone-200 hover:text-app-accent hover:bg-stone-800/60 transition-colors"
             >
               <Search className="w-5 h-5" />
             </button>
@@ -45,7 +45,7 @@ export const NavBar = ({
           {token ? (
             <button
               onClick={handleLogout}
-              className="h-9 px-4 text-sm font-medium rounded-md text-stone-200 hover:text-app-accent hover:bg-stone-800/60 transition-colors"
+              className="h-9 px-4 text-sm font-medium rounded-lg text-stone-200 hover:text-app-accent hover:bg-stone-800/60 transition-colors"
             >
               Logout
             </button>
@@ -54,7 +54,7 @@ export const NavBar = ({
               <NavLink
                 to="/login"
                 className={({ isActive }) =>
-                  `h-9 px-4 inline-flex items-center text-sm font-medium rounded-md transition-colors ${
+                  `h-9 px-4 inline-flex items-center text-sm font-medium rounded-lg transition-colors ${
                     isActive
                       ? "text-app-accent underline underline-offset-4"
                       : "text-stone-200 hover:text-app-accent"
@@ -66,7 +66,7 @@ export const NavBar = ({
               <NavLink
                 to="/register"
                 className={({ isActive }) =>
-                  `h-9 px-4 inline-flex items-center text-sm font-medium rounded-md transition-colors ${
+                  `h-9 px-4 inline-flex items-center text-sm font-medium rounded-lg transition-colors ${
                     isActive
                       ? "text-app-accent underline underline-offset-4"
                       : "bg-teal text-stone-900 hover:bg-teal-hover"

@@ -140,7 +140,7 @@ export const PostDetails = () => {
           </p>
           <button
             onClick={() => navigate("/home")}
-            className="bg-stone-100 hover:bg-stone-200 text-stone-900 px-6 py-2.5 font-medium transition-colors border border-stone-100"
+            className="bg-stone-100 hover:bg-stone-200 text-stone-900 px-6 py-3 font-medium transition-colors border border-stone-100"
           >
             Back to Posts
           </button>
@@ -167,7 +167,7 @@ export const PostDetails = () => {
 
       {/* Main Article */}
       <div className="max-w-2xl mx-auto px-6 py-12">
-        <article className="shadow-xl border border-stone-700/60 relative rounded-lg overflow-hidden">
+        <article className="shadow-xl border border-stone-700/60 relative rounded-xl overflow-hidden">
           {/* Top Right Menu */}
           <div className="absolute top-4 right-4" ref={menuRef}>
             <button
@@ -285,7 +285,7 @@ export const PostDetails = () => {
               </div>
               <div>
                 {!isOwner && (
-                  <button className="bg-app-surface hover:bg-stone-700 text-stone-100 px-6 py-2 text-sm font-medium transition-colors">
+                  <button className="bg-app-surface hover:bg-stone-700 text-stone-100 px-4 py-2 text-sm font-medium transition-colors">
                     Follow
                   </button>
                 )}

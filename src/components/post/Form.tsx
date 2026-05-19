@@ -463,7 +463,7 @@ export const PostForm = ({
                     <img
                       src={url}
                       alt={`Preview ${idx + 1}`}
-                      className="w-24 h-24 object-cover rounded-lg shadow-md border border-stone-700 group-hover:shadow-lg transition-shadow duration-200"
+                      className="w-24 h-24 object-cover rounded-xl shadow-md border border-stone-700 group-hover:shadow-lg transition-shadow duration-200"
                     />
                   </div>
                 ))}

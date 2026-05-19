@@ -240,7 +240,7 @@ export const HomeFeed = () => {
           </p>
           <button
             onClick={openModal}
-            className="bg-stone-100 hover:bg-stone-200 text-stone-900 px-6 py-2.5 font-medium transition-colors border border-stone-100"
+            className="bg-stone-100 hover:bg-stone-200 text-stone-900 px-6 py-3 font-medium transition-colors border border-stone-100"
           >
             Share Your Story
           </button>
@@ -303,7 +303,7 @@ export const HomeFeed = () => {
             </p>
             <button
               onClick={openModal}
-              className="inline-flex items-center gap-2 bg-stone-100 hover:bg-stone-200 text-stone-900 px-5 py-2.5 font-medium transition-colors border border-stone-100"
+              className="inline-flex items-center gap-2 bg-stone-100 hover:bg-stone-200 text-stone-900 px-6 py-3 font-medium transition-colors border border-stone-100"
             >
               Start your journey
             </button>

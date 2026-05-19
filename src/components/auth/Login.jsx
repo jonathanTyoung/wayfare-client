@@ -32,11 +32,11 @@ export const Login = () => {
     <main className="min-h-screen flex flex-col items-center justify-center p-8 bg-app-bg">
       <dialog
         ref={existDialog}
-        className="bg-app-surface text-stone-100 border border-stone-700/60 rounded-lg p-6 max-w-sm w-full flex-col items-center gap-4 shadow-2xl open:flex [&::backdrop]:bg-black/60 [&::backdrop]:backdrop-blur-sm"
+        className="bg-app-surface text-stone-100 border border-stone-700/60 rounded-xl p-6 max-w-sm w-full flex-col items-center gap-4 shadow-2xl open:flex [&::backdrop]:bg-black/60 [&::backdrop]:backdrop-blur-sm"
       >
         <div>User does not exist</div>
         <button
-          className="px-4 py-1.5 rounded-md bg-transparent border border-stone-700/60 text-stone-400 hover:bg-stone-800/50 hover:text-stone-100 transition-colors text-sm"
+          className="px-4 py-1.5 rounded-lg bg-transparent border border-stone-700/60 text-stone-400 hover:bg-stone-800/50 hover:text-stone-100 transition-colors text-sm"
           onClick={() => existDialog.current.close()}
         >
           Close
@@ -62,7 +62,7 @@ export const Login = () => {
               id="inputUsername"
               value={username}
               onChange={(evt) => setUsername(evt.target.value)}
-              className="block w-full mt-1.5 px-3 py-2 rounded-md bg-app-bg border border-stone-700/60 text-stone-100 placeholder-stone-500 focus:outline-none focus:border-app-accent focus:ring-2 focus:ring-app-accent/20"
+              className="block w-full mt-1.5 px-3 py-2 rounded-lg bg-app-bg border border-stone-700/60 text-stone-100 placeholder-stone-500 focus:outline-none focus:border-app-accent focus:ring-2 focus:ring-app-accent/20"
               placeholder="Username"
               required
               autoFocus
@@ -78,7 +78,7 @@ export const Login = () => {
               id="inputPassword"
               value={password}
               onChange={(evt) => setPassword(evt.target.value)}
-              className="block w-full mt-1.5 px-3 py-2 rounded-md bg-app-bg border border-stone-700/60 text-stone-100 placeholder-stone-500 focus:outline-none focus:border-app-accent focus:ring-2 focus:ring-app-accent/20"
+              className="block w-full mt-1.5 px-3 py-2 rounded-lg bg-app-bg border border-stone-700/60 text-stone-100 placeholder-stone-500 focus:outline-none focus:border-app-accent focus:ring-2 focus:ring-app-accent/20"
               placeholder="Password"
             />
           </fieldset>
@@ -86,7 +86,7 @@ export const Login = () => {
           <fieldset>
             <button
               type="submit"
-              className="w-full px-4 py-2.5 rounded-md bg-app-accent text-stone-900 font-medium hover:bg-app-accent-hover transition-colors"
+              className="w-full px-6 py-3 rounded-lg bg-app-accent text-stone-900 font-medium hover:bg-app-accent-hover transition-colors"
             >
               Sign in
             </button>

@@ -64,7 +64,7 @@ export const SearchBar = ({ onClose }: SearchBarProps) => {
   return (
     <div
       ref={containerRef}
-      className="relative flex items-center bg-stone-800 rounded overflow-hidden w-full max-w-md"
+      className="relative flex items-center bg-stone-800 rounded-lg overflow-hidden w-full max-w-md"
     >
       <input
         type="text"

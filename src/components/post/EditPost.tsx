@@ -80,7 +80,7 @@ export const EditPost = () => {
           </p>
           <button
             onClick={handleBack}
-            className="bg-stone-100 hover:bg-stone-200 text-stone-900 px-6 py-2.5 font-medium transition-colors border border-stone-100"
+            className="bg-stone-100 hover:bg-stone-200 text-stone-900 px-6 py-3 font-medium transition-colors border border-stone-100"
           >
             Back to Posts
           </button>

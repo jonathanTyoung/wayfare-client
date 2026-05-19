@@ -96,7 +96,7 @@ export function PostCard({
   const hasLocation = post.latitude && post.longitude;
 
   return (
-    <article className="w-full max-w-2xl mb-8 bg-app-bg rounded-lg border border-stone-600/30 p-8">
+    <article className="w-full max-w-2xl mb-8 bg-app-bg rounded-xl border border-stone-600/30 p-8">
       {/* HEADER */}
       <header className="mb-4 flex justify-between items-start gap-4">
         <div className="flex-1">
@@ -208,7 +208,7 @@ export function PostCard({
 
       {/* THUMBNAIL */}
       {post.photos?.length ? (
-        <div className="mb-5 rounded-lg overflow-hidden">
+        <div className="mb-5 rounded-xl overflow-hidden">
           <img
             src={post.photos[0].url}
             alt={`Thumbnail for ${post.title}`}
@@ -216,7 +216,7 @@ export function PostCard({
           />
         </div>
       ) : (
-        <div className="mb-5 rounded-lg border-2 border-dashed border-stone-600/40 p-8 text-center text-stone-500 text-xs">
+        <div className="mb-5 rounded-xl border-2 border-dashed border-stone-600/40 p-8 text-center text-stone-500 text-xs">
           This story doesn't include any photos
         </div>
       )}
@@ -241,7 +241,7 @@ export function PostCard({
           {/* LIKE BUTTON */}
           <button
             onClick={toggleLike}
-            className="flex items-center gap-1 px-3 py-1 rounded-md hover:bg-red-900/20 transition-colors"
+            className="flex items-center gap-1 px-3 py-1 rounded-lg hover:bg-red-900/20 transition-colors"
           >
             {liked ? (
               <HiHeart className="w-5 h-5 text-app-accent" />
@@ -261,7 +261,7 @@ export function PostCard({
                   )}&lng=${encodeURIComponent(post.longitude)}`
                 )
               }
-              className="px-4 py-2 text-sm font-medium text-stone-300 hover:text-teal hover:bg-teal/10 rounded-md transition-colors flex-shrink-0"
+              className="px-4 py-2 text-sm font-medium text-stone-300 hover:text-teal hover:bg-teal/10 rounded-lg transition-colors flex-shrink-0"
             >
               View on Map
             </button>
