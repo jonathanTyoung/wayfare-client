@@ -131,3 +131,26 @@ select:focus {
 .leaflet-container a.leaflet-popup-close-button:hover {
   color: var(--color-accent);
 }
+
+/* === Leaflet zoom controls === */
+.leaflet-bar a,
+.leaflet-bar a:hover {
+  background-color: var(--color-surface);
+  border-bottom-color: var(--color-border);
+  color: var(--color-text);
+}
+
+.leaflet-bar a:hover {
+  background-color: rgba(120, 113, 108, 0.3);
+}
+
+/* === Leaflet attribution bar === */
+.leaflet-control-attribution {
+  background-color: rgba(30, 30, 30, 0.8);
+  color: var(--color-muted);
+  font-size: 11px;
+}
+
+.leaflet-control-attribution a {
+  color: var(--color-accent);
+}
