@@ -96,7 +96,7 @@ export function PostCard({
   const hasLocation = post.latitude && post.longitude;
 
   return (
-    <article className="w-full max-w-2xl mb-8 bg-app-bg rounded-xl border border-stone-600/30 p-8">
+    <article className="w-full max-w-2xl mb-8 bg-app-bg rounded-xl border border-stone-600/30 p-8 transition-shadow duration-200 hover:shadow-xl">
       {/* HEADER */}
       <header className="mb-4 flex justify-between items-start gap-4">
         <div className="flex-1">

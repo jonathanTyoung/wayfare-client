@@ -495,7 +495,7 @@ export const PostForm = ({
           <button
             type="button"
             onClick={mode === "edit" ? () => navigate(-1) : handleReset}
-            className="px-6 py-3 rounded-lg border border-stone-700 text-stone-200 font-semibold bg-transparent hover:bg-stone-800/50 transition-all duration-200"
+            className="px-6 py-3 rounded-lg border border-stone-700 text-stone-200 font-semibold bg-transparent hover:bg-stone-800/50 transition-colors duration-150"
           >
             {mode === "edit" ? "← Back" : "🔄 Reset"}
           </button>
