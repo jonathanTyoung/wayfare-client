@@ -242,12 +242,12 @@ export const PostForm = ({
   };
 
   return (
-    <div className="max-w-3xl mx-auto p-8 bg-app-surface rounded-2xl shadow-lg border border-stone-100">
+    <div className="max-w-3xl mx-auto p-8 bg-app-surface border border-stone-700/60 rounded-xl shadow-xl">
       <div className="mb-8">
-        <h1 className="text-2xl font-bold text-stone-800 mb-2">
+        <h1 className="text-2xl font-bold text-stone-100 mb-2">
           {mode === "edit" ? "✏️ Edit Post" : "✨ Create New Post"}
         </h1>
-        <p className="text-stone-600">
+        <p className="text-stone-400">
           {mode === "edit"
             ? "Update your post details below"
             : "Share your story with the community"}
@@ -259,7 +259,7 @@ export const PostForm = ({
         <div className="space-y-2">
           <label
             htmlFor="title"
-            className="block text-sm font-semibold text-stone-700"
+            className="block text-sm font-semibold text-stone-300"
           >
             Post Title
           </label>
@@ -271,7 +271,7 @@ export const PostForm = ({
             onChange={handleChange}
             placeholder="Give your post an engaging title..."
             required
-            className="w-full px-4 py-3 border border-stone-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
+            className="w-full px-4 py-3 bg-app-bg border border-stone-700 text-stone-100 placeholder:text-app-muted rounded-lg focus:outline-none focus:ring-2 focus:ring-app-accent/20 focus:border-app-accent/40 transition-all duration-200"
           />
         </div>
 
@@ -279,7 +279,7 @@ export const PostForm = ({
         <div className="space-y-2">
           <label
             htmlFor="short_description"
-            className="block text-sm font-semibold text-stone-700"
+            className="block text-sm font-semibold text-stone-300"
           >
             📝 Short Description
           </label>
@@ -291,7 +291,7 @@ export const PostForm = ({
             placeholder="Write a brief, engaging summary..."
             rows={3}
             required
-            className="w-full px-4 py-3 border border-stone-300 rounded-lg resize-y focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
+            className="w-full px-4 py-3 bg-app-bg border border-stone-700 text-stone-100 placeholder:text-app-muted rounded-lg resize-y focus:outline-none focus:ring-2 focus:ring-app-accent/20 focus:border-app-accent/40 transition-all duration-200"
           />
         </div>
 
@@ -299,7 +299,7 @@ export const PostForm = ({
         <div className="space-y-2">
           <label
             htmlFor="long_form_description"
-            className="block text-sm font-semibold text-stone-700"
+            className="block text-sm font-semibold text-stone-300"
           >
             📖 Full Story
           </label>
@@ -311,7 +311,7 @@ export const PostForm = ({
             placeholder="Tell your full story here..."
             rows={6}
             required
-            className="w-full px-4 py-3 border border-stone-300 rounded-lg resize-y focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
+            className="w-full px-4 py-3 bg-app-bg border border-stone-700 text-stone-100 placeholder:text-app-muted rounded-lg resize-y focus:outline-none focus:ring-2 focus:ring-app-accent/20 focus:border-app-accent/40 transition-all duration-200"
           />
         </div>
 
@@ -319,7 +319,7 @@ export const PostForm = ({
         <div className="space-y-2 relative">
           <label
             htmlFor="location"
-            className="block text-sm font-semibold text-stone-700"
+            className="block text-sm font-semibold text-stone-300"
           >
             📍 Location
           </label>
@@ -331,7 +331,7 @@ export const PostForm = ({
               value={formData.location}
               onChange={handleLocationChange}
               placeholder="Start typing a city or place..."
-              className="w-full px-4 py-3 pr-12 border border-stone-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
+              className="w-full px-4 py-3 pr-12 bg-app-bg border border-stone-700 text-stone-100 placeholder:text-app-muted rounded-lg focus:outline-none focus:ring-2 focus:ring-app-accent/20 focus:border-app-accent/40 transition-all duration-200"
               autoComplete="off"
               required
             />
@@ -346,11 +346,11 @@ export const PostForm = ({
 
           {/* Location suggestions */}
           {locationSuggestions.length > 0 && (
-            <ul className="absolute z-20 bg-white border border-stone-200 w-full mt-1 rounded-lg max-h-48 overflow-auto shadow-lg">
+            <ul className="absolute z-20 bg-app-surface border border-stone-700/60 w-full mt-1 rounded-lg max-h-48 overflow-auto shadow-lg">
               {locationSuggestions.map((loc) => (
                 <li
                   key={loc.place_id}
-                  className="px-4 py-3 hover:bg-blue-50 cursor-pointer border-b border-stone-100 last:border-b-0 transition-colors duration-150"
+                  className="px-4 py-3 hover:bg-stone-700/50 cursor-pointer border-b border-stone-700/40 last:border-b-0 transition-colors duration-150"
                   onClick={() => {
                     setFormData((prev) => ({
                       ...prev,
@@ -364,7 +364,7 @@ export const PostForm = ({
                     setLocationSuggestions([]);
                   }}
                 >
-                  <div className="text-sm text-stone-800">
+                  <div className="text-sm text-stone-100">
                     {loc.display_name}
                   </div>
                 </li>
@@ -374,7 +374,7 @@ export const PostForm = ({
 
           {/* Selected location confirmation */}
           {selectedLocation && (
-            <div className="flex items-center gap-2 mt-2 text-sm text-green-600 bg-green-50 px-3 py-2 rounded-lg">
+            <div className="flex items-center gap-2 mt-2 text-sm text-green-400 bg-green-900/20 border border-green-900/40 px-3 py-2 rounded-lg">
               <span>✓</span>
               <span>
                 Location selected: {selectedLocation.name.split(",")[0]}
@@ -387,7 +387,7 @@ export const PostForm = ({
         <div className="space-y-2">
           <label
             htmlFor="category_id"
-            className="block text-sm font-semibold text-black-700"
+            className="block text-sm font-semibold text-stone-300"
           >
             🏷️ Category
           </label>
@@ -397,7 +397,7 @@ export const PostForm = ({
             value={formData.category_id}
             onChange={handleChange}
             required
-            className="w-full px-4 py-3 border border-stone-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 bg-black-400"
+            className="w-full px-4 py-3 bg-app-bg border border-stone-700 text-stone-100 placeholder:text-app-muted rounded-lg focus:outline-none focus:ring-2 focus:ring-app-accent/20 focus:border-app-accent/40 transition-all duration-200"
           >
             <option value="">Choose a category...</option>
             {categories.map((cat) => (
@@ -412,7 +412,7 @@ export const PostForm = ({
         <div className="space-y-2">
           <label
             htmlFor="tags"
-            className="block text-sm font-semibold text-stone-700"
+            className="block text-sm font-semibold text-stone-300"
           >
             🏷️ Tags
             <span className="text-stone-500 font-normal ml-1">(Optional)</span>
@@ -424,7 +424,7 @@ export const PostForm = ({
             value={formData.tags}
             onChange={handleChange}
             placeholder="travel, summer, food, adventure..."
-            className="w-full px-4 py-3 border border-stone-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
+            className="w-full px-4 py-3 bg-app-bg border border-stone-700 text-stone-100 placeholder:text-app-muted rounded-lg focus:outline-none focus:ring-2 focus:ring-app-accent/20 focus:border-app-accent/40 transition-all duration-200"
           />
           <p className="text-xs text-stone-500">
             Separate multiple tags with commas
@@ -435,7 +435,7 @@ export const PostForm = ({
         <div className="space-y-2">
           <label
             htmlFor="photo"
-            className="block text-sm font-semibold text-stone-700"
+            className="block text-sm font-semibold text-stone-300"
           >
             📸 Photos
             <span className="text-stone-500 font-normal ml-1">(Optional)</span>
@@ -446,15 +446,15 @@ export const PostForm = ({
             accept="image/*"
             multiple
             onChange={handlePhotoChange}
-            className="block w-full text-sm text-stone-600 
-                       file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 
-                       file:text-sm file:font-medium file:bg-blue-50 file:text-blue-700 
-                       hover:file:bg-blue-100 transition-colors duration-200"
+            className="block w-full text-sm text-stone-400
+                       file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0
+                       file:text-sm file:font-medium file:bg-stone-700 file:text-stone-100
+                       hover:file:bg-stone-600 transition-colors duration-200"
           />
 
           {photoPreviews && photoPreviews.length > 0 && (
             <div className="mt-4 space-y-3">
-              <p className="text-sm font-medium text-stone-700">
+              <p className="text-sm font-medium text-stone-300">
                 Photo Preview:
               </p>
               <div className="flex gap-3 flex-wrap">
@@ -463,7 +463,7 @@ export const PostForm = ({
                     <img
                       src={url}
                       alt={`Preview ${idx + 1}`}
-                      className="w-24 h-24 object-cover rounded-lg shadow-md border border-stone-200 group-hover:shadow-lg transition-shadow duration-200"
+                      className="w-24 h-24 object-cover rounded-lg shadow-md border border-stone-700 group-hover:shadow-lg transition-shadow duration-200"
                     />
                   </div>
                 ))}
@@ -473,14 +473,14 @@ export const PostForm = ({
         </div>
 
         {/* Action Buttons */}
-        <div className="flex flex-col sm:flex-row gap-3 pt-6 border-t border-stone-200">
+        <div className="flex flex-col sm:flex-row gap-3 pt-6 border-t border-stone-700/60">
           <button
             type="submit"
             disabled={isSubmitting}
-            className={`flex-1 py-3 px-6 rounded-lg font-semibold text-white transition-all duration-200 ${
+            className={`flex-1 py-3 px-6 rounded-lg font-semibold transition-all duration-200 ${
               isSubmitting
-                ? "bg-stone-400 cursor-not-allowed"
-                : "bg-teal hover:bg-app-accent active:bg-blue-800 shadow-md hover:shadow-lg"
+                ? "bg-stone-600 text-stone-400 cursor-not-allowed"
+                : "bg-app-accent hover:bg-app-accent-hover text-stone-900 shadow-md hover:shadow-lg"
             }`}
           >
             {isSubmitting
@@ -495,7 +495,7 @@ export const PostForm = ({
           <button
             type="button"
             onClick={mode === "edit" ? () => navigate(-1) : handleReset}
-            className="px-6 py-3 rounded-lg border border-stone-300 text-stone-700 font-semibold bg-white hover:bg-stone-50 active:bg-stone-100 transition-all duration-200 shadow-sm hover:shadow-md"
+            className="px-6 py-3 rounded-lg border border-stone-700 text-stone-200 font-semibold bg-transparent hover:bg-stone-800/50 transition-all duration-200"
           >
             {mode === "edit" ? "← Back" : "🔄 Reset"}
           </button>
