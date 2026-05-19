@@ -132,7 +132,7 @@ export const PostDetails = () => {
           <div className="w-16 h-16 bg-stone-800 border border-stone-600 flex items-center justify-center mx-auto mb-6">
             <span className="text-2xl text-stone-400">📖</span>
           </div>
-          <h2 className="text-2xl font-bold text-stone-100 mb-3">
+          <h2 className="text-2xl font-special font-bold text-stone-100 mb-3">
             Story Not Found
           </h2>
           <p className="text-stone-400 mb-6 leading-relaxed">
@@ -243,7 +243,7 @@ export const PostDetails = () => {
             )}
 
             {post.title && (
-              <h1 className="text-5xl font-bold text-stone-100 mb-12 leading-tight tracking-tight">
+              <h1 className="text-5xl font-special text-stone-100 mb-12 leading-tight tracking-tight">
                 {post.title}
               </h1>
             )}

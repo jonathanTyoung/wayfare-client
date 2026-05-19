@@ -27,7 +27,7 @@ const CreatePostModal = ({
         <div className="bg-stone-900 px-6 py-4 border-b border-stone-700">
           <div className="flex items-center justify-between">
             <div>
-              <h2 className="text-xl font-bold text-stone-100">
+              <h2 className="text-xl font-special font-bold text-stone-100">
                 Write your story
               </h2>
               <p className="text-stone-400 mt-0.5 text-sm">

@@ -43,7 +43,7 @@ const CreatePostModal = ({
         <div className="bg-stone-900 px-6 py-4 border-b border-stone-700">
           <div className="flex items-center justify-between">
             <div>
-              <h2 className="text-xl font-bold text-stone-100">
+              <h2 className="text-xl font-special font-bold text-stone-100">
                 Write your story
               </h2>
               <p className="text-stone-400 mt-0.5 text-sm">
@@ -218,7 +218,7 @@ export const HomeFeed = () => {
       <div className="min-h-screen flex items-center justify-center bg-app-bg">
         <div className="text-center max-w-md">
           <div className="w-8 h-8 border-2 border-stone-600 border-t-stone-100 animate-spin mx-auto mb-4"></div>
-          <h2 className="text-xl font-semibold text-stone-100 mb-2">
+          <h2 className="text-xl font-special font-semibold text-stone-100 mb-2">
             Loading posts
           </h2>
           <p className="text-stone-400">{loadingMessage}</p>
@@ -301,7 +301,7 @@ export const HomeFeed = () => {
             <div className="w-12 h-12 bg-stone-800 border border-stone-600 flex items-center justify-center mx-auto mb-4">
               <span className="text-xl text-stone-300">🗺️</span>
             </div>
-            <h2 className="text-2xl font-bold text-stone-100 mb-3">
+            <h2 className="text-2xl font-special font-bold text-stone-100 mb-3">
               Start exploring
             </h2>
             <p className="text-stone-400 mb-6 max-w-md mx-auto leading-relaxed">

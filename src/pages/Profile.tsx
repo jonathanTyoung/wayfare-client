@@ -71,7 +71,7 @@ const CreatePostModal: React.FC<CreatePostModalProps> = ({
         <div className="bg-stone-900 px-6 py-4 border-b border-stone-700">
           <div className="flex items-center justify-between">
             <div>
-              <h2 className="text-xl font-bold text-stone-100">
+              <h2 className="text-xl font-special font-bold text-stone-100">
                 Write your story
               </h2>
               <p className="text-stone-400 mt-0.5 text-sm">
@@ -266,7 +266,7 @@ export const Profile: React.FC = () => {
 
               {/* Profile Info */}
               <div className="flex-1">
-                <h1 className="text-4xl font-bold text-stone-50 mb-3">
+                <h1 className="text-4xl font-special font-bold text-stone-50 mb-3">
                   {userProfile.user?.name}
                 </h1>
                 {userProfile.traveler?.location && (
@@ -325,7 +325,7 @@ export const Profile: React.FC = () => {
         <div>
           <div className="flex items-center justify-between mb-8">
             <div>
-              <h2 className="text-2xl font-bold text-stone-50 mb-1">Posts</h2>
+              <h2 className="text-2xl font-special font-bold text-stone-50 mb-1">Posts</h2>
               <p className="text-stone-300">
                 {posts.length === 0
                   ? "No posts shared yet"

@@ -129,7 +129,7 @@ export function PostCard({
             </span>
           </div>
 
-          <h2 className="text-2xl font-bold text-white leading-tight hover:text-stone-300 transition-colors">
+          <h2 className="text-2xl font-special text-white leading-tight hover:text-stone-300 transition-colors">
             <Link
               to={`/posts/${post.id}`}
               className="no-underline text-inherit hover:text-stone-300"

@@ -96,7 +96,7 @@ export const EditPost = () => {
         <div className="max-w-4xl mx-auto px-6 py-6">
           <div className="flex items-center justify-between">
             <div>
-              <h1 className="text-2xl font-bold text-stone-100 tracking-tight">
+              <h1 className="text-2xl font-special font-bold text-stone-100 tracking-tight">
                 Edit Story
               </h1>
               <p className="text-stone-400 mt-1">
