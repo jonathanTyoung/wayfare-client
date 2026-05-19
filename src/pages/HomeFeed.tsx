@@ -231,7 +231,7 @@ export const HomeFeed = () => {
     <div className="min-h-screen bg-app-bg">
       {/* Proper Homepage Header */}
       <header className="border-b border-stone-600/20 bg-app-bg">
-        <div className="max-w-4xl mx-auto px-6 py-8 text-center">
+        <div className="max-w-2xl mx-auto px-6 py-8 text-center">
           <h1 className="text-4xl font-special font-bold text-stone-100 tracking-tight mb-2">
             Wayfare
           </h1>
@@ -249,7 +249,7 @@ export const HomeFeed = () => {
 
       {/* Navigation — sticks to the top of <main>, directly below the NavBar */}
       <nav className="border-b border-stone-600/20 bg-app-bg sticky top-0 z-30">
-        <div className="max-w-4xl mx-auto px-6 py-4">
+        <div className="max-w-2xl mx-auto px-6 py-4">
           <div className="flex items-center gap-8 text-sm">
             <span className="text-stone-100 font-medium border-b-2 border-stone-100 pb-2">
               Latest Posts
@@ -273,27 +273,20 @@ export const HomeFeed = () => {
         onSubmit={handleCreatePost}
       />
 
-      {/* Posts List - Tighter Spacing */}
-      <div className="max-w-4xl mx-auto px-6 py-8">
+      {/* Posts List — Card owns vertical rhythm via its mb-8 */}
+      <div className="max-w-2xl mx-auto px-6 py-8">
         {posts.length > 0 ? (
-          <div className="space-y-4">
-            {posts.map((post, index) => (
-              <article
+          <div>
+            {posts.map((post) => (
+              <PostCard
                 key={post.id}
-                className={`
-                  border-b border-stone-600/20 pb-6 mb-6
-                  ${index === posts.length - 1 ? "border-b-0 pb-0 mb-0" : ""}
-                `}
-              >
-                <PostCard
-                  post={post}
-                  initialData={post}
-                  currentUserId={currentUserTravelerId}
-                  updatePostLikes={updatePostLikes} // ✅ same name used in PostCard
-                  isOwner={currentUserTravelerId === post.traveler?.id}
-                  removePost={() => handleRemovePost(post.id)}
-                />
-              </article>
+                post={post}
+                initialData={post}
+                currentUserId={currentUserTravelerId}
+                updatePostLikes={updatePostLikes}
+                isOwner={currentUserTravelerId === post.traveler?.id}
+                removePost={() => handleRemovePost(post.id)}
+              />
             ))}
           </div>
         ) : (
