@@ -1,6 +1,5 @@
 import { useRef, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import "./Login.css";
 import { API_URL } from "../data/Fetcher";
 
 export const Register = () => {
@@ -76,32 +75,45 @@ export const Register = () => {
     }
   };
 
+  const inputClass =
+    "block w-full mt-1.5 px-3 py-2 rounded-md bg-app-bg border border-stone-700/60 text-stone-100 placeholder-stone-500 focus:outline-none focus:border-app-accent focus:ring-2 focus:ring-app-accent/20 disabled:opacity-60 disabled:cursor-not-allowed";
+  const labelClass = "text-sm text-stone-300";
+
   return (
-    <main className="container--login">
-      <dialog className="dialog dialog--auth" ref={errorDialog}>
+    <main className="min-h-screen flex flex-col items-center justify-center p-8 bg-app-bg">
+      <dialog
+        ref={errorDialog}
+        className="bg-app-surface text-stone-100 border border-stone-700/60 rounded-lg p-6 max-w-sm w-full flex-col items-center gap-4 shadow-2xl open:flex [&::backdrop]:bg-black/60 [&::backdrop]:backdrop-blur-sm"
+      >
         <div>{errorMessage}</div>
         <button
-          className="button--close"
+          className="px-4 py-1.5 rounded-md bg-transparent border border-stone-700/60 text-stone-400 hover:bg-stone-800/50 hover:text-stone-100 transition-colors text-sm"
           onClick={() => errorDialog.current.close()}
         >
           Close
         </button>
       </dialog>
 
-      <section>
-        <form className="form--login" onSubmit={handleRegister}>
-          <h1 className="text-4xl mt-7 mb-3">Wayfare</h1>
-          <h2 className="text-xl mb-10">Register new account</h2>
+      <section className="w-full max-w-md">
+        <form
+          onSubmit={handleRegister}
+          className="bg-app-surface border border-stone-700/60 rounded-xl p-8 sm:p-10 flex flex-col gap-1 shadow-xl"
+        >
+          <h1 className="text-4xl font-special text-app-accent mt-2 mb-2">
+            Wayfare
+          </h1>
+          <h2 className="text-lg text-stone-300 mb-8">Register new account</h2>
 
           <fieldset className="mb-4">
-            <label htmlFor="firstName"> First name </label>
+            <label htmlFor="firstName" className={labelClass}>
+              First name
+            </label>
             <input
               type="text"
               id="firstName"
               value={firstName}
               onChange={(evt) => setFirstName(evt.target.value)}
-              className="form-control"
-              placeholder=""
+              className={inputClass}
               required
               autoFocus
               disabled={isLoading}
@@ -109,55 +121,61 @@ export const Register = () => {
           </fieldset>
 
           <fieldset className="mb-4">
-            <label htmlFor="lastName"> Last name </label>
+            <label htmlFor="lastName" className={labelClass}>
+              Last name
+            </label>
             <input
               type="text"
               id="lastName"
               value={lastName}
               onChange={(evt) => setLastName(evt.target.value)}
-              className="form-control"
-              placeholder=""
+              className={inputClass}
               required
               disabled={isLoading}
             />
           </fieldset>
 
           <fieldset className="mb-4">
-            <label htmlFor="username"> Username </label>
+            <label htmlFor="username" className={labelClass}>
+              Username
+            </label>
             <input
               type="text"
               id="username"
               value={username}
               onChange={(evt) => setUsername(evt.target.value)}
-              className="form-control"
-              placeholder=""
+              className={inputClass}
               required
               disabled={isLoading}
             />
           </fieldset>
 
           <fieldset className="mb-4">
-            <label htmlFor="inputEmail"> Email address </label>
+            <label htmlFor="inputEmail" className={labelClass}>
+              Email address
+            </label>
             <input
               type="email"
               id="inputEmail"
               value={email}
               onChange={(evt) => setEmail(evt.target.value)}
-              className="form-control"
+              className={inputClass}
               placeholder="Email address"
               required
               disabled={isLoading}
             />
           </fieldset>
 
-          <fieldset className="mb-4">
-            <label htmlFor="inputPassword"> Password </label>
+          <fieldset className="mb-6">
+            <label htmlFor="inputPassword" className={labelClass}>
+              Password
+            </label>
             <input
               type="password"
               id="inputPassword"
               value={password}
               onChange={(evt) => setPassword(evt.target.value)}
-              className="form-control"
+              className={inputClass}
               placeholder="Password"
               required
               disabled={isLoading}
@@ -167,27 +185,27 @@ export const Register = () => {
           <fieldset>
             <button
               type="submit"
-              className={`button p-3 rounded-md ${
-                isLoading ? "bg-gray-400" : "bg-blue-800"
-              } text-blue-100`}
+              className={`w-full px-4 py-2.5 rounded-md font-medium transition-colors ${
+                isLoading
+                  ? "bg-stone-600 text-stone-400 cursor-not-allowed"
+                  : "bg-app-accent text-stone-900 hover:bg-app-accent-hover"
+              }`}
               disabled={isLoading}
             >
               {isLoading ? "Registering..." : "Register"}
             </button>
           </fieldset>
         </form>
-      </section>
 
-      <div className="loginLinks">
-        <section className="link--register">
+        <div className="mt-5 text-center text-sm">
           <Link
-            className="underline text-blue-600 hover:text-blue-800 visited:text-purple-600"
             to="/login"
+            className="text-app-muted hover:text-app-accent transition-colors"
           >
             Already have an account?
           </Link>
-        </section>
-      </div>
+        </div>
+      </section>
     </main>
   );
 };
