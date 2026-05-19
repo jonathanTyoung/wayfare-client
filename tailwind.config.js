@@ -5,14 +5,22 @@ export default {
   theme: {
     extend: {
       colors: {
-        // Semantic tokens — match CSS variables in index.css
-        bg:      '#292524',
-        surface: '#1e1e1e',
-        'surface-raised': '#2a2a2a',
-        accent:  '#fbbf24',
-        'accent-hover': '#05b88b',
-        teal:    '#05b88b',
-        muted:   '#a0a0a0',
+        // Semantic tokens — match CSS variables in index.css.
+        // Prefixed with `app-` to avoid collision with Tailwind's built-in
+        // color scales (e.g. teal-50..950) when used as `bg-app-*`.
+        'app-bg':              '#292524',
+        'app-surface':         '#1e1e1e',
+        'app-surface-raised':  '#2a2a2a',
+        'app-accent':          '#fbbf24',
+        'app-accent-hover':    '#05b88b',
+        'app-muted':           '#a0a0a0',
+
+        // Teal: expose a minimal DEFAULT + hover pair while preserving
+        // Tailwind's default teal-50..950 scale via `extend`.
+        teal: {
+          DEFAULT: '#05b88b',
+          hover:   '#04a07a',
+        },
 
         // Grays used throughout the app
         stone: {
